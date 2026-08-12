@@ -1,0 +1,9 @@
+{
+  "name": "ev-twin",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api",
+    "scripts/MQTT-simulator"
+  ]
+}

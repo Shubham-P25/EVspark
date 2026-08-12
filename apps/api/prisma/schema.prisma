@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  DRIVER
+  OPERATOR
+  ADMIN
+}
+
+enum StationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ChargerStatus {
+  FREE
+  BUSY
+  MAINTENANCE
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String     @unique
+  role      Role       @default(DRIVER)
+  favorites Favorite[]
+  reviews   Review[]
+  createdAt DateTime   @default(now())
+}
+
+model Station {
+  id           String        @id @default(cuid())
+  name         String
+  operatorName String
+  lat          Float
+  lng          Float
+  pricePerKwh  Float
+  status       StationStatus @default(PENDING)
+  chargers     Charger[]
+  favorites    Favorite[]
+  reviews      Review[]
+  createdAt    DateTime      @default(now())
+}
+
+model Charger {
+  id            String        @id @default(cuid())
+  stationId     String
+  connectorType String
+  powerKw       Float
+  status        ChargerStatus @default(FREE)
+  station       Station       @relation(fields: [stationId], references: [id])
+  updatedAt     DateTime      @updatedAt
+}
+
+model Favorite {
+  id        String  @id @default(cuid())
+  userId    String
+  stationId String
+  user      User    @relation(fields: [userId], references: [id])
+  station   Station @relation(fields: [stationId], references: [id])
+
+  @@unique([userId, stationId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  stationId String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  station   Station  @relation(fields: [stationId], references: [id])
+}

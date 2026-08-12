@@ -1,0 +1,62 @@
+ev-twin/
+├── .github/
+│   └── workflows/
+│       ├── ci-web.yml            # lint + build check for apps/web
+│       ├── ci-api.yml            # lint + build check for apps/api
+│       └── ci-ml.yml             # install + smoke test for apps/ml-service
+├── apps/
+│   ├── web/                      # Next.js — driver map, operator dashboard, admin dashboard
+│   │   ├── app/
+│   │   │   ├── page.tsx                       # landing / driver map
+│   │   │   ├── layout.tsx
+│   │   │   ├── operator/page.tsx               # operator dashboard
+│   │   │   ├── admin/page.tsx                  # admin dashboard
+│   │   │   └── api/auth/[...nextauth]/route.ts # Auth.js handler
+│   │   ├── components/
+│   │   │   ├── Map/                # GoogleMap, Marker, FuelButton
+│   │   │   └── ui/
+│   │   ├── lib/                    # api client, socket client, helpers
+│   │   ├── public/
+│   │   ├── styles/
+│   │   ├── .env.local.example
+│   │   ├── next.config.js
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   ├── api/                      # Express backend
+│   │   ├── src/
+│   │   │   ├── index.ts            # server entry
+│   │   │   ├── routes/             # stations.ts, users.ts, reviews.ts, recommend.ts
+│   │   │   ├── controllers/
+│   │   │   ├── services/           # forecast.service.ts (calls FastAPI)
+│   │   │   ├── sockets/            # socket.io room logic
+│   │   │   ├── mqtt/               # MQTT subscriber -> socket.io bridge
+│   │   │   └── cron/               # node-cron revenue rollups
+│   │   ├── prisma/
+│   │   │   └── schema.prisma
+│   │   ├── .env.example
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   └── ml-service/               # FastAPI forecasting microservice
+│       ├── app/
+│       │   ├── main.py             # FastAPI app + /predict, /health
+│       │   ├── model.py            # load/serve trained model
+│       │   ├── train.py            # training script (LightGBM/Prophet)
+│       │   └── schemas.py          # pydantic request/response models
+│       ├── data/                   # simulated/historical training data
+│       ├── requirements.txt
+│       ├── .env.example
+│       └── README.md
+│
+├── scripts/
+│   └── mqtt-simulator/            # fake sensor data (no real hardware yet)
+│       ├── simulate.js
+│       ├── package.json
+│       └── README.md
+│
+├── docs/
+│   └── EV-Twin-Architecture.md    # your existing architecture doc
+│
+├── .gitignore                 # this file
+└── package.json                   # root — npm workspaces config

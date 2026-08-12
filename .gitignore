@@ -1,0 +1,34 @@
+
+/-- whole project --/
+node_modules/
+.env
+.env.local
+package-lock.json
+
+
+/--  api --/
+apps/api/.agents/
+apps/api/.claude/
+apps/api/.windsurf/
+apps/api/skills-lock.json
+apps/api/tsconfig.json
+apps/api/node_modules/
+
+
+
+/--  models --/
+apps/models/venv/
+apps/models/__pycache__/
+
+
+/-- web --/
+apps/web/.next/
+apps/web/tsconfig.json
+apps/web/postcss.config.mjs
+apps/web/next-env.d.ts
+apps/web/next.config.ts
+apps/web/eslint.config.mjs
+apps/web/.env.local.example
+
+.next/
+dist/
