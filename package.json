@@ -5,5 +5,12 @@
     "apps/web",
     "apps/api",
     "scripts/MQTT-simulator"
-  ]
+  ],
+  "dependencies": {
+    "@types/leaflet": "^1.9.22",
+    "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
+    "mqtt": "^5.15.2",
+    "react-leaflet": "^5.0.0"
+  }
 }

@@ -1,0 +1,1 @@
+export function AuthSubmit({ children, onClick, disabled = false }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) { return <button type="button" className="auth-submit" onClick={onClick} disabled={disabled}>{children}</button> }

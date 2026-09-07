@@ -1,0 +1,17 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/Badge";
+import { StatusDot } from "@/components/ui/StatusDot";
+import { useStations } from "@/hooks/useStations";
+import { formatWait } from "@/lib/utils";
+import type { ConnectorType } from "@/types";
+
+export default function DriverPage() {
+  const { stations } = useStations();
+  const [filter, setFilter] = useState<ConnectorType | "All">("All");
+  const [query, setQuery] = useState("");
+  const visible = useMemo(() => stations.filter((station) => station.name.toLowerCase().includes(query.toLowerCase()) && (filter === "All" || station.chargers.some((charger) => charger.connectorType === filter))), [filter, query, stations]);
+  return <main className="min-h-screen bg-bg"><header className="sticky top-0 z-10 flex flex-wrap items-center gap-4 border-b border-border bg-bg/95 px-5 py-4 backdrop-blur"><Link className="mr-auto font-semibold" href="/">EV<span className="text-primary">spark</span></Link><span className="hidden items-center gap-2 font-mono text-xs text-muted sm:flex"><StatusDot status="green" pulse /> 94 / 100 live</span><input className="order-3 h-9 min-w-[220px] flex-1 rounded-lg border border-border bg-surface px-3 text-sm text-text outline-none focus:border-primary sm:order-none sm:max-w-xs" placeholder="Search stations" value={query} onChange={(event) => setQuery(event.target.value)} />{["All", "CCS2", "Type2", "CHAdeMO"].map((option) => <button key={option} className={`rounded-full border px-3 py-1.5 font-mono text-xs ${filter === option ? "border-primary bg-primary-dim text-primary" : "border-border text-muted"}`} onClick={() => setFilter(option as ConnectorType | "All")}>{option}</button>)}</header><div className="grid min-h-[calc(100vh-73px)] lg:grid-cols-[1fr_380px]"><section className="relative hidden overflow-hidden border-r border-border lg:block"><div className="ev-grid absolute inset-0 opacity-50" /><div className="absolute inset-0 flex items-center justify-center"><div className="text-center"><div className="font-mono text-xs tracking-widest text-primary">MUMBAI NETWORK VIEW</div><p className="mt-3 text-sm text-muted">Google Maps will render here when an API key is configured.</p></div></div></section><section className="p-5 sm:p-8"><div className="flex items-end justify-between"><div><p className="font-mono text-xs tracking-widest text-primary">NEARBY STATIONS</p><h1 className="mt-2 text-2xl font-semibold">Choose where to charge</h1></div><span className="font-mono text-xs text-muted">{visible.length} results</span></div><div className="mt-6 space-y-3">{visible.slice(0, 12).map((station) => <article key={station.id} className="rounded-lg border border-border bg-surface p-4 transition-colors hover:bg-surface-2"><div className="flex items-start gap-3"><StatusDot status={station.status} /><div className="min-w-0 flex-1"><h2 className="truncate font-medium">{station.name}</h2><p className="mt-1 truncate text-xs text-muted">{station.address}</p></div><Badge variant={station.status}>{station.status}</Badge></div><div className="mt-4 flex items-center justify-between border-t border-border-dim pt-3 text-xs"><span className="font-mono text-text">{formatWait(station.predictedWaitMin)}</span><span className="text-muted">{station.chargers.filter((charger) => charger.status === "free").length}/{station.chargers.length} available</span><span className="font-mono text-primary">{station.pricePerKwh} INR/kWh</span></div></article>)}</div></section></div></main>;
+}

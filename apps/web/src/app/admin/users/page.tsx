@@ -1,0 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { TopBar } from "@/components/layout/TopBar";
+
+type User = { id: string; name: string; role: string; email: string; joined: string; status: "active" | "suspended" };
+const seed: User[] = [{ id: "U1", name: "Rohan Mehta", role: "driver", email: "rohan@example.com", joined: "2025-01-12", status: "active" }, { id: "U2", name: "GreenVolt Pvt Ltd", role: "operator", email: "ops@greenvolt.in", joined: "2025-02-01", status: "active" }, { id: "U3", name: "Priya Kulkarni", role: "driver", email: "priya@example.com", joined: "2025-03-08", status: "suspended" }];
+
+export default function AdminUsersPage() { const [users, setUsers] = useState(seed); const [sort, setSort] = useState<keyof User>("name"); const sorted = [...users].sort((a, b) => String(a[sort]).localeCompare(String(b[sort]))); return <><TopBar eyebrow="Admin / User management" title="Network users" /><main className="p-5 sm:p-8"><Card className="overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead className="border-b border-border text-xs text-muted"><tr>{(["name", "role", "email", "joined", "status"] as const).map((column) => <th key={column} className="cursor-pointer px-5 py-4 font-mono font-normal uppercase tracking-wider hover:text-text" onClick={() => setSort(column)}>{column} ↕</th>)}<th className="px-5 py-4 font-mono font-normal uppercase tracking-wider">Actions</th></tr></thead><tbody className="divide-y divide-border-dim">{sorted.map((user) => <tr key={user.id}><td className="px-5 py-4 font-medium">{user.name}</td><td className="px-5 py-4"><Badge variant={user.role === "operator" ? "primary" : "default"}>{user.role}</Badge></td><td className="px-5 py-4 text-muted">{user.email}</td><td className="px-5 py-4 font-mono text-xs text-muted">{user.joined}</td><td className="px-5 py-4"><Badge variant={user.status === "active" ? "green" : "red"}>{user.status}</Badge></td><td className="px-5 py-4"><Button size="sm" variant={user.status === "active" ? "danger" : "secondary"} onClick={() => setUsers((current) => current.map((item) => item.id === user.id ? { ...item, status: item.status === "active" ? "suspended" : "active" } : item))}>{user.status === "active" ? "Suspend" : "Restore"}</Button></td></tr>)}</tbody></table></Card></main></>; }

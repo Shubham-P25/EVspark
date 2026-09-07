@@ -1,0 +1,3 @@
+import { Sidebar } from "@/components/layout/Sidebar";
+
+export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <div className="flex min-h-screen"><Sidebar role="admin" items={[{ href: "/admin", label: "Approval queue", icon: "□" }, { href: "/admin/analytics", label: "Network analytics", icon: "◎" }, { href: "/admin/users", label: "User management", icon: "♙" }]} /><div className="min-w-0 flex-1">{children}</div></div>; }

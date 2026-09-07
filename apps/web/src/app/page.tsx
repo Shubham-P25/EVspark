@@ -1,69 +1,24 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
-}
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { BarChart3, Building2, Car, CircleDollarSign, Flag, LayoutDashboard, MapPin, Plug, TrendingUp, Wifi, Zap } from 'lucide-react'
+import { EVButton } from '@/components/ui/ev-button'
+import { EVFooter } from '@/components/layout/ev-footer'
+import { EVNavbar } from '@/components/layout/ev-navbar'
+import { Reveal } from '@/components/ui/reveal'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { CountUp } from '@/components/ui/count-up'
+import { CheckItem } from '@/components/ui/check-item'
+import { HeroDashboard } from '@/components/landing/hero-dashboard'
+import { Stat } from '@/components/landing/stat'
+import { Step } from '@/components/landing/step'
+import { RoleCard } from '@/components/landing/role-card'
+import { RoleMock } from '@/components/landing/role-mock'
+import { ChargingVisual } from '@/components/landing/charging-visual'
+import { InfoCard } from '@/components/landing/info-card'
+import { DashboardSection } from '@/components/landing/dashboard-section'
+import { Metric } from '@/components/landing/metric'
+import { features, roles } from '@/components/landing/landing-data'
+
+export default function Page() { return <main id="top"><EVNavbar /><section className="hero page-pad"><div className="hero-copy"><motion.div {...({ initial:{opacity:0,y:18}, animate:{opacity:1,y:0}, transition:{delay:.1} })} className="hero-eyebrow">⚡ AI-Powered EV Infrastructure for India</motion.div><motion.h1 initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{delay:.25}}>Smart Charging,<br /><span>Smarter Cities</span></motion.h1><motion.p initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{delay:.4}}>EVspark uses real-time AI to predict charging demand, reduce wait times, and keep India's EV network running at full capacity.</motion.p><motion.div className="hero-actions" initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{delay:.55}}><Link href="/auth/register"><span className="ev-button">Start for Free <span>›</span></span></Link><a className="demo-link" href="#dashboard">Watch Demo <span>▶</span></a></motion.div><small className="hero-note">Trusted by 500+ charging operators across India</small></div><Reveal className="hero-visual"><HeroDashboard /></Reveal><div className="hero-ticker"><span><b><CountUp end={2400} suffix="+" /></b> Stations</span><span><b><CountUp end={18000} suffix="+" /></b> EV Drivers</span><span><b><CountUp end={99.7} suffix="%" /></b> Uptime</span></div></section><section className="live-bar"><Stat icon={MapPin} value={<CountUp end={2400} suffix="+" />} label="Stations Active" /><Stat icon={Car} value={<CountUp end={18000} suffix="+" />} label="EV Drivers Served" /><Stat icon={Wifi} value={<CountUp end={99.7} suffix="%" />} label="Network Uptime" /><Stat icon={CircleDollarSign} value={<><span>₹</span><CountUp end={24} suffix="Cr" /></>} label="Energy Revenue Managed" /></section><section id="features" className="section page-pad"><Reveal><SectionHeading eyebrow="Platform Features" title="Everything an EV Ecosystem Needs" copy="One intelligent platform connecting drivers, operators, and the infrastructure powering India's electric future." /></Reveal><div className="feature-grid">{features.map((f,i) => { const Icon=f.icon; return <Reveal key={f.title} delay={i*.08}><motion.article className="feature-card" whileHover={{ y:-8 }}><div className={`icon-box ${f.green?'green':''}`}><Icon /></div><h3>{f.title}</h3><p>{f.copy}</p></motion.article></Reveal> })}</div></section><section id="how" className="section light-section page-pad"><Reveal><SectionHeading eyebrow="How It Works" title="Up and Running in 3 Steps" copy="From first connection to smarter operations, EVspark makes the switch simple." /></Reveal><div className="steps"><Step num="01" icon={Building2} title="Register & Connect" copy="Operators register, add their charging stations, and configure charger types and pricing in minutes." /><Step num="02" icon={Wifi} title="Go Live" copy="Station sensors stream live data. The AI model begins learning usage patterns from day one." /><Step num="03" icon={TrendingUp} title="Optimize & Earn" copy="View real-time insights, reduce idle time, and watch your network grow more efficient every day." /></div></section><section id="roles" className="section page-pad"><Reveal><SectionHeading eyebrow="Built for Every Role" title="One Platform. Every Perspective." copy="Give every stakeholder the tools and visibility they need to move India forward." /></Reveal><div className="role-showcase"><RoleCard title="EV Driver" icon={Car} color="blue" copy="Find, book, and charge with confidence across India's roads." bullets={roles.Drivers.bullets} mock={<RoleMock role="Drivers" />} /><RoleCard title="Station Operator" icon={Plug} color="green" copy="Manage performance, revenue, and every station in real time." bullets={roles.Operators.bullets} mock={<RoleMock role="Operators" />} /><RoleCard title="Platform Admin" icon={LayoutDashboard} color="blue" copy="Oversee the entire network with powerful operational control." bullets={roles.Admins.bullets} mock={<RoleMock role="Admins" />} /></div></section><section className="section light-section live-action page-pad"><Reveal><div className="action-copy"><span className="eyebrow">Live in Action</span><h2>Watch Your Network Work in Real Time</h2><p>Every charge, every session, every alert — EVspark gives operators and drivers a live window into India's EV network.</p><ul><CheckItem>Live power delivery tracking</CheckItem><CheckItem>Station-level granularity</CheckItem><CheckItem>Instant congestion alerts</CheckItem><CheckItem>AI predictions updated every 5 minutes</CheckItem></ul><EVButton href="#connect">Request a Live Demo</EVButton></div></Reveal><Reveal><ChargingVisual /></Reveal></section><section id="ecosystem" className="section page-pad"><Reveal><SectionHeading eyebrow="India EV Ecosystem" title="Built for Bharat's EV Future" copy="Aligned with India's national EV mission and government schemes." /></Reveal><div className="ecosystem-grid"><InfoCard icon={Flag} title="FAME II & PM e-DRIVE Ready" copy="EVspark aligns with India's ₹10,900 crore FAME II scheme and the new PM e-DRIVE initiative — helping operators qualify for government subsidies and compliance reporting." /><InfoCard icon={Zap} title="OCPP 1.6 & 2.0 Compatible" copy="Works with all major Indian charging networks and hardware — Tata Power EZ Charge, Ather Grid, HPCL EV stations, and more." /><InfoCard icon={TrendingUp} title="India's EV Market is Ready" copy="With 10 lakh+ registered EVs and 12,000+ public charging points as of 2024, EVspark is built to scale with India's growth." /></div></section><DashboardSection /><section className="section metrics page-pad"><Reveal><SectionHeading eyebrow="The EVspark Effect" title="Small changes. Massive impact." copy="The right intelligence compounds. See what happens when every part of your charging network works in sync." /></Reveal><div className="metric-rows"><Metric value={<CountUp end={94} suffix="%" />} title="Reduction in idle station time" copy="AI-driven demand routing helps charging stations stay active longer and dramatically reduces wasted capacity." color="blue" progress="94%" /><Metric value={<CountUp end={3} suffix="x" />} title="Faster operator response to alerts" copy="Every alert reaches the right team at the right time, turning operational friction into momentum." color="green" progress="76%" /><Metric value={<><span>₹</span><CountUp end={40} suffix="K" /></>} title="Average monthly savings per operator" copy="Smarter scheduling, better utilization, and fewer idle hours create measurable savings every month." color="blue" progress="82%" /></div></section><section id="connect" className="cta"><div className="shimmer" /><Reveal><div className="cta-content"><h2>Ready to Electrify<br />Your Network?</h2><p>Join operators already running smarter charging infrastructure across India.</p><div><a href="#start" className="cta-primary">Start Free Trial</a><a href="#sales" className="cta-secondary">Talk to Sales →</a></div><small>No credit card required · FAME II compliant · OCPP 1.6 & 2.0 supported</small></div></Reveal></section><EVFooter /></main> }

@@ -1,0 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { TopBar } from "@/components/layout/TopBar";
+
+export default function OperatorSettingsPage() { const [price, setPrice] = useState("12"); const [threshold, setThreshold] = useState("6"); return <><TopBar eyebrow="Operator / Settings" title="Station settings" /><main className="max-w-2xl space-y-4 p-5 sm:p-8"><Card className="p-5"><h2 className="font-medium">Pricing</h2><p className="mt-1 text-sm text-muted">Set the public rate for energy delivered.</p><div className="mt-5 flex gap-3"><input className="h-10 w-32 rounded-lg border border-border bg-surface-2 px-3 font-mono text-text outline-none focus:border-primary" value={price} onChange={(event) => setPrice(event.target.value)} /><span className="flex items-center text-sm text-muted">₹ / kWh</span><Button className="ml-auto" size="sm">Save</Button></div></Card><Card className="p-5"><h2 className="font-medium">Alert threshold</h2><p className="mt-1 text-sm text-muted">Get alerted when the queue reaches this depth.</p><div className="mt-5 flex gap-3"><input className="h-10 w-32 rounded-lg border border-border bg-surface-2 px-3 font-mono text-text outline-none focus:border-primary" type="number" min="1" max="10" value={threshold} onChange={(event) => setThreshold(event.target.value)} /><span className="flex items-center text-sm text-muted">vehicles</span><Button className="ml-auto" size="sm">Save</Button></div></Card><Card className="p-5"><h2 className="font-medium">Operating hours</h2><p className="mt-1 text-sm text-muted">This station currently operates 24/7.</p><Button className="mt-5" variant="secondary">24/7 enabled</Button></Card></main></>; }

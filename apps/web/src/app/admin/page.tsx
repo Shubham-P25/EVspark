@@ -1,0 +1,13 @@
+"use client";
+
+import { useState } from "react";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Stat } from "@/components/ui/Stat";
+import { TopBar } from "@/components/layout/TopBar";
+import type { ApprovalItem } from "@/types";
+
+const initialQueue: ApprovalItem[] = [{ id: "P001", stationName: "Versova Beach Charger", operatorName: "Seaside EV", address: "Versova Beach Road, Andheri West", lat: 19.1253, lng: 72.8104, chargerCount: 4, connectorTypes: ["CCS2", "Type2"], pricePerKwh: 13, submittedAt: "2h ago" }, { id: "P002", stationName: "Dharavi EV Hub", operatorName: "Urban Charge Co", address: "Dharavi Main Road, Sion", lat: 19.0417, lng: 72.8552, chargerCount: 6, connectorTypes: ["CCS2", "CHAdeMO", "Type2"], pricePerKwh: 11, submittedAt: "5h ago" }];
+
+export default function AdminPage() { const [queue, setQueue] = useState(initialQueue); const remove = (id: string) => setQueue((current) => current.filter((item) => item.id !== id)); return <><TopBar eyebrow="Admin / Approval queue" title="Keep the network trusted" /><main className="space-y-8 p-5 sm:p-8"><div className="grid gap-4 sm:grid-cols-3"><Stat label="Pending" value={queue.length} /><Stat label="Approved today" value={7} /><Stat label="Rejected" value={1} /></div><section><div className="flex items-center justify-between"><h2 className="font-mono text-xs uppercase tracking-widest text-muted">Pending registrations</h2><Badge variant="yellow">Needs review</Badge></div><div className="mt-4 space-y-4">{queue.length === 0 ? <Card className="p-8 text-center text-muted">Approval queue is clear.</Card> : queue.map((item) => <Card key={item.id} className="p-5"><div className="flex flex-wrap items-start justify-between gap-4"><div><h2 className="text-lg font-medium">{item.stationName}</h2><p className="mt-1 text-sm text-muted">{item.operatorName} · {item.address}</p></div><span className="font-mono text-xs text-muted">Submitted {item.submittedAt}</span></div><div className="mt-5 grid gap-3 border-y border-border-dim py-4 text-sm sm:grid-cols-3"><span><strong className="font-mono text-text">{item.chargerCount}</strong> chargers</span><span>{item.connectorTypes.join(", ")}</span><span className="font-mono">₹{item.pricePerKwh}/kWh</span></div><div className="mt-5 flex justify-end gap-3"><Button variant="danger" size="sm" onClick={() => remove(item.id)}>Reject</Button><Button size="sm" onClick={() => remove(item.id)}>Approve ✓</Button></div></Card>)}</div></section></main></>; }

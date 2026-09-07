@@ -1,0 +1,1 @@
+export function TopBar({ title, eyebrow }: { title: string; eyebrow?: string }) { return <header className="border-b border-border bg-bg px-5 py-5 sm:px-8"><p className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">{eyebrow ?? "EVspark console"}</p><h1 className="mt-2 text-2xl font-semibold">{title}</h1></header>; }

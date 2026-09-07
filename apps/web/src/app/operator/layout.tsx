@@ -1,0 +1,3 @@
+import { Sidebar } from "@/components/layout/Sidebar";
+
+export default function OperatorLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <div className="flex min-h-screen"><Sidebar role="operator" items={[{ href: "/operator", label: "My station", icon: "▦" }, { href: "/operator/analytics", label: "Analytics", icon: "↗" }, { href: "/operator/settings", label: "Settings", icon: "⚙" }]} /><div className="min-w-0 flex-1">{children}</div></div>; }

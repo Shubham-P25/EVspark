@@ -1,0 +1,3 @@
+import { ChargingIcon } from '@/components/ui/charging-icon'
+
+export function ChargingVisual() { return <div className="charging-visual"><div className="pulse pulse-a" /><div className="pulse pulse-b" /><div className="pulse pulse-c" /><div className="station-center"><ChargingIcon /><span>LIVE</span></div><div className="battery"><div /><b>85% SoC</b><small>42 kW Charging</small></div><div className="data-chip chip-a">Session Live · 18 min</div><div className="data-chip chip-b">Power: 42 kW</div><div className="data-chip chip-c">Queue: 0</div></div> }
