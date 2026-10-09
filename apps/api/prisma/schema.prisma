@@ -23,48 +23,177 @@ enum ChargerStatus {
   FREE
   BUSY
   MAINTENANCE
+  FAULTED
+  OFFLINE
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum IssueStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String?
-  email     String     @unique
-  role      Role       @default(DRIVER)
-  favorites Favorite[]
-  reviews   Review[]
-  createdAt DateTime   @default(now())
+  id              String           @id @default(cuid())
+  name            String?
+  email           String           @unique
+  role            Role             @default(DRIVER)
+  driverProfile   DriverProfile?
+  operatorProfile OperatorProfile?
+  favorites       Favorite[]
+  reviews         Review[]
+  sessions        Session[]
+  bookings        Booking[]
+  issues          Issue[]
+  createdAt       DateTime         @default(now())
+}
+
+model VehicleModel {
+  id         String   @id @default(cuid())
+  make       String
+  model      String
+  batteryKwh Float
+  maxAcKw    Float
+  maxDcKw    Float
+  connectors String   // comma-separated e.g. "CCS2,Type2"
+  createdAt  DateTime @default(now())
+}
+
+model DriverProfile {
+  id             String  @id @default(cuid())
+  userId         String  @unique
+  vehicleModelId String?
+  connectorPref  String?
+  rangeKm        Float?
+  homeLat        Float?
+  homeLng        Float?
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OperatorProfile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  businessName String?
+  phone        String?
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Station {
-  id           String        @id @default(cuid())
-  name         String
-  operatorName String
-  lat          Float
-  lng          Float
-  pricePerKwh  Float
-  status       StationStatus @default(PENDING)
-  chargers     Charger[]
-  favorites    Favorite[]
-  reviews      Review[]
-  createdAt    DateTime      @default(now())
+  id             String                @id @default(cuid())
+  sourceId       String?
+  operatorUserId String?
+  name           String
+  operatorName   String
+  state          String?               @default("Maharashtra")
+  district       String?
+  city           String?               @default("Mumbai")
+  address        String?
+  lat            Float
+  lng            Float
+  pricePerKwh    Float
+  hours          String?               @default("24/7")
+  amenities      String?               @default("WiFi,Cafe,Restroom,Parking")
+  status         StationStatus         @default(APPROVED)
+  ratingAvg      Float?                @default(4.5)
+  chargers       Charger[]
+  favorites      Favorite[]
+  reviews        Review[]
+  sessions       Session[]
+  queueEntries   QueueEntry[]
+  bookings       Booking[]
+  issues         Issue[]
+  metrics        StationMetricHourly[]
+  forecasts      Forecast[]
+  createdAt      DateTime              @default(now())
 }
 
 model Charger {
-  id            String        @id @default(cuid())
+  id            String         @id @default(cuid())
   stationId     String
+  label         String?
   connectorType String
   powerKw       Float
-  status        ChargerStatus @default(FREE)
-  station       Station       @relation(fields: [stationId], references: [id])
-  updatedAt     DateTime      @updatedAt
+  status        ChargerStatus  @default(FREE)
+  ocppId        String?
+  station       Station        @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  events        ChargerEvent[]
+  sessions      Session[]
+  bookings      Booking[]
+  updatedAt     DateTime       @updatedAt
+}
+
+model ChargerEvent {
+  id        String        @id @default(cuid())
+  chargerId String
+  status    ChargerStatus
+  ts        DateTime      @default(now())
+  payload   String?
+  charger   Charger       @relation(fields: [chargerId], references: [id], onDelete: Cascade)
+
+  @@index([chargerId, ts(sort: Desc)])
+}
+
+model Session {
+  id             String   @id @default(cuid())
+  stationId      String
+  chargerId      String
+  driverUserId   String?
+  vehicleModelId String?
+  startTs        DateTime @default(now())
+  endTs          DateTime?
+  socStart       Float?
+  socEnd         Float?
+  energyKwh      Float?
+  amountInr      Float?
+  source         String   @default("sim") // "real" | "sim"
+  station        Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  charger        Charger  @relation(fields: [chargerId], references: [id], onDelete: Cascade)
+  driver         User?    @relation(fields: [driverUserId], references: [id], onDelete: SetNull)
+
+  @@index([stationId, startTs(sort: Desc)])
+}
+
+model QueueEntry {
+  id         String   @id @default(cuid())
+  stationId  String
+  vehicleRef String
+  connector  String
+  joinedTs   DateTime @default(now())
+  status     String   @default("waiting") // "waiting" | "charging" | "abandoned"
+  station    Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([stationId, status])
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  driverUserId String
+  stationId    String
+  chargerId    String?
+  startTs      DateTime
+  endTs        DateTime
+  status       BookingStatus @default(CONFIRMED)
+  createdAt    DateTime      @default(now())
+  driver       User          @relation(fields: [driverUserId], references: [id], onDelete: Cascade)
+  station      Station       @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  charger      Charger?      @relation(fields: [chargerId], references: [id], onDelete: SetNull)
 }
 
 model Favorite {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String
   stationId String
-  user      User    @relation(fields: [userId], references: [id])
-  station   Station @relation(fields: [stationId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 
   @@unique([userId, stationId])
 }
@@ -75,7 +204,53 @@ model Review {
   stationId String
   rating    Int
   comment   String?
+  reply     String?
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  station   Station  @relation(fields: [stationId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+}
+
+model Issue {
+  id          String      @id @default(cuid())
+  stationId   String
+  chargerId   String?
+  reporterId  String
+  type        String      // "damage" | "offline" | "blocked" | "payment" | "other"
+  text        String
+  status      IssueStatus @default(OPEN)
+  createdAt   DateTime    @default(now())
+  station     Station     @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  reporter    User        @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+}
+
+model StationMetricHourly {
+  id            String   @id @default(cuid())
+  stationId     String
+  hourTs        DateTime
+  sessions      Int      @default(0)
+  occupancyPct  Float    @default(0)
+  avgWaitMin    Float    @default(0)
+  energyKwh     Float    @default(0)
+  revenueInr    Float    @default(0)
+  station       Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@unique([stationId, hourTs])
+}
+
+model Forecast {
+  id            String   @id @default(cuid())
+  stationId     String
+  madeAt        DateTime @default(now())
+  horizonMin    Int      @default(30)
+  predictedWait Float
+  actualWait    Float?
+  station       Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+}
+
+model SimConfig {
+  id            String   @id @default("default")
+  speed         Float    @default(10)
+  surgeStations String   @default("") // comma-separated station IDs
+  seed          Int      @default(42)
+  updatedAt     DateTime @updatedAt
 }

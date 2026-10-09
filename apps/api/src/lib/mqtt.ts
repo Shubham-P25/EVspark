@@ -1,16 +1,15 @@
 import mqtt from "mqtt";
-import type { ChargerStatus } from "@prisma/client";
 import prisma from "./prisma";
 import { getIO } from "./socket";
 
-// Contract with scripts/mqtt-simulator (Phase 3):
-// evtwin/chargers/<chargerId>/status  →  { "status": "FREE" | "BUSY" | "MAINTENANCE" }
+export type ChargerStatus = "FREE" | "BUSY" | "MAINTENANCE" | "FAULTED" | "OFFLINE";
+
 const TOPIC = "evtwin/chargers/+/status";
 
 export function initMqtt() {
   const brokerUrl = process.env.MQTT_BROKER_URL;
   if (!brokerUrl) {
-    console.warn("MQTT_BROKER_URL not set — skipping MQTT consumer");
+    console.warn("[MQTT] MQTT_BROKER_URL not set — skipping MQTT consumer");
     return;
   }
 
@@ -20,9 +19,9 @@ export function initMqtt() {
   });
 
   client.on("connect", () => {
-    console.log("MQTT connected");
+    console.log("[MQTT] Connected to broker");
     client.subscribe(TOPIC, (err) => {
-      if (err) console.error("MQTT subscribe error:", err);
+      if (err) console.error("[MQTT] Subscribe error:", err);
     });
   });
 
@@ -34,17 +33,17 @@ export function initMqtt() {
 
       const updated = await prisma.charger.update({
         where: { id: chargerId },
-        data: { status: data.status },
+        data: { status: data.status as any },
       });
 
       getIO().emit("charger:update", updated);
     } catch (err) {
-      console.error("Failed to process MQTT message:", err);
+      console.error("[MQTT] Failed to process message:", err);
     }
   });
 
   client.on("error", (err) => {
-    console.error("MQTT client error:", err);
+    console.error("[MQTT] Client error:", err);
   });
 
   return client;

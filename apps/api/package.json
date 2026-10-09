@@ -5,11 +5,11 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-  "dev": "tsx watch src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -28,12 +28,14 @@
     "resend": "^6.18.1",
     "socket.io": "^4.8.3",
     "web-push": "^3.6.7",
+    "ws": "^8.22.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.2",
+    "@types/ws": "^8.18.2",
     "nodemon": "^3.1.14",
     "prisma": "^7.9.1",
     "tsx": "^4.23.11",

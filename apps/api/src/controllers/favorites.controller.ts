@@ -16,6 +16,6 @@ export async function createFavorite(req: Request, res: Response) {
 }
 
 export async function deleteFavorite(req: Request, res: Response) {
-  await prisma.favorite.delete({ where: { id: req.params.id } });
+  await prisma.favorite.delete({ where: { id: String(req.params.id) } });
   res.status(204).send();
 }

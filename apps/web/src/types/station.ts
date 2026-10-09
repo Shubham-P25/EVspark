@@ -14,7 +14,8 @@ export interface EVStation {
   totalSlots: number;
   amenities: string[];
   rating: number;
-  network: string;
+  network?: string;
+  chargers?: any[];
   distanceKm?: number;
   etaMinutes?: number;
 }

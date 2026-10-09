@@ -47,6 +47,21 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model VehicleModel
+ * 
+ */
+export type VehicleModel = Prisma.VehicleModelModel
+/**
+ * Model DriverProfile
+ * 
+ */
+export type DriverProfile = Prisma.DriverProfileModel
+/**
+ * Model OperatorProfile
+ * 
+ */
+export type OperatorProfile = Prisma.OperatorProfileModel
+/**
  * Model Station
  * 
  */
@@ -57,6 +72,26 @@ export type Station = Prisma.StationModel
  */
 export type Charger = Prisma.ChargerModel
 /**
+ * Model ChargerEvent
+ * 
+ */
+export type ChargerEvent = Prisma.ChargerEventModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model QueueEntry
+ * 
+ */
+export type QueueEntry = Prisma.QueueEntryModel
+/**
+ * Model Booking
+ * 
+ */
+export type Booking = Prisma.BookingModel
+/**
  * Model Favorite
  * 
  */
@@ -66,3 +101,23 @@ export type Favorite = Prisma.FavoriteModel
  * 
  */
 export type Review = Prisma.ReviewModel
+/**
+ * Model Issue
+ * 
+ */
+export type Issue = Prisma.IssueModel
+/**
+ * Model StationMetricHourly
+ * 
+ */
+export type StationMetricHourly = Prisma.StationMetricHourlyModel
+/**
+ * Model Forecast
+ * 
+ */
+export type Forecast = Prisma.ForecastModel
+/**
+ * Model SimConfig
+ * 
+ */
+export type SimConfig = Prisma.SimConfigModel

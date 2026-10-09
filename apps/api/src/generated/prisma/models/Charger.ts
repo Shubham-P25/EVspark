@@ -37,27 +37,33 @@ export type ChargerSumAggregateOutputType = {
 export type ChargerMinAggregateOutputType = {
   id: string | null
   stationId: string | null
+  label: string | null
   connectorType: string | null
   powerKw: number | null
   status: $Enums.ChargerStatus | null
+  ocppId: string | null
   updatedAt: Date | null
 }
 
 export type ChargerMaxAggregateOutputType = {
   id: string | null
   stationId: string | null
+  label: string | null
   connectorType: string | null
   powerKw: number | null
   status: $Enums.ChargerStatus | null
+  ocppId: string | null
   updatedAt: Date | null
 }
 
 export type ChargerCountAggregateOutputType = {
   id: number
   stationId: number
+  label: number
   connectorType: number
   powerKw: number
   status: number
+  ocppId: number
   updatedAt: number
   _all: number
 }
@@ -74,27 +80,33 @@ export type ChargerSumAggregateInputType = {
 export type ChargerMinAggregateInputType = {
   id?: true
   stationId?: true
+  label?: true
   connectorType?: true
   powerKw?: true
   status?: true
+  ocppId?: true
   updatedAt?: true
 }
 
 export type ChargerMaxAggregateInputType = {
   id?: true
   stationId?: true
+  label?: true
   connectorType?: true
   powerKw?: true
   status?: true
+  ocppId?: true
   updatedAt?: true
 }
 
 export type ChargerCountAggregateInputType = {
   id?: true
   stationId?: true
+  label?: true
   connectorType?: true
   powerKw?: true
   status?: true
+  ocppId?: true
   updatedAt?: true
   _all?: true
 }
@@ -188,9 +200,11 @@ export type ChargerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type ChargerGroupByOutputType = {
   id: string
   stationId: string
+  label: string | null
   connectorType: string
   powerKw: number
   status: $Enums.ChargerStatus
+  ocppId: string | null
   updatedAt: Date
   _count: ChargerCountAggregateOutputType | null
   _avg: ChargerAvgAggregateOutputType | null
@@ -220,21 +234,31 @@ export type ChargerWhereInput = {
   NOT?: Prisma.ChargerWhereInput | Prisma.ChargerWhereInput[]
   id?: Prisma.StringFilter<"Charger"> | string
   stationId?: Prisma.StringFilter<"Charger"> | string
+  label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
+  ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
+  events?: Prisma.ChargerEventListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
 }
 
 export type ChargerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
+  label?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ocppId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   station?: Prisma.StationOrderByWithRelationInput
+  events?: Prisma.ChargerEventOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
 }
 
 export type ChargerWhereUniqueInput = Prisma.AtLeast<{
@@ -243,19 +267,26 @@ export type ChargerWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ChargerWhereInput[]
   NOT?: Prisma.ChargerWhereInput | Prisma.ChargerWhereInput[]
   stationId?: Prisma.StringFilter<"Charger"> | string
+  label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
+  ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
+  events?: Prisma.ChargerEventListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
 }, "id">
 
 export type ChargerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
+  label?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ocppId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ChargerCountOrderByAggregateInput
   _avg?: Prisma.ChargerAvgOrderByAggregateInput
@@ -270,71 +301,99 @@ export type ChargerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ChargerScalarWhereWithAggregatesInput | Prisma.ChargerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Charger"> | string
   stationId?: Prisma.StringWithAggregatesFilter<"Charger"> | string
+  label?: Prisma.StringNullableWithAggregatesFilter<"Charger"> | string | null
   connectorType?: Prisma.StringWithAggregatesFilter<"Charger"> | string
   powerKw?: Prisma.FloatWithAggregatesFilter<"Charger"> | number
   status?: Prisma.EnumChargerStatusWithAggregatesFilter<"Charger"> | $Enums.ChargerStatus
+  ocppId?: Prisma.StringNullableWithAggregatesFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Charger"> | Date | string
 }
 
 export type ChargerCreateInput = {
   id?: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
   station: Prisma.StationCreateNestedOneWithoutChargersInput
+  events?: Prisma.ChargerEventCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutChargerInput
 }
 
 export type ChargerUncheckedCreateInput = {
   id?: string
   stationId: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
+  events?: Prisma.ChargerEventUncheckedCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutChargerInput
 }
 
 export type ChargerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   station?: Prisma.StationUpdateOneRequiredWithoutChargersNestedInput
+  events?: Prisma.ChargerEventUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutChargerNestedInput
 }
 
 export type ChargerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stationId?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.ChargerEventUncheckedUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutChargerNestedInput
 }
 
 export type ChargerCreateManyInput = {
   id?: string
   stationId: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
 }
 
 export type ChargerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ChargerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stationId?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -351,9 +410,11 @@ export type ChargerOrderByRelationAggregateInput = {
 export type ChargerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -364,23 +425,37 @@ export type ChargerAvgOrderByAggregateInput = {
 export type ChargerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ChargerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
+  label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ChargerSumOrderByAggregateInput = {
   powerKw?: Prisma.SortOrder
+}
+
+export type ChargerScalarRelationFilter = {
+  is?: Prisma.ChargerWhereInput
+  isNot?: Prisma.ChargerWhereInput
+}
+
+export type ChargerNullableScalarRelationFilter = {
+  is?: Prisma.ChargerWhereInput | null
+  isNot?: Prisma.ChargerWhereInput | null
 }
 
 export type ChargerCreateNestedManyWithoutStationInput = {
@@ -429,20 +504,74 @@ export type EnumChargerStatusFieldUpdateOperationsInput = {
   set?: $Enums.ChargerStatus
 }
 
+export type ChargerCreateNestedOneWithoutEventsInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutEventsInput, Prisma.ChargerUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutEventsInput
+  connect?: Prisma.ChargerWhereUniqueInput
+}
+
+export type ChargerUpdateOneRequiredWithoutEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutEventsInput, Prisma.ChargerUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutEventsInput
+  upsert?: Prisma.ChargerUpsertWithoutEventsInput
+  connect?: Prisma.ChargerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChargerUpdateToOneWithWhereWithoutEventsInput, Prisma.ChargerUpdateWithoutEventsInput>, Prisma.ChargerUncheckedUpdateWithoutEventsInput>
+}
+
+export type ChargerCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutSessionsInput, Prisma.ChargerUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.ChargerWhereUniqueInput
+}
+
+export type ChargerUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutSessionsInput, Prisma.ChargerUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.ChargerUpsertWithoutSessionsInput
+  connect?: Prisma.ChargerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChargerUpdateToOneWithWhereWithoutSessionsInput, Prisma.ChargerUpdateWithoutSessionsInput>, Prisma.ChargerUncheckedUpdateWithoutSessionsInput>
+}
+
+export type ChargerCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutBookingsInput, Prisma.ChargerUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.ChargerWhereUniqueInput
+}
+
+export type ChargerUpdateOneWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChargerCreateWithoutBookingsInput, Prisma.ChargerUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.ChargerCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.ChargerUpsertWithoutBookingsInput
+  disconnect?: Prisma.ChargerWhereInput | boolean
+  delete?: Prisma.ChargerWhereInput | boolean
+  connect?: Prisma.ChargerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChargerUpdateToOneWithWhereWithoutBookingsInput, Prisma.ChargerUpdateWithoutBookingsInput>, Prisma.ChargerUncheckedUpdateWithoutBookingsInput>
+}
+
 export type ChargerCreateWithoutStationInput = {
   id?: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
+  events?: Prisma.ChargerEventCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutChargerInput
 }
 
 export type ChargerUncheckedCreateWithoutStationInput = {
   id?: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
+  events?: Prisma.ChargerEventUncheckedCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutChargerInput
 }
 
 export type ChargerCreateOrConnectWithoutStationInput = {
@@ -477,62 +606,337 @@ export type ChargerScalarWhereInput = {
   NOT?: Prisma.ChargerScalarWhereInput | Prisma.ChargerScalarWhereInput[]
   id?: Prisma.StringFilter<"Charger"> | string
   stationId?: Prisma.StringFilter<"Charger"> | string
+  label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
+  ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
+}
+
+export type ChargerCreateWithoutEventsInput = {
+  id?: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  station: Prisma.StationCreateNestedOneWithoutChargersInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerUncheckedCreateWithoutEventsInput = {
+  id?: string
+  stationId: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerCreateOrConnectWithoutEventsInput = {
+  where: Prisma.ChargerWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutEventsInput, Prisma.ChargerUncheckedCreateWithoutEventsInput>
+}
+
+export type ChargerUpsertWithoutEventsInput = {
+  update: Prisma.XOR<Prisma.ChargerUpdateWithoutEventsInput, Prisma.ChargerUncheckedUpdateWithoutEventsInput>
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutEventsInput, Prisma.ChargerUncheckedCreateWithoutEventsInput>
+  where?: Prisma.ChargerWhereInput
+}
+
+export type ChargerUpdateToOneWithWhereWithoutEventsInput = {
+  where?: Prisma.ChargerWhereInput
+  data: Prisma.XOR<Prisma.ChargerUpdateWithoutEventsInput, Prisma.ChargerUncheckedUpdateWithoutEventsInput>
+}
+
+export type ChargerUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  station?: Prisma.StationUpdateOneRequiredWithoutChargersNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutChargerNestedInput
+}
+
+export type ChargerUncheckedUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stationId?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutChargerNestedInput
+}
+
+export type ChargerCreateWithoutSessionsInput = {
+  id?: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  station: Prisma.StationCreateNestedOneWithoutChargersInput
+  events?: Prisma.ChargerEventCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  stationId: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  events?: Prisma.ChargerEventUncheckedCreateNestedManyWithoutChargerInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.ChargerWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutSessionsInput, Prisma.ChargerUncheckedCreateWithoutSessionsInput>
+}
+
+export type ChargerUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.ChargerUpdateWithoutSessionsInput, Prisma.ChargerUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutSessionsInput, Prisma.ChargerUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.ChargerWhereInput
+}
+
+export type ChargerUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.ChargerWhereInput
+  data: Prisma.XOR<Prisma.ChargerUpdateWithoutSessionsInput, Prisma.ChargerUncheckedUpdateWithoutSessionsInput>
+}
+
+export type ChargerUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  station?: Prisma.StationUpdateOneRequiredWithoutChargersNestedInput
+  events?: Prisma.ChargerEventUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutChargerNestedInput
+}
+
+export type ChargerUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stationId?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.ChargerEventUncheckedUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutChargerNestedInput
+}
+
+export type ChargerCreateWithoutBookingsInput = {
+  id?: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  station: Prisma.StationCreateNestedOneWithoutChargersInput
+  events?: Prisma.ChargerEventCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  stationId: string
+  label?: string | null
+  connectorType: string
+  powerKw: number
+  status?: $Enums.ChargerStatus
+  ocppId?: string | null
+  updatedAt?: Date | string
+  events?: Prisma.ChargerEventUncheckedCreateNestedManyWithoutChargerInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutChargerInput
+}
+
+export type ChargerCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.ChargerWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutBookingsInput, Prisma.ChargerUncheckedCreateWithoutBookingsInput>
+}
+
+export type ChargerUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.ChargerUpdateWithoutBookingsInput, Prisma.ChargerUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.ChargerCreateWithoutBookingsInput, Prisma.ChargerUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.ChargerWhereInput
+}
+
+export type ChargerUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.ChargerWhereInput
+  data: Prisma.XOR<Prisma.ChargerUpdateWithoutBookingsInput, Prisma.ChargerUncheckedUpdateWithoutBookingsInput>
+}
+
+export type ChargerUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  station?: Prisma.StationUpdateOneRequiredWithoutChargersNestedInput
+  events?: Prisma.ChargerEventUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutChargerNestedInput
+}
+
+export type ChargerUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stationId?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  connectorType?: Prisma.StringFieldUpdateOperationsInput | string
+  powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.ChargerEventUncheckedUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutChargerNestedInput
 }
 
 export type ChargerCreateManyStationInput = {
   id?: string
+  label?: string | null
   connectorType: string
   powerKw: number
   status?: $Enums.ChargerStatus
+  ocppId?: string | null
   updatedAt?: Date | string
 }
 
 export type ChargerUpdateWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.ChargerEventUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutChargerNestedInput
 }
 
 export type ChargerUncheckedUpdateWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.ChargerEventUncheckedUpdateManyWithoutChargerNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutChargerNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutChargerNestedInput
 }
 
 export type ChargerUncheckedUpdateManyWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
+  ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type ChargerCountOutputType
+ */
+
+export type ChargerCountOutputType = {
+  events: number
+  sessions: number
+  bookings: number
+}
+
+export type ChargerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  events?: boolean | ChargerCountOutputTypeCountEventsArgs
+  sessions?: boolean | ChargerCountOutputTypeCountSessionsArgs
+  bookings?: boolean | ChargerCountOutputTypeCountBookingsArgs
+}
+
+/**
+ * ChargerCountOutputType without action
+ */
+export type ChargerCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChargerCountOutputType
+   */
+  select?: Prisma.ChargerCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ChargerCountOutputType without action
+ */
+export type ChargerCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChargerEventWhereInput
+}
+
+/**
+ * ChargerCountOutputType without action
+ */
+export type ChargerCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
+/**
+ * ChargerCountOutputType without action
+ */
+export type ChargerCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
 
 
 export type ChargerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   stationId?: boolean
+  label?: boolean
   connectorType?: boolean
   powerKw?: boolean
   status?: boolean
+  ocppId?: boolean
   updatedAt?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
+  events?: boolean | Prisma.Charger$eventsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Charger$sessionsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Charger$bookingsArgs<ExtArgs>
+  _count?: boolean | Prisma.ChargerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["charger"]>
 
 export type ChargerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   stationId?: boolean
+  label?: boolean
   connectorType?: boolean
   powerKw?: boolean
   status?: boolean
+  ocppId?: boolean
   updatedAt?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["charger"]>
@@ -540,9 +944,11 @@ export type ChargerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type ChargerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   stationId?: boolean
+  label?: boolean
   connectorType?: boolean
   powerKw?: boolean
   status?: boolean
+  ocppId?: boolean
   updatedAt?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["charger"]>
@@ -550,15 +956,21 @@ export type ChargerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type ChargerSelectScalar = {
   id?: boolean
   stationId?: boolean
+  label?: boolean
   connectorType?: boolean
   powerKw?: boolean
   status?: boolean
+  ocppId?: boolean
   updatedAt?: boolean
 }
 
-export type ChargerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "connectorType" | "powerKw" | "status" | "updatedAt", ExtArgs["result"]["charger"]>
+export type ChargerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "label" | "connectorType" | "powerKw" | "status" | "ocppId" | "updatedAt", ExtArgs["result"]["charger"]>
 export type ChargerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
+  events?: boolean | Prisma.Charger$eventsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Charger$sessionsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Charger$bookingsArgs<ExtArgs>
+  _count?: boolean | Prisma.ChargerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ChargerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
@@ -571,13 +983,18 @@ export type $ChargerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Charger"
   objects: {
     station: Prisma.$StationPayload<ExtArgs>
+    events: Prisma.$ChargerEventPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     stationId: string
+    label: string | null
     connectorType: string
     powerKw: number
     status: $Enums.ChargerStatus
+    ocppId: string | null
     updatedAt: Date
   }, ExtArgs["result"]["charger"]>
   composites: {}
@@ -974,6 +1391,9 @@ readonly fields: ChargerFieldRefs;
 export interface Prisma__ChargerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   station<T extends Prisma.StationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StationDefaultArgs<ExtArgs>>): Prisma.Prisma__StationClient<runtime.Types.Result.GetResult<Prisma.$StationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  events<T extends Prisma.Charger$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Charger$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChargerEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.Charger$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Charger$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Charger$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Charger$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1005,9 +1425,11 @@ export interface Prisma__ChargerClient<T, Null = never, ExtArgs extends runtime.
 export interface ChargerFieldRefs {
   readonly id: Prisma.FieldRef<"Charger", 'String'>
   readonly stationId: Prisma.FieldRef<"Charger", 'String'>
+  readonly label: Prisma.FieldRef<"Charger", 'String'>
   readonly connectorType: Prisma.FieldRef<"Charger", 'String'>
   readonly powerKw: Prisma.FieldRef<"Charger", 'Float'>
   readonly status: Prisma.FieldRef<"Charger", 'ChargerStatus'>
+  readonly ocppId: Prisma.FieldRef<"Charger", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Charger", 'DateTime'>
 }
     
@@ -1407,6 +1829,78 @@ export type ChargerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Chargers to delete.
    */
   limit?: number
+}
+
+/**
+ * Charger.events
+ */
+export type Charger$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChargerEvent
+   */
+  select?: Prisma.ChargerEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChargerEvent
+   */
+  omit?: Prisma.ChargerEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChargerEventInclude<ExtArgs> | null
+  where?: Prisma.ChargerEventWhereInput
+  orderBy?: Prisma.ChargerEventOrderByWithRelationInput | Prisma.ChargerEventOrderByWithRelationInput[]
+  cursor?: Prisma.ChargerEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChargerEventScalarFieldEnum | Prisma.ChargerEventScalarFieldEnum[]
+}
+
+/**
+ * Charger.sessions
+ */
+export type Charger$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Charger.bookings
+ */
+export type Charger$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

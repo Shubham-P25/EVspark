@@ -52,10 +52,21 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  VehicleModel: 'VehicleModel',
+  DriverProfile: 'DriverProfile',
+  OperatorProfile: 'OperatorProfile',
   Station: 'Station',
   Charger: 'Charger',
+  ChargerEvent: 'ChargerEvent',
+  Session: 'Session',
+  QueueEntry: 'QueueEntry',
+  Booking: 'Booking',
   Favorite: 'Favorite',
-  Review: 'Review'
+  Review: 'Review',
+  Issue: 'Issue',
+  StationMetricHourly: 'StationMetricHourly',
+  Forecast: 'Forecast',
+  SimConfig: 'SimConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -85,14 +96,60 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const VehicleModelScalarFieldEnum = {
+  id: 'id',
+  make: 'make',
+  model: 'model',
+  batteryKwh: 'batteryKwh',
+  maxAcKw: 'maxAcKw',
+  maxDcKw: 'maxDcKw',
+  connectors: 'connectors',
+  createdAt: 'createdAt'
+} as const
+
+export type VehicleModelScalarFieldEnum = (typeof VehicleModelScalarFieldEnum)[keyof typeof VehicleModelScalarFieldEnum]
+
+
+export const DriverProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  vehicleModelId: 'vehicleModelId',
+  connectorPref: 'connectorPref',
+  rangeKm: 'rangeKm',
+  homeLat: 'homeLat',
+  homeLng: 'homeLng'
+} as const
+
+export type DriverProfileScalarFieldEnum = (typeof DriverProfileScalarFieldEnum)[keyof typeof DriverProfileScalarFieldEnum]
+
+
+export const OperatorProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  businessName: 'businessName',
+  phone: 'phone'
+} as const
+
+export type OperatorProfileScalarFieldEnum = (typeof OperatorProfileScalarFieldEnum)[keyof typeof OperatorProfileScalarFieldEnum]
+
+
 export const StationScalarFieldEnum = {
   id: 'id',
+  sourceId: 'sourceId',
+  operatorUserId: 'operatorUserId',
   name: 'name',
   operatorName: 'operatorName',
+  state: 'state',
+  district: 'district',
+  city: 'city',
+  address: 'address',
   lat: 'lat',
   lng: 'lng',
   pricePerKwh: 'pricePerKwh',
+  hours: 'hours',
+  amenities: 'amenities',
   status: 'status',
+  ratingAvg: 'ratingAvg',
   createdAt: 'createdAt'
 } as const
 
@@ -102,19 +159,77 @@ export type StationScalarFieldEnum = (typeof StationScalarFieldEnum)[keyof typeo
 export const ChargerScalarFieldEnum = {
   id: 'id',
   stationId: 'stationId',
+  label: 'label',
   connectorType: 'connectorType',
   powerKw: 'powerKw',
   status: 'status',
+  ocppId: 'ocppId',
   updatedAt: 'updatedAt'
 } as const
 
 export type ChargerScalarFieldEnum = (typeof ChargerScalarFieldEnum)[keyof typeof ChargerScalarFieldEnum]
 
 
+export const ChargerEventScalarFieldEnum = {
+  id: 'id',
+  chargerId: 'chargerId',
+  status: 'status',
+  ts: 'ts',
+  payload: 'payload'
+} as const
+
+export type ChargerEventScalarFieldEnum = (typeof ChargerEventScalarFieldEnum)[keyof typeof ChargerEventScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  stationId: 'stationId',
+  chargerId: 'chargerId',
+  driverUserId: 'driverUserId',
+  vehicleModelId: 'vehicleModelId',
+  startTs: 'startTs',
+  endTs: 'endTs',
+  socStart: 'socStart',
+  socEnd: 'socEnd',
+  energyKwh: 'energyKwh',
+  amountInr: 'amountInr',
+  source: 'source'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const QueueEntryScalarFieldEnum = {
+  id: 'id',
+  stationId: 'stationId',
+  vehicleRef: 'vehicleRef',
+  connector: 'connector',
+  joinedTs: 'joinedTs',
+  status: 'status'
+} as const
+
+export type QueueEntryScalarFieldEnum = (typeof QueueEntryScalarFieldEnum)[keyof typeof QueueEntryScalarFieldEnum]
+
+
+export const BookingScalarFieldEnum = {
+  id: 'id',
+  driverUserId: 'driverUserId',
+  stationId: 'stationId',
+  chargerId: 'chargerId',
+  startTs: 'startTs',
+  endTs: 'endTs',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
 export const FavoriteScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  stationId: 'stationId'
+  stationId: 'stationId',
+  createdAt: 'createdAt'
 } as const
 
 export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
@@ -126,10 +241,62 @@ export const ReviewScalarFieldEnum = {
   stationId: 'stationId',
   rating: 'rating',
   comment: 'comment',
+  reply: 'reply',
   createdAt: 'createdAt'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const IssueScalarFieldEnum = {
+  id: 'id',
+  stationId: 'stationId',
+  chargerId: 'chargerId',
+  reporterId: 'reporterId',
+  type: 'type',
+  text: 'text',
+  status: 'status',
+  createdAt: 'createdAt'
+} as const
+
+export type IssueScalarFieldEnum = (typeof IssueScalarFieldEnum)[keyof typeof IssueScalarFieldEnum]
+
+
+export const StationMetricHourlyScalarFieldEnum = {
+  id: 'id',
+  stationId: 'stationId',
+  hourTs: 'hourTs',
+  sessions: 'sessions',
+  occupancyPct: 'occupancyPct',
+  avgWaitMin: 'avgWaitMin',
+  energyKwh: 'energyKwh',
+  revenueInr: 'revenueInr'
+} as const
+
+export type StationMetricHourlyScalarFieldEnum = (typeof StationMetricHourlyScalarFieldEnum)[keyof typeof StationMetricHourlyScalarFieldEnum]
+
+
+export const ForecastScalarFieldEnum = {
+  id: 'id',
+  stationId: 'stationId',
+  madeAt: 'madeAt',
+  horizonMin: 'horizonMin',
+  predictedWait: 'predictedWait',
+  actualWait: 'actualWait'
+} as const
+
+export type ForecastScalarFieldEnum = (typeof ForecastScalarFieldEnum)[keyof typeof ForecastScalarFieldEnum]
+
+
+export const SimConfigScalarFieldEnum = {
+  id: 'id',
+  speed: 'speed',
+  surgeStations: 'surgeStations',
+  seed: 'seed',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SimConfigScalarFieldEnum = (typeof SimConfigScalarFieldEnum)[keyof typeof SimConfigScalarFieldEnum]
 
 
 export const SortOrder = {

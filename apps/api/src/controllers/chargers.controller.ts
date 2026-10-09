@@ -11,7 +11,7 @@ export async function listChargers(req: Request, res: Response) {
 }
 
 export async function getCharger(req: Request, res: Response) {
-  const charger = await prisma.charger.findUnique({ where: { id: req.params.id } });
+  const charger = await prisma.charger.findUnique({ where: { id: String(req.params.id) } });
   if (!charger) return res.status(404).json({ error: "Charger not found" });
   res.json(charger);
 }
@@ -23,7 +23,7 @@ export async function createCharger(req: Request, res: Response) {
 
 export async function updateCharger(req: Request, res: Response) {
   const charger = await prisma.charger.update({
-    where: { id: req.params.id },
+    where: { id: String(req.params.id) },
     data: req.body,
   });
   getIO().emit("charger:update", charger);
@@ -31,6 +31,6 @@ export async function updateCharger(req: Request, res: Response) {
 }
 
 export async function deleteCharger(req: Request, res: Response) {
-  await prisma.charger.delete({ where: { id: req.params.id } });
+  await prisma.charger.delete({ where: { id: String(req.params.id) } });
   res.status(204).send();
 }

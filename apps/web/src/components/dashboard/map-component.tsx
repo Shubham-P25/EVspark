@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Circle, MapContainer, Marker, Popup, Polyline, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet-defaulticon-compatibility'
@@ -9,14 +9,22 @@ import type { RouteResult } from '@/hooks/useRoute'
 
 function MapFocus({ stations, station }: { stations: EVStation[]; station: EVStation | null }) {
   const map = useMap()
+  const initialFitRef = useRef(false)
+  const prevStationIdRef = useRef<string | null>(null)
+
   useEffect(() => {
-    if (!stations.length) return
+    if (!stations.length || initialFitRef.current) return
     const bounds = L.latLngBounds(stations.map((item) => [item.lat, item.lng] as [number, number]))
     map.fitBounds(bounds, { padding: [36, 36], maxZoom: 11, animate: false })
-  }, [map, stations])
+    initialFitRef.current = true
+  }, [map, stations.length])
+
   useEffect(() => {
-    if (station) map.panTo([station.lat, station.lng], { animate: true, duration: 0.4 })
-  }, [map, station])
+    if (station && station.id !== prevStationIdRef.current) {
+      prevStationIdRef.current = station.id
+      map.panTo([station.lat, station.lng], { animate: true, duration: 0.4 })
+    }
+  }, [map, station?.id])
   return null
 }
 

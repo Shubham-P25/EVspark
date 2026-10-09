@@ -30,44 +30,73 @@ export type StationAvgAggregateOutputType = {
   lat: number | null
   lng: number | null
   pricePerKwh: number | null
+  ratingAvg: number | null
 }
 
 export type StationSumAggregateOutputType = {
   lat: number | null
   lng: number | null
   pricePerKwh: number | null
+  ratingAvg: number | null
 }
 
 export type StationMinAggregateOutputType = {
   id: string | null
+  sourceId: string | null
+  operatorUserId: string | null
   name: string | null
   operatorName: string | null
+  state: string | null
+  district: string | null
+  city: string | null
+  address: string | null
   lat: number | null
   lng: number | null
   pricePerKwh: number | null
+  hours: string | null
+  amenities: string | null
   status: $Enums.StationStatus | null
+  ratingAvg: number | null
   createdAt: Date | null
 }
 
 export type StationMaxAggregateOutputType = {
   id: string | null
+  sourceId: string | null
+  operatorUserId: string | null
   name: string | null
   operatorName: string | null
+  state: string | null
+  district: string | null
+  city: string | null
+  address: string | null
   lat: number | null
   lng: number | null
   pricePerKwh: number | null
+  hours: string | null
+  amenities: string | null
   status: $Enums.StationStatus | null
+  ratingAvg: number | null
   createdAt: Date | null
 }
 
 export type StationCountAggregateOutputType = {
   id: number
+  sourceId: number
+  operatorUserId: number
   name: number
   operatorName: number
+  state: number
+  district: number
+  city: number
+  address: number
   lat: number
   lng: number
   pricePerKwh: number
+  hours: number
+  amenities: number
   status: number
+  ratingAvg: number
   createdAt: number
   _all: number
 }
@@ -77,44 +106,73 @@ export type StationAvgAggregateInputType = {
   lat?: true
   lng?: true
   pricePerKwh?: true
+  ratingAvg?: true
 }
 
 export type StationSumAggregateInputType = {
   lat?: true
   lng?: true
   pricePerKwh?: true
+  ratingAvg?: true
 }
 
 export type StationMinAggregateInputType = {
   id?: true
+  sourceId?: true
+  operatorUserId?: true
   name?: true
   operatorName?: true
+  state?: true
+  district?: true
+  city?: true
+  address?: true
   lat?: true
   lng?: true
   pricePerKwh?: true
+  hours?: true
+  amenities?: true
   status?: true
+  ratingAvg?: true
   createdAt?: true
 }
 
 export type StationMaxAggregateInputType = {
   id?: true
+  sourceId?: true
+  operatorUserId?: true
   name?: true
   operatorName?: true
+  state?: true
+  district?: true
+  city?: true
+  address?: true
   lat?: true
   lng?: true
   pricePerKwh?: true
+  hours?: true
+  amenities?: true
   status?: true
+  ratingAvg?: true
   createdAt?: true
 }
 
 export type StationCountAggregateInputType = {
   id?: true
+  sourceId?: true
+  operatorUserId?: true
   name?: true
   operatorName?: true
+  state?: true
+  district?: true
+  city?: true
+  address?: true
   lat?: true
   lng?: true
   pricePerKwh?: true
+  hours?: true
+  amenities?: true
   status?: true
+  ratingAvg?: true
   createdAt?: true
   _all?: true
 }
@@ -207,12 +265,21 @@ export type StationGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type StationGroupByOutputType = {
   id: string
+  sourceId: string | null
+  operatorUserId: string | null
   name: string
   operatorName: string
+  state: string | null
+  district: string | null
+  city: string | null
+  address: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours: string | null
+  amenities: string | null
   status: $Enums.StationStatus
+  ratingAvg: number | null
   createdAt: Date
   _count: StationCountAggregateOutputType | null
   _avg: StationAvgAggregateOutputType | null
@@ -241,30 +308,60 @@ export type StationWhereInput = {
   OR?: Prisma.StationWhereInput[]
   NOT?: Prisma.StationWhereInput | Prisma.StationWhereInput[]
   id?: Prisma.StringFilter<"Station"> | string
+  sourceId?: Prisma.StringNullableFilter<"Station"> | string | null
+  operatorUserId?: Prisma.StringNullableFilter<"Station"> | string | null
   name?: Prisma.StringFilter<"Station"> | string
   operatorName?: Prisma.StringFilter<"Station"> | string
+  state?: Prisma.StringNullableFilter<"Station"> | string | null
+  district?: Prisma.StringNullableFilter<"Station"> | string | null
+  city?: Prisma.StringNullableFilter<"Station"> | string | null
+  address?: Prisma.StringNullableFilter<"Station"> | string | null
   lat?: Prisma.FloatFilter<"Station"> | number
   lng?: Prisma.FloatFilter<"Station"> | number
   pricePerKwh?: Prisma.FloatFilter<"Station"> | number
+  hours?: Prisma.StringNullableFilter<"Station"> | string | null
+  amenities?: Prisma.StringNullableFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusFilter<"Station"> | $Enums.StationStatus
+  ratingAvg?: Prisma.FloatNullableFilter<"Station"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  queueEntries?: Prisma.QueueEntryListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  issues?: Prisma.IssueListRelationFilter
+  metrics?: Prisma.StationMetricHourlyListRelationFilter
+  forecasts?: Prisma.ForecastListRelationFilter
 }
 
 export type StationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  operatorUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   operatorName?: Prisma.SortOrder
+  state?: Prisma.SortOrderInput | Prisma.SortOrder
+  district?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  hours?: Prisma.SortOrderInput | Prisma.SortOrder
+  amenities?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   chargers?: Prisma.ChargerOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
+  queueEntries?: Prisma.QueueEntryOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
+  issues?: Prisma.IssueOrderByRelationAggregateInput
+  metrics?: Prisma.StationMetricHourlyOrderByRelationAggregateInput
+  forecasts?: Prisma.ForecastOrderByRelationAggregateInput
 }
 
 export type StationWhereUniqueInput = Prisma.AtLeast<{
@@ -272,26 +369,50 @@ export type StationWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.StationWhereInput | Prisma.StationWhereInput[]
   OR?: Prisma.StationWhereInput[]
   NOT?: Prisma.StationWhereInput | Prisma.StationWhereInput[]
+  sourceId?: Prisma.StringNullableFilter<"Station"> | string | null
+  operatorUserId?: Prisma.StringNullableFilter<"Station"> | string | null
   name?: Prisma.StringFilter<"Station"> | string
   operatorName?: Prisma.StringFilter<"Station"> | string
+  state?: Prisma.StringNullableFilter<"Station"> | string | null
+  district?: Prisma.StringNullableFilter<"Station"> | string | null
+  city?: Prisma.StringNullableFilter<"Station"> | string | null
+  address?: Prisma.StringNullableFilter<"Station"> | string | null
   lat?: Prisma.FloatFilter<"Station"> | number
   lng?: Prisma.FloatFilter<"Station"> | number
   pricePerKwh?: Prisma.FloatFilter<"Station"> | number
+  hours?: Prisma.StringNullableFilter<"Station"> | string | null
+  amenities?: Prisma.StringNullableFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusFilter<"Station"> | $Enums.StationStatus
+  ratingAvg?: Prisma.FloatNullableFilter<"Station"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  queueEntries?: Prisma.QueueEntryListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
+  issues?: Prisma.IssueListRelationFilter
+  metrics?: Prisma.StationMetricHourlyListRelationFilter
+  forecasts?: Prisma.ForecastListRelationFilter
 }, "id">
 
 export type StationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  operatorUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   operatorName?: Prisma.SortOrder
+  state?: Prisma.SortOrderInput | Prisma.SortOrder
+  district?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  hours?: Prisma.SortOrderInput | Prisma.SortOrder
+  amenities?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StationCountOrderByAggregateInput
   _avg?: Prisma.StationAvgOrderByAggregateInput
@@ -305,112 +426,217 @@ export type StationScalarWhereWithAggregatesInput = {
   OR?: Prisma.StationScalarWhereWithAggregatesInput[]
   NOT?: Prisma.StationScalarWhereWithAggregatesInput | Prisma.StationScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Station"> | string
+  sourceId?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  operatorUserId?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"Station"> | string
   operatorName?: Prisma.StringWithAggregatesFilter<"Station"> | string
+  state?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  district?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   lat?: Prisma.FloatWithAggregatesFilter<"Station"> | number
   lng?: Prisma.FloatWithAggregatesFilter<"Station"> | number
   pricePerKwh?: Prisma.FloatWithAggregatesFilter<"Station"> | number
+  hours?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  amenities?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusWithAggregatesFilter<"Station"> | $Enums.StationStatus
+  ratingAvg?: Prisma.FloatNullableWithAggregatesFilter<"Station"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Station"> | Date | string
 }
 
 export type StationCreateInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateManyInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
 }
 
 export type StationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type StationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type StationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
+  operatorUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operatorName?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  hours?: Prisma.SortOrder
+  amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -418,27 +644,46 @@ export type StationAvgOrderByAggregateInput = {
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrder
 }
 
 export type StationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
+  operatorUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operatorName?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  hours?: Prisma.SortOrder
+  amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type StationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  sourceId?: Prisma.SortOrder
+  operatorUserId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   operatorName?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  district?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  hours?: Prisma.SortOrder
+  amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -446,19 +691,12 @@ export type StationSumOrderByAggregateInput = {
   lat?: Prisma.SortOrder
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
+  ratingAvg?: Prisma.SortOrder
 }
 
 export type StationScalarRelationFilter = {
   is?: Prisma.StationWhereInput
   isNot?: Prisma.StationWhereInput
-}
-
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type EnumStationStatusFieldUpdateOperationsInput = {
@@ -477,6 +715,48 @@ export type StationUpdateOneRequiredWithoutChargersNestedInput = {
   upsert?: Prisma.StationUpsertWithoutChargersInput
   connect?: Prisma.StationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutChargersInput, Prisma.StationUpdateWithoutChargersInput>, Prisma.StationUncheckedUpdateWithoutChargersInput>
+}
+
+export type StationCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutSessionsInput, Prisma.StationUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutSessionsInput, Prisma.StationUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.StationUpsertWithoutSessionsInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutSessionsInput, Prisma.StationUpdateWithoutSessionsInput>, Prisma.StationUncheckedUpdateWithoutSessionsInput>
+}
+
+export type StationCreateNestedOneWithoutQueueEntriesInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutQueueEntriesInput, Prisma.StationUncheckedCreateWithoutQueueEntriesInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutQueueEntriesInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutQueueEntriesNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutQueueEntriesInput, Prisma.StationUncheckedCreateWithoutQueueEntriesInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutQueueEntriesInput
+  upsert?: Prisma.StationUpsertWithoutQueueEntriesInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutQueueEntriesInput, Prisma.StationUpdateWithoutQueueEntriesInput>, Prisma.StationUncheckedUpdateWithoutQueueEntriesInput>
+}
+
+export type StationCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutBookingsInput, Prisma.StationUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutBookingsInput, Prisma.StationUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.StationUpsertWithoutBookingsInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutBookingsInput, Prisma.StationUpdateWithoutBookingsInput>, Prisma.StationUncheckedUpdateWithoutBookingsInput>
 }
 
 export type StationCreateNestedOneWithoutFavoritesInput = {
@@ -507,30 +787,102 @@ export type StationUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutReviewsInput, Prisma.StationUpdateWithoutReviewsInput>, Prisma.StationUncheckedUpdateWithoutReviewsInput>
 }
 
+export type StationCreateNestedOneWithoutIssuesInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutIssuesInput, Prisma.StationUncheckedCreateWithoutIssuesInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutIssuesInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutIssuesNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutIssuesInput, Prisma.StationUncheckedCreateWithoutIssuesInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutIssuesInput
+  upsert?: Prisma.StationUpsertWithoutIssuesInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutIssuesInput, Prisma.StationUpdateWithoutIssuesInput>, Prisma.StationUncheckedUpdateWithoutIssuesInput>
+}
+
+export type StationCreateNestedOneWithoutMetricsInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutMetricsInput, Prisma.StationUncheckedCreateWithoutMetricsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutMetricsInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutMetricsNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutMetricsInput, Prisma.StationUncheckedCreateWithoutMetricsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutMetricsInput
+  upsert?: Prisma.StationUpsertWithoutMetricsInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutMetricsInput, Prisma.StationUpdateWithoutMetricsInput>, Prisma.StationUncheckedUpdateWithoutMetricsInput>
+}
+
+export type StationCreateNestedOneWithoutForecastsInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutForecastsInput, Prisma.StationUncheckedCreateWithoutForecastsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutForecastsInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneRequiredWithoutForecastsNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutForecastsInput, Prisma.StationUncheckedCreateWithoutForecastsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutForecastsInput
+  upsert?: Prisma.StationUpsertWithoutForecastsInput
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutForecastsInput, Prisma.StationUpdateWithoutForecastsInput>, Prisma.StationUncheckedUpdateWithoutForecastsInput>
+}
+
 export type StationCreateWithoutChargersInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutChargersInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutChargersInput = {
@@ -551,54 +903,498 @@ export type StationUpdateToOneWithWhereWithoutChargersInput = {
 
 export type StationUpdateWithoutChargersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutChargersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutSessionsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutSessionsInput, Prisma.StationUncheckedCreateWithoutSessionsInput>
+}
+
+export type StationUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutSessionsInput, Prisma.StationUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutSessionsInput, Prisma.StationUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutSessionsInput, Prisma.StationUncheckedUpdateWithoutSessionsInput>
+}
+
+export type StationUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutQueueEntriesInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutQueueEntriesInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutQueueEntriesInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutQueueEntriesInput, Prisma.StationUncheckedCreateWithoutQueueEntriesInput>
+}
+
+export type StationUpsertWithoutQueueEntriesInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutQueueEntriesInput, Prisma.StationUncheckedUpdateWithoutQueueEntriesInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutQueueEntriesInput, Prisma.StationUncheckedCreateWithoutQueueEntriesInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutQueueEntriesInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutQueueEntriesInput, Prisma.StationUncheckedUpdateWithoutQueueEntriesInput>
+}
+
+export type StationUpdateWithoutQueueEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutQueueEntriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutBookingsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutBookingsInput, Prisma.StationUncheckedCreateWithoutBookingsInput>
+}
+
+export type StationUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutBookingsInput, Prisma.StationUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutBookingsInput, Prisma.StationUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutBookingsInput, Prisma.StationUncheckedUpdateWithoutBookingsInput>
+}
+
+export type StationUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutFavoritesInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutFavoritesInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutFavoritesInput = {
@@ -619,54 +1415,114 @@ export type StationUpdateToOneWithWhereWithoutFavoritesInput = {
 
 export type StationUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutReviewsInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutReviewsInput = {
   id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
   name: string
   operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
   lat: number
   lng: number
   pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
   status?: $Enums.StationStatus
+  ratingAvg?: number | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutReviewsInput = {
@@ -687,28 +1543,442 @@ export type StationUpdateToOneWithWhereWithoutReviewsInput = {
 
 export type StationUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lat?: Prisma.FloatFieldUpdateOperationsInput | number
   lng?: Prisma.FloatFieldUpdateOperationsInput | number
   pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutIssuesInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutIssuesInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutIssuesInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutIssuesInput, Prisma.StationUncheckedCreateWithoutIssuesInput>
+}
+
+export type StationUpsertWithoutIssuesInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutIssuesInput, Prisma.StationUncheckedUpdateWithoutIssuesInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutIssuesInput, Prisma.StationUncheckedCreateWithoutIssuesInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutIssuesInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutIssuesInput, Prisma.StationUncheckedUpdateWithoutIssuesInput>
+}
+
+export type StationUpdateWithoutIssuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutIssuesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutMetricsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutMetricsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutMetricsInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutMetricsInput, Prisma.StationUncheckedCreateWithoutMetricsInput>
+}
+
+export type StationUpsertWithoutMetricsInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutMetricsInput, Prisma.StationUncheckedUpdateWithoutMetricsInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutMetricsInput, Prisma.StationUncheckedCreateWithoutMetricsInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutMetricsInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutMetricsInput, Prisma.StationUncheckedUpdateWithoutMetricsInput>
+}
+
+export type StationUpdateWithoutMetricsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutMetricsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutForecastsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutForecastsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutForecastsInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutForecastsInput, Prisma.StationUncheckedCreateWithoutForecastsInput>
+}
+
+export type StationUpsertWithoutForecastsInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutForecastsInput, Prisma.StationUncheckedUpdateWithoutForecastsInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutForecastsInput, Prisma.StationUncheckedCreateWithoutForecastsInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutForecastsInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutForecastsInput, Prisma.StationUncheckedUpdateWithoutForecastsInput>
+}
+
+export type StationUpdateWithoutForecastsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutForecastsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
 }
 
 
@@ -720,12 +1990,24 @@ export type StationCountOutputType = {
   chargers: number
   favorites: number
   reviews: number
+  sessions: number
+  queueEntries: number
+  bookings: number
+  issues: number
+  metrics: number
+  forecasts: number
 }
 
 export type StationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chargers?: boolean | StationCountOutputTypeCountChargersArgs
   favorites?: boolean | StationCountOutputTypeCountFavoritesArgs
   reviews?: boolean | StationCountOutputTypeCountReviewsArgs
+  sessions?: boolean | StationCountOutputTypeCountSessionsArgs
+  queueEntries?: boolean | StationCountOutputTypeCountQueueEntriesArgs
+  bookings?: boolean | StationCountOutputTypeCountBookingsArgs
+  issues?: boolean | StationCountOutputTypeCountIssuesArgs
+  metrics?: boolean | StationCountOutputTypeCountMetricsArgs
+  forecasts?: boolean | StationCountOutputTypeCountForecastsArgs
 }
 
 /**
@@ -759,60 +2041,150 @@ export type StationCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types
   where?: Prisma.ReviewWhereInput
 }
 
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountQueueEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QueueEntryWhereInput
+}
+
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountIssuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IssueWhereInput
+}
+
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountMetricsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StationMetricHourlyWhereInput
+}
+
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountForecastsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ForecastWhereInput
+}
+
 
 export type StationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  sourceId?: boolean
+  operatorUserId?: boolean
   name?: boolean
   operatorName?: boolean
+  state?: boolean
+  district?: boolean
+  city?: boolean
+  address?: boolean
   lat?: boolean
   lng?: boolean
   pricePerKwh?: boolean
+  hours?: boolean
+  amenities?: boolean
   status?: boolean
+  ratingAvg?: boolean
   createdAt?: boolean
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
   reviews?: boolean | Prisma.Station$reviewsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Station$sessionsArgs<ExtArgs>
+  queueEntries?: boolean | Prisma.Station$queueEntriesArgs<ExtArgs>
+  bookings?: boolean | Prisma.Station$bookingsArgs<ExtArgs>
+  issues?: boolean | Prisma.Station$issuesArgs<ExtArgs>
+  metrics?: boolean | Prisma.Station$metricsArgs<ExtArgs>
+  forecasts?: boolean | Prisma.Station$forecastsArgs<ExtArgs>
   _count?: boolean | Prisma.StationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["station"]>
 
 export type StationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  sourceId?: boolean
+  operatorUserId?: boolean
   name?: boolean
   operatorName?: boolean
+  state?: boolean
+  district?: boolean
+  city?: boolean
+  address?: boolean
   lat?: boolean
   lng?: boolean
   pricePerKwh?: boolean
+  hours?: boolean
+  amenities?: boolean
   status?: boolean
+  ratingAvg?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
 export type StationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  sourceId?: boolean
+  operatorUserId?: boolean
   name?: boolean
   operatorName?: boolean
+  state?: boolean
+  district?: boolean
+  city?: boolean
+  address?: boolean
   lat?: boolean
   lng?: boolean
   pricePerKwh?: boolean
+  hours?: boolean
+  amenities?: boolean
   status?: boolean
+  ratingAvg?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
 export type StationSelectScalar = {
   id?: boolean
+  sourceId?: boolean
+  operatorUserId?: boolean
   name?: boolean
   operatorName?: boolean
+  state?: boolean
+  district?: boolean
+  city?: boolean
+  address?: boolean
   lat?: boolean
   lng?: boolean
   pricePerKwh?: boolean
+  hours?: boolean
+  amenities?: boolean
   status?: boolean
+  ratingAvg?: boolean
   createdAt?: boolean
 }
 
-export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "operatorName" | "lat" | "lng" | "pricePerKwh" | "status" | "createdAt", ExtArgs["result"]["station"]>
+export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sourceId" | "operatorUserId" | "name" | "operatorName" | "state" | "district" | "city" | "address" | "lat" | "lng" | "pricePerKwh" | "hours" | "amenities" | "status" | "ratingAvg" | "createdAt", ExtArgs["result"]["station"]>
 export type StationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
   reviews?: boolean | Prisma.Station$reviewsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Station$sessionsArgs<ExtArgs>
+  queueEntries?: boolean | Prisma.Station$queueEntriesArgs<ExtArgs>
+  bookings?: boolean | Prisma.Station$bookingsArgs<ExtArgs>
+  issues?: boolean | Prisma.Station$issuesArgs<ExtArgs>
+  metrics?: boolean | Prisma.Station$metricsArgs<ExtArgs>
+  forecasts?: boolean | Prisma.Station$forecastsArgs<ExtArgs>
   _count?: boolean | Prisma.StationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -824,15 +2196,30 @@ export type $StationPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     chargers: Prisma.$ChargerPayload<ExtArgs>[]
     favorites: Prisma.$FavoritePayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
+    queueEntries: Prisma.$QueueEntryPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
+    issues: Prisma.$IssuePayload<ExtArgs>[]
+    metrics: Prisma.$StationMetricHourlyPayload<ExtArgs>[]
+    forecasts: Prisma.$ForecastPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    sourceId: string | null
+    operatorUserId: string | null
     name: string
     operatorName: string
+    state: string | null
+    district: string | null
+    city: string | null
+    address: string | null
     lat: number
     lng: number
     pricePerKwh: number
+    hours: string | null
+    amenities: string | null
     status: $Enums.StationStatus
+    ratingAvg: number | null
     createdAt: Date
   }, ExtArgs["result"]["station"]>
   composites: {}
@@ -1231,6 +2618,12 @@ export interface Prisma__StationClient<T, Null = never, ExtArgs extends runtime.
   chargers<T extends Prisma.Station$chargersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$chargersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChargerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Station$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Station$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.Station$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  queueEntries<T extends Prisma.Station$queueEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$queueEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QueueEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Station$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  issues<T extends Prisma.Station$issuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$issuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  metrics<T extends Prisma.Station$metricsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$metricsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StationMetricHourlyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  forecasts<T extends Prisma.Station$forecastsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$forecastsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ForecastPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1261,12 +2654,21 @@ export interface Prisma__StationClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface StationFieldRefs {
   readonly id: Prisma.FieldRef<"Station", 'String'>
+  readonly sourceId: Prisma.FieldRef<"Station", 'String'>
+  readonly operatorUserId: Prisma.FieldRef<"Station", 'String'>
   readonly name: Prisma.FieldRef<"Station", 'String'>
   readonly operatorName: Prisma.FieldRef<"Station", 'String'>
+  readonly state: Prisma.FieldRef<"Station", 'String'>
+  readonly district: Prisma.FieldRef<"Station", 'String'>
+  readonly city: Prisma.FieldRef<"Station", 'String'>
+  readonly address: Prisma.FieldRef<"Station", 'String'>
   readonly lat: Prisma.FieldRef<"Station", 'Float'>
   readonly lng: Prisma.FieldRef<"Station", 'Float'>
   readonly pricePerKwh: Prisma.FieldRef<"Station", 'Float'>
+  readonly hours: Prisma.FieldRef<"Station", 'String'>
+  readonly amenities: Prisma.FieldRef<"Station", 'String'>
   readonly status: Prisma.FieldRef<"Station", 'StationStatus'>
+  readonly ratingAvg: Prisma.FieldRef<"Station", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Station", 'DateTime'>
 }
     
@@ -1730,6 +3132,150 @@ export type Station$reviewsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Station.sessions
+ */
+export type Station$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Station.queueEntries
+ */
+export type Station$queueEntriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QueueEntry
+   */
+  select?: Prisma.QueueEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QueueEntry
+   */
+  omit?: Prisma.QueueEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QueueEntryInclude<ExtArgs> | null
+  where?: Prisma.QueueEntryWhereInput
+  orderBy?: Prisma.QueueEntryOrderByWithRelationInput | Prisma.QueueEntryOrderByWithRelationInput[]
+  cursor?: Prisma.QueueEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QueueEntryScalarFieldEnum | Prisma.QueueEntryScalarFieldEnum[]
+}
+
+/**
+ * Station.bookings
+ */
+export type Station$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * Station.issues
+ */
+export type Station$issuesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Issue
+   */
+  select?: Prisma.IssueSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Issue
+   */
+  omit?: Prisma.IssueOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IssueInclude<ExtArgs> | null
+  where?: Prisma.IssueWhereInput
+  orderBy?: Prisma.IssueOrderByWithRelationInput | Prisma.IssueOrderByWithRelationInput[]
+  cursor?: Prisma.IssueWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IssueScalarFieldEnum | Prisma.IssueScalarFieldEnum[]
+}
+
+/**
+ * Station.metrics
+ */
+export type Station$metricsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StationMetricHourly
+   */
+  select?: Prisma.StationMetricHourlySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StationMetricHourly
+   */
+  omit?: Prisma.StationMetricHourlyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StationMetricHourlyInclude<ExtArgs> | null
+  where?: Prisma.StationMetricHourlyWhereInput
+  orderBy?: Prisma.StationMetricHourlyOrderByWithRelationInput | Prisma.StationMetricHourlyOrderByWithRelationInput[]
+  cursor?: Prisma.StationMetricHourlyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StationMetricHourlyScalarFieldEnum | Prisma.StationMetricHourlyScalarFieldEnum[]
+}
+
+/**
+ * Station.forecasts
+ */
+export type Station$forecastsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Forecast
+   */
+  select?: Prisma.ForecastSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Forecast
+   */
+  omit?: Prisma.ForecastOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ForecastInclude<ExtArgs> | null
+  where?: Prisma.ForecastWhereInput
+  orderBy?: Prisma.ForecastOrderByWithRelationInput | Prisma.ForecastOrderByWithRelationInput[]
+  cursor?: Prisma.ForecastWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ForecastScalarFieldEnum | Prisma.ForecastScalarFieldEnum[]
 }
 
 /**

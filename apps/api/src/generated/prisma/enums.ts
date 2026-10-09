@@ -30,7 +30,29 @@ export type StationStatus = (typeof StationStatus)[keyof typeof StationStatus]
 export const ChargerStatus = {
   FREE: 'FREE',
   BUSY: 'BUSY',
-  MAINTENANCE: 'MAINTENANCE'
+  MAINTENANCE: 'MAINTENANCE',
+  FAULTED: 'FAULTED',
+  OFFLINE: 'OFFLINE'
 } as const
 
 export type ChargerStatus = (typeof ChargerStatus)[keyof typeof ChargerStatus]
+
+
+export const BookingStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
+
+export const IssueStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type IssueStatus = (typeof IssueStatus)[keyof typeof IssueStatus]

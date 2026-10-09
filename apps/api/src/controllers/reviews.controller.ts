@@ -16,6 +16,6 @@ export async function createReview(req: Request, res: Response) {
 }
 
 export async function deleteReview(req: Request, res: Response) {
-  await prisma.review.delete({ where: { id: req.params.id } });
+  await prisma.review.delete({ where: { id: String(req.params.id) } });
   res.status(204).send();
 }

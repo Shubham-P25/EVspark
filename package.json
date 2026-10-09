@@ -2,15 +2,13 @@
   "name": "ev-twin",
   "private": true,
   "workspaces": [
-    "apps/web",
-    "apps/api",
-    "scripts/MQTT-simulator"
+    "apps/*",
+    "packages/*",
+    "scripts/*"
   ],
-  "dependencies": {
-    "@types/leaflet": "^1.9.22",
-    "leaflet": "^1.9.4",
-    "leaflet-defaulticon-compatibility": "^0.1.2",
-    "mqtt": "^5.15.2",
-    "react-leaflet": "^5.0.0"
+  "scripts": {
+    "dev:web": "npm --workspace=apps/web run dev",
+    "dev:api": "npm --workspace=apps/api run dev",
+    "sim": "node scripts/mqtt-simulator/index.js"
   }
 }
