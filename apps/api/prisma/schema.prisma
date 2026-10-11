@@ -43,9 +43,13 @@ enum IssueStatus {
 
 model User {
   id              String           @id @default(cuid())
+  authId          String?          @unique
+  username        String?          @unique
   name            String?
   email           String           @unique
+  phone           String?
   role            Role             @default(DRIVER)
+  onboardedAt     DateTime?
   driverProfile   DriverProfile?
   operatorProfile OperatorProfile?
   favorites       Favorite[]
@@ -71,10 +75,19 @@ model DriverProfile {
   id             String  @id @default(cuid())
   userId         String  @unique
   vehicleModelId String?
+  vehicleRegNo   String?
+  batteryPct     Float?
+  city           String?
   connectorPref  String?
   rangeKm        Float?
   homeLat        Float?
   homeLng        Float?
+  homeLabel      String?
+  workLat        Float?
+  workLng        Float?
+  workLabel      String?
+  maxWaitMin     Int?
+  minKw          Float?
   user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -82,7 +95,9 @@ model OperatorProfile {
   id           String  @id @default(cuid())
   userId       String  @unique
   businessName String?
+  contactName  String?
   phone        String?
+  gstin        String?
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -98,11 +113,17 @@ model Station {
   address        String?
   lat            Float
   lng            Float
+  location       Unsupported("geography(Point,4326)")?
   pricePerKwh    Float
   hours          String?               @default("24/7")
   amenities      String?               @default("WiFi,Cafe,Restroom,Parking")
   status         StationStatus         @default(APPROVED)
   ratingAvg      Float?                @default(4.5)
+  datasetSource  String?
+  externalId     String?               @unique
+  googlePlaceId  String?
+  photoUrl       String?
+  phone          String?
   chargers       Charger[]
   favorites      Favorite[]
   reviews        Review[]
@@ -112,6 +133,7 @@ model Station {
   issues         Issue[]
   metrics        StationMetricHourly[]
   forecasts      Forecast[]
+  vehiclePings   VehiclePing[]
   createdAt      DateTime              @default(now())
 }
 
@@ -142,33 +164,38 @@ model ChargerEvent {
 }
 
 model Session {
-  id             String   @id @default(cuid())
+  id             String    @id @default(cuid())
   stationId      String
   chargerId      String
   driverUserId   String?
   vehicleModelId String?
-  startTs        DateTime @default(now())
+  startTs        DateTime  @default(now())
   endTs          DateTime?
+  estimatedEndTs DateTime?
   socStart       Float?
   socEnd         Float?
   energyKwh      Float?
   amountInr      Float?
-  source         String   @default("sim") // "real" | "sim"
-  station        Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
-  charger        Charger  @relation(fields: [chargerId], references: [id], onDelete: Cascade)
-  driver         User?    @relation(fields: [driverUserId], references: [id], onDelete: SetNull)
+  source         String    @default("twin") // "real" | "twin"
+  queueWaitMin   Float?
+  ocppTxId       Int?
+  station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  charger        Charger   @relation(fields: [chargerId], references: [id], onDelete: Cascade)
+  driver         User?     @relation(fields: [driverUserId], references: [id], onDelete: SetNull)
 
   @@index([stationId, startTs(sort: Desc)])
 }
 
 model QueueEntry {
-  id         String   @id @default(cuid())
-  stationId  String
-  vehicleRef String
-  connector  String
-  joinedTs   DateTime @default(now())
-  status     String   @default("waiting") // "waiting" | "charging" | "abandoned"
-  station    Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  id             String    @id @default(cuid())
+  stationId      String
+  vehicleRef     String
+  vehicleModelId String?
+  connector      String
+  joinedTs       DateTime  @default(now())
+  etaTs          DateTime?
+  status         String    @default("waiting") // "waiting" | "charging" | "abandoned"
+  station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
 
   @@index([stationId, status])
 }
@@ -191,6 +218,7 @@ model Favorite {
   id        String   @id @default(cuid())
   userId    String
   stationId String
+  label     String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   station   Station  @relation(fields: [stationId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -248,9 +276,25 @@ model Forecast {
 }
 
 model SimConfig {
-  id            String   @id @default("default")
-  speed         Float    @default(10)
-  surgeStations String   @default("") // comma-separated station IDs
-  seed          Int      @default(42)
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default("default")
+  speed           Float    @default(10)
+  surgeStations   String   @default("") // comma-separated station IDs
+  seed            Int      @default(42)
+  arrivalsPerMin  Float    @default(0.5)
+  running         Boolean  @default(true)
+  surgeMultiplier Float    @default(2.0)
+  updatedAt       DateTime @updatedAt
+}
+
+model VehiclePing {
+  id         String   @id @default(cuid())
+  vehicleRef String
+  stationId  String?
+  lat        Float
+  lng        Float
+  ts         DateTime @default(now())
+  intent     String   // "heading_to" | "idle" | "charging"
+  station    Station? @relation(fields: [stationId], references: [id], onDelete: SetNull)
+
+  @@index([stationId, ts])
 }

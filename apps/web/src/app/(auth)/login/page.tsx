@@ -1,12 +1,258 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { DEMO } from "@/lib/api";
-import { Button } from "@/components/ui/Button";
+import { useSignIn, useClerk, useAuth } from "@clerk/nextjs";
+import { Eye, EyeSlash, CircleNotch, ArrowRight, SignOut } from "@phosphor-icons/react";
+import { siGoogle, siGithub } from "simple-icons";
 
 export default function LoginPage() {
   const router = useRouter();
-  const enterDemo = (role: "driver" | "operator" | "admin") => { document.cookie = `demoRole=${role}; path=/`; router.push(`/${role}`); };
-  return <main className="flex min-h-screen items-center justify-center px-6 py-12"><section className="w-full max-w-sm rounded-lg border border-border bg-surface p-7"><Link className="flex items-center justify-center gap-2 font-semibold" href="/"><span className="flex h-8 w-8 items-center justify-center rounded bg-primary text-bg">⚡</span>EV<span className="text-primary">spark</span></Link><h1 className="mt-8 text-center text-xl font-semibold">Sign in to EVspark</h1><form className="mt-8 space-y-4" onSubmit={(event) => { event.preventDefault(); router.push("/driver"); }}><label className="block text-sm text-muted">Email<input className="mt-2 h-10 w-full rounded-lg border border-border bg-surface-2 px-3 text-text outline-none focus:border-primary" type="email" required /></label><label className="block text-sm text-muted">Password<input className="mt-2 h-10 w-full rounded-lg border border-border bg-surface-2 px-3 text-text outline-none focus:border-primary" type="password" required /></label><Button className="w-full" size="lg">Sign in</Button></form>{DEMO && <div className="mt-8 border-t border-border-dim pt-5"><p className="font-mono text-[10px] uppercase tracking-wider text-muted">Demo access</p><div className="mt-3 grid gap-2"><Button size="sm" variant="secondary" onClick={() => enterDemo("driver")}>Enter as Driver Demo</Button><Button size="sm" variant="secondary" onClick={() => enterDemo("operator")}>Enter as Operator Demo</Button><Button size="sm" variant="secondary" onClick={() => enterDemo("admin")}>Enter as Admin Demo</Button></div></div>}<p className="mt-7 text-center text-sm text-muted">New to EVspark? <Link className="text-primary hover:text-text" href="/register">Create an account</Link></p></section></main>;
+  const { signIn } = useSignIn();
+  const { setActive, loaded: isLoaded, signOut } = useClerk();
+  const { isSignedIn } = useAuth();
+
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [identifierError, setIdentifierError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  const handleSignOutAndReset = async () => {
+    document.cookie = "evspark_onboarded=; path=/; max-age=0";
+    document.cookie = "evspark_onboarding_complete=; path=/; max-age=0";
+    document.cookie = "evspark_role=; path=/; max-age=0";
+    await signOut();
+    window.location.reload();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setGeneralError(null);
+    setIdentifierError(null);
+    setPasswordError(null);
+
+    let hasError = false;
+    if (!identifier.trim()) {
+      setIdentifierError("Please enter your username or email.");
+      hasError = true;
+    }
+    if (!password) {
+      setPasswordError("Please enter your password.");
+      hasError = true;
+    }
+    if (hasError || !isLoaded || !signIn) return;
+
+    setIsSubmitting(true);
+    try {
+      // If user was already signed in, clear previous session first
+      if (isSignedIn) {
+        document.cookie = "evspark_onboarded=; path=/; max-age=0";
+        document.cookie = "evspark_onboarding_complete=; path=/; max-age=0";
+        document.cookie = "evspark_role=; path=/; max-age=0";
+        await signOut();
+      }
+
+      const result = await signIn.create({
+        identifier: identifier.trim(),
+        password,
+      });
+
+      if (result.error) {
+        const errorMsg = result.error.message || "Invalid username or password.";
+        if (result.error.code === "form_identifier_not_found") {
+          setIdentifierError("No account found with this username or email.");
+        } else if (result.error.code === "form_password_incorrect") {
+          setPasswordError("Incorrect password. Please try again.");
+        } else {
+          setGeneralError(errorMsg);
+        }
+        return;
+      }
+
+      if (signIn.status === "complete" && signIn.createdSessionId) {
+        await setActive({ session: signIn.createdSessionId });
+        document.cookie = "evspark_onboarded=true; path=/; max-age=31536000; SameSite=Lax";
+        window.location.href = "/driver";
+      } else {
+        setGeneralError("Additional verification required. Please try again.");
+      }
+    } catch (err: any) {
+      setGeneralError(err?.message || "Invalid username or password.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleOAuth = (strategy: "oauth_google" | "oauth_github") => {
+    if (!isLoaded || !signIn) return;
+    signIn.sso({
+      strategy,
+      redirectUrl: "/sso-callback",
+      redirectCallbackUrl: "/onboarding",
+    });
+  };
+
+  return (
+    <div className="w-full bg-white border border-[#DADCE0] rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className="text-center mb-6">
+        <h1 className="text-2xl font-bold text-[#202124]">Log in to EVspark</h1>
+        <p className="text-sm text-[#5F6368] mt-1.5">
+          Enter your username or email to continue.
+        </p>
+      </div>
+
+      {/* Already signed in notification */}
+      {isSignedIn && (
+        <div className="mb-5 p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-[#1A73E8] flex items-center justify-between gap-2">
+          <span>You have an active session.</span>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/driver"
+              className="font-semibold underline hover:text-[#174ea6] flex items-center gap-0.5"
+            >
+              Dashboard <ArrowRight size={12} />
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOutAndReset}
+              className="font-semibold text-[#D93025] hover:underline flex items-center gap-0.5 cursor-pointer ml-1"
+            >
+              <SignOut size={12} /> Sign out
+            </button>
+          </div>
+        </div>
+      )}
+
+      {generalError && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-[#D93025] text-center"
+        >
+          {generalError}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        <div>
+          <label
+            htmlFor="identifier"
+            className="block text-xs font-semibold text-[#202124] uppercase tracking-wider mb-1.5"
+          >
+            Username or Email
+          </label>
+          <input
+            id="identifier"
+            type="text"
+            autoCapitalize="none"
+            autoComplete="username"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            disabled={isSubmitting}
+            className={`w-full h-11 px-3.5 rounded-xl border text-sm text-[#202124] placeholder-[#80868B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8] ${
+              identifierError ? "border-[#D93025] bg-red-50/20" : "border-[#DADCE0] bg-white"
+            }`}
+            placeholder="e.g. aarav_ev or driver@example.com"
+          />
+          {identifierError && (
+            <p className="mt-1 text-xs text-[#D93025]" role="alert">
+              {identifierError}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-xs font-semibold text-[#202124] uppercase tracking-wider mb-1.5"
+          >
+            Password
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isSubmitting}
+              className={`w-full h-11 px-3.5 pr-10 rounded-xl border text-sm text-[#202124] placeholder-[#80868B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8] ${
+                passwordError ? "border-[#D93025] bg-red-50/20" : "border-[#DADCE0] bg-white"
+              }`}
+              placeholder="••••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5F6368] hover:text-[#202124] transition-colors cursor-pointer"
+            >
+              {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+          {passwordError && (
+            <p className="mt-1 text-xs text-[#D93025]" role="alert">
+              {passwordError}
+            </p>
+          )}
+        </div>
+
+        {/* Turnstile / CAPTCHA anchor element for Clerk custom flows */}
+        <div id="clerk-captcha" />
+
+        <button
+          type="submit"
+          disabled={isSubmitting || !isLoaded}
+          className="w-full h-11 rounded-xl bg-[#1A73E8] hover:bg-[#1557b0] active:bg-[#174ea6] text-white font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2 cursor-pointer"
+        >
+          {isSubmitting && <CircleNotch size={18} className="animate-spin" />}
+          <span>{isSubmitting ? "Logging in..." : "Log in"}</span>
+        </button>
+      </form>
+
+      <div className="relative my-6 text-center text-xs">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-[#DADCE0]" />
+        </div>
+        <span className="relative bg-white px-3 text-[#5F6368]">or continue with</span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          onClick={() => handleOAuth("oauth_google")}
+          disabled={!isLoaded}
+          className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d={siGoogle.path} />
+          </svg>
+          <span>Google</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleOAuth("oauth_github")}
+          disabled={!isLoaded}
+          className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          <svg className="w-4 h-4 fill-[#202124]" viewBox="0 0 24 24">
+            <path d={siGithub.path} />
+          </svg>
+          <span>GitHub</span>
+        </button>
+      </div>
+
+      <p className="text-center text-xs text-[#5F6368] mt-6">
+        Don&apos;t have an account?{" "}
+        <Link href="/register" className="text-[#1A73E8] font-semibold hover:underline">
+          Sign up
+        </Link>
+      </p>
+    </div>
+  );
 }

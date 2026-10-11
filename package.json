@@ -1,14 +1,31 @@
 {
-  "name": "ev-twin",
+  "name": "evspark",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "scripts/*"
-  ],
+  "packageManager": "pnpm@11.2.2",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "dev:web": "npm --workspace=apps/web run dev",
-    "dev:api": "npm --workspace=apps/api run dev",
-    "sim": "node scripts/mqtt-simulator/index.js"
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "vitest run tests/e2e/smoke.test.ts",
+    "test:load": "tsx tests/load/run-load.ts",
+    "db:migrate": "pnpm --filter api db:migrate",
+    "db:seed": "pnpm --filter api db:seed",
+    "sim": "pnpm --filter twin-engine dev",
+    "twin": "pnpm --filter twin-engine dev"
+  },
+  "devDependencies": {
+    "@types/supertest": "^7.2.1",
+    "cross-env": "^7.0.3",
+    "rimraf": "^6.0.1",
+    "supertest": "^7.3.1",
+    "turbo": "^2.4.4",
+    "vitest": "^5.0.3"
   }
 }

@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model QueueEntry
@@ -28,8 +28,10 @@ export type QueueEntryMinAggregateOutputType = {
   id: string | null
   stationId: string | null
   vehicleRef: string | null
+  vehicleModelId: string | null
   connector: string | null
   joinedTs: Date | null
+  etaTs: Date | null
   status: string | null
 }
 
@@ -37,8 +39,10 @@ export type QueueEntryMaxAggregateOutputType = {
   id: string | null
   stationId: string | null
   vehicleRef: string | null
+  vehicleModelId: string | null
   connector: string | null
   joinedTs: Date | null
+  etaTs: Date | null
   status: string | null
 }
 
@@ -46,8 +50,10 @@ export type QueueEntryCountAggregateOutputType = {
   id: number
   stationId: number
   vehicleRef: number
+  vehicleModelId: number
   connector: number
   joinedTs: number
+  etaTs: number
   status: number
   _all: number
 }
@@ -57,8 +63,10 @@ export type QueueEntryMinAggregateInputType = {
   id?: true
   stationId?: true
   vehicleRef?: true
+  vehicleModelId?: true
   connector?: true
   joinedTs?: true
+  etaTs?: true
   status?: true
 }
 
@@ -66,8 +74,10 @@ export type QueueEntryMaxAggregateInputType = {
   id?: true
   stationId?: true
   vehicleRef?: true
+  vehicleModelId?: true
   connector?: true
   joinedTs?: true
+  etaTs?: true
   status?: true
 }
 
@@ -75,8 +85,10 @@ export type QueueEntryCountAggregateInputType = {
   id?: true
   stationId?: true
   vehicleRef?: true
+  vehicleModelId?: true
   connector?: true
   joinedTs?: true
+  etaTs?: true
   status?: true
   _all?: true
 }
@@ -157,8 +169,10 @@ export type QueueEntryGroupByOutputType = {
   id: string
   stationId: string
   vehicleRef: string
+  vehicleModelId: string | null
   connector: string
   joinedTs: Date
+  etaTs: Date | null
   status: string
   _count: QueueEntryCountAggregateOutputType | null
   _min: QueueEntryMinAggregateOutputType | null
@@ -187,8 +201,10 @@ export type QueueEntryWhereInput = {
   id?: Prisma.StringFilter<"QueueEntry"> | string
   stationId?: Prisma.StringFilter<"QueueEntry"> | string
   vehicleRef?: Prisma.StringFilter<"QueueEntry"> | string
+  vehicleModelId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
   connector?: Prisma.StringFilter<"QueueEntry"> | string
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
+  etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
 }
@@ -197,8 +213,10 @@ export type QueueEntryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
   vehicleRef?: Prisma.SortOrder
+  vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   connector?: Prisma.SortOrder
   joinedTs?: Prisma.SortOrder
+  etaTs?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   station?: Prisma.StationOrderByWithRelationInput
 }
@@ -210,8 +228,10 @@ export type QueueEntryWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.QueueEntryWhereInput | Prisma.QueueEntryWhereInput[]
   stationId?: Prisma.StringFilter<"QueueEntry"> | string
   vehicleRef?: Prisma.StringFilter<"QueueEntry"> | string
+  vehicleModelId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
   connector?: Prisma.StringFilter<"QueueEntry"> | string
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
+  etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
 }, "id">
@@ -220,8 +240,10 @@ export type QueueEntryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
   vehicleRef?: Prisma.SortOrder
+  vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   connector?: Prisma.SortOrder
   joinedTs?: Prisma.SortOrder
+  etaTs?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.QueueEntryCountOrderByAggregateInput
   _max?: Prisma.QueueEntryMaxOrderByAggregateInput
@@ -235,16 +257,20 @@ export type QueueEntryScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
   stationId?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
   vehicleRef?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
+  vehicleModelId?: Prisma.StringNullableWithAggregatesFilter<"QueueEntry"> | string | null
   connector?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
   joinedTs?: Prisma.DateTimeWithAggregatesFilter<"QueueEntry"> | Date | string
+  etaTs?: Prisma.DateTimeNullableWithAggregatesFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
 }
 
 export type QueueEntryCreateInput = {
   id?: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
   station: Prisma.StationCreateNestedOneWithoutQueueEntriesInput
 }
@@ -253,16 +279,20 @@ export type QueueEntryUncheckedCreateInput = {
   id?: string
   stationId: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
 }
 
 export type QueueEntryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   station?: Prisma.StationUpdateOneRequiredWithoutQueueEntriesNestedInput
 }
@@ -271,8 +301,10 @@ export type QueueEntryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stationId?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -280,16 +312,20 @@ export type QueueEntryCreateManyInput = {
   id?: string
   stationId: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
 }
 
 export type QueueEntryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -297,8 +333,10 @@ export type QueueEntryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stationId?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -316,8 +354,10 @@ export type QueueEntryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
   vehicleRef?: Prisma.SortOrder
+  vehicleModelId?: Prisma.SortOrder
   connector?: Prisma.SortOrder
   joinedTs?: Prisma.SortOrder
+  etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -325,8 +365,10 @@ export type QueueEntryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
   vehicleRef?: Prisma.SortOrder
+  vehicleModelId?: Prisma.SortOrder
   connector?: Prisma.SortOrder
   joinedTs?: Prisma.SortOrder
+  etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -334,8 +376,10 @@ export type QueueEntryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   stationId?: Prisma.SortOrder
   vehicleRef?: Prisma.SortOrder
+  vehicleModelId?: Prisma.SortOrder
   connector?: Prisma.SortOrder
   joinedTs?: Prisma.SortOrder
+  etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -384,16 +428,20 @@ export type QueueEntryUncheckedUpdateManyWithoutStationNestedInput = {
 export type QueueEntryCreateWithoutStationInput = {
   id?: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
 }
 
 export type QueueEntryUncheckedCreateWithoutStationInput = {
   id?: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
 }
 
@@ -430,40 +478,50 @@ export type QueueEntryScalarWhereInput = {
   id?: Prisma.StringFilter<"QueueEntry"> | string
   stationId?: Prisma.StringFilter<"QueueEntry"> | string
   vehicleRef?: Prisma.StringFilter<"QueueEntry"> | string
+  vehicleModelId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
   connector?: Prisma.StringFilter<"QueueEntry"> | string
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
+  etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
 }
 
 export type QueueEntryCreateManyStationInput = {
   id?: string
   vehicleRef: string
+  vehicleModelId?: string | null
   connector: string
   joinedTs?: Date | string
+  etaTs?: Date | string | null
   status?: string
 }
 
 export type QueueEntryUpdateWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type QueueEntryUncheckedUpdateWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type QueueEntryUncheckedUpdateManyWithoutStationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleRef?: Prisma.StringFieldUpdateOperationsInput | string
+  vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connector?: Prisma.StringFieldUpdateOperationsInput | string
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -473,8 +531,10 @@ export type QueueEntrySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   stationId?: boolean
   vehicleRef?: boolean
+  vehicleModelId?: boolean
   connector?: boolean
   joinedTs?: boolean
+  etaTs?: boolean
   status?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
@@ -483,8 +543,10 @@ export type QueueEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   stationId?: boolean
   vehicleRef?: boolean
+  vehicleModelId?: boolean
   connector?: boolean
   joinedTs?: boolean
+  etaTs?: boolean
   status?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
@@ -493,8 +555,10 @@ export type QueueEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   stationId?: boolean
   vehicleRef?: boolean
+  vehicleModelId?: boolean
   connector?: boolean
   joinedTs?: boolean
+  etaTs?: boolean
   status?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
@@ -503,12 +567,14 @@ export type QueueEntrySelectScalar = {
   id?: boolean
   stationId?: boolean
   vehicleRef?: boolean
+  vehicleModelId?: boolean
   connector?: boolean
   joinedTs?: boolean
+  etaTs?: boolean
   status?: boolean
 }
 
-export type QueueEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "vehicleRef" | "connector" | "joinedTs" | "status", ExtArgs["result"]["queueEntry"]>
+export type QueueEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "vehicleRef" | "vehicleModelId" | "connector" | "joinedTs" | "etaTs" | "status", ExtArgs["result"]["queueEntry"]>
 export type QueueEntryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }
@@ -528,8 +594,10 @@ export type $QueueEntryPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     stationId: string
     vehicleRef: string
+    vehicleModelId: string | null
     connector: string
     joinedTs: Date
+    etaTs: Date | null
     status: string
   }, ExtArgs["result"]["queueEntry"]>
   composites: {}
@@ -958,8 +1026,10 @@ export interface QueueEntryFieldRefs {
   readonly id: Prisma.FieldRef<"QueueEntry", 'String'>
   readonly stationId: Prisma.FieldRef<"QueueEntry", 'String'>
   readonly vehicleRef: Prisma.FieldRef<"QueueEntry", 'String'>
+  readonly vehicleModelId: Prisma.FieldRef<"QueueEntry", 'String'>
   readonly connector: Prisma.FieldRef<"QueueEntry", 'String'>
   readonly joinedTs: Prisma.FieldRef<"QueueEntry", 'DateTime'>
+  readonly etaTs: Prisma.FieldRef<"QueueEntry", 'DateTime'>
   readonly status: Prisma.FieldRef<"QueueEntry", 'String'>
 }
     

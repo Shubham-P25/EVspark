@@ -1,34 +1,45 @@
-
-/-- whole project --/
+# Dependencies
 node_modules/
-.env
-.env.local
-package-lock.json
+.pnpm-store/
 
-
-/--  api --/
-apps/api/.agents/
-apps/api/.claude/
-apps/api/.windsurf/
-apps/api/skills-lock.json
-apps/api/tsconfig.json
-apps/api/node_modules/
-
-
-
-/--  models --/
-apps/models/venv/
-apps/models/__pycache__/
-
-
-/-- web --/
-apps/web/.next/
-apps/web/tsconfig.json
-apps/web/postcss.config.mjs
-apps/web/next-env.d.ts
-apps/web/next.config.ts
-apps/web/eslint.config.mjs
-apps/web/.env.local.example
-
+# Build and cache
+.turbo/
 .next/
 dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Generated
+apps/api/src/generated/
+
+# Data
+data/raw/*
+!data/raw/README.md
+
+# ML artifacts
+models/*.joblib
+
+# OS & Logs
+.DS_Store
+*.log
+
+# Package locks
+package-lock.json
+
+# Agents
+.agents/
+.claude/
+.windsurf/
+.qmind/

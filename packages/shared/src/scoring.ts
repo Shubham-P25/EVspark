@@ -109,3 +109,53 @@ export function calculateFuelRecommendations(
 
   return results.slice(0, 5);
 }
+
+export function rankStationsByFuel(
+  stations: any[],
+  req: { lat: number; lng: number; connector?: string }
+) {
+  const w1 = 1.0;
+  const w2 = 1.2;
+  const w3 = 0.3;
+  const w4 = 0.5;
+
+  const list = stations.map((st) => {
+    const dist = haversineKm(req.lat, req.lng, st.lat, st.lng);
+    const driveMin = estimateDriveMinutes(dist);
+    const wait = computeWaitTime({
+      chargers: st.chargers || [],
+      queueLength: st.queueEntries?.length || 0,
+      targetConnector: req.connector,
+    });
+
+    const predWaitAtEta = Math.max(0, wait.waitMinutes - Math.floor(driveMin * 0.4));
+    const pricePen = Math.max(0, (st.pricePerKwh ?? 18) - 15);
+    const ratingDef = Math.max(0, 5 - (st.ratingAvg ?? 4.0));
+    const overloadPen = wait.isOverloaded ? 50 : 0;
+
+    const fuelScore = +(w1 * driveMin + w2 * predWaitAtEta + w3 * pricePen + w4 * ratingDef + overloadPen).toFixed(2);
+
+    return {
+      station: {
+        ...st,
+        distanceKm: +dist.toFixed(1),
+        etaMinutes: driveMin,
+        waitMinutes: wait.waitMinutes,
+        predictedWaitMinutes: predWaitAtEta,
+        markerColor: wait.markerColor,
+        isOverloaded: wait.isOverloaded,
+        availableChargers: wait.availableChargers,
+        totalChargers: (st.chargers || []).length,
+      },
+      fuelScore,
+      driveMinutes: driveMin,
+      distanceKm: +dist.toFixed(1),
+      predictedWaitAtEta: predWaitAtEta,
+      reason: `${predWaitAtEta === 0 ? "No wait" : `${predWaitAtEta}m wait`}, ${dist.toFixed(1)} km away (${driveMin}m drive)`,
+    };
+  });
+
+  list.sort((a, b) => a.fuelScore - b.fuelScore);
+  return list;
+}
+

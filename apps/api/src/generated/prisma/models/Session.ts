@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Session
@@ -31,6 +31,8 @@ export type SessionAvgAggregateOutputType = {
   socEnd: number | null
   energyKwh: number | null
   amountInr: number | null
+  queueWaitMin: number | null
+  ocppTxId: number | null
 }
 
 export type SessionSumAggregateOutputType = {
@@ -38,6 +40,8 @@ export type SessionSumAggregateOutputType = {
   socEnd: number | null
   energyKwh: number | null
   amountInr: number | null
+  queueWaitMin: number | null
+  ocppTxId: number | null
 }
 
 export type SessionMinAggregateOutputType = {
@@ -48,11 +52,14 @@ export type SessionMinAggregateOutputType = {
   vehicleModelId: string | null
   startTs: Date | null
   endTs: Date | null
+  estimatedEndTs: Date | null
   socStart: number | null
   socEnd: number | null
   energyKwh: number | null
   amountInr: number | null
   source: string | null
+  queueWaitMin: number | null
+  ocppTxId: number | null
 }
 
 export type SessionMaxAggregateOutputType = {
@@ -63,11 +70,14 @@ export type SessionMaxAggregateOutputType = {
   vehicleModelId: string | null
   startTs: Date | null
   endTs: Date | null
+  estimatedEndTs: Date | null
   socStart: number | null
   socEnd: number | null
   energyKwh: number | null
   amountInr: number | null
   source: string | null
+  queueWaitMin: number | null
+  ocppTxId: number | null
 }
 
 export type SessionCountAggregateOutputType = {
@@ -78,11 +88,14 @@ export type SessionCountAggregateOutputType = {
   vehicleModelId: number
   startTs: number
   endTs: number
+  estimatedEndTs: number
   socStart: number
   socEnd: number
   energyKwh: number
   amountInr: number
   source: number
+  queueWaitMin: number
+  ocppTxId: number
   _all: number
 }
 
@@ -92,6 +105,8 @@ export type SessionAvgAggregateInputType = {
   socEnd?: true
   energyKwh?: true
   amountInr?: true
+  queueWaitMin?: true
+  ocppTxId?: true
 }
 
 export type SessionSumAggregateInputType = {
@@ -99,6 +114,8 @@ export type SessionSumAggregateInputType = {
   socEnd?: true
   energyKwh?: true
   amountInr?: true
+  queueWaitMin?: true
+  ocppTxId?: true
 }
 
 export type SessionMinAggregateInputType = {
@@ -109,11 +126,14 @@ export type SessionMinAggregateInputType = {
   vehicleModelId?: true
   startTs?: true
   endTs?: true
+  estimatedEndTs?: true
   socStart?: true
   socEnd?: true
   energyKwh?: true
   amountInr?: true
   source?: true
+  queueWaitMin?: true
+  ocppTxId?: true
 }
 
 export type SessionMaxAggregateInputType = {
@@ -124,11 +144,14 @@ export type SessionMaxAggregateInputType = {
   vehicleModelId?: true
   startTs?: true
   endTs?: true
+  estimatedEndTs?: true
   socStart?: true
   socEnd?: true
   energyKwh?: true
   amountInr?: true
   source?: true
+  queueWaitMin?: true
+  ocppTxId?: true
 }
 
 export type SessionCountAggregateInputType = {
@@ -139,11 +162,14 @@ export type SessionCountAggregateInputType = {
   vehicleModelId?: true
   startTs?: true
   endTs?: true
+  estimatedEndTs?: true
   socStart?: true
   socEnd?: true
   energyKwh?: true
   amountInr?: true
   source?: true
+  queueWaitMin?: true
+  ocppTxId?: true
   _all?: true
 }
 
@@ -241,11 +267,14 @@ export type SessionGroupByOutputType = {
   vehicleModelId: string | null
   startTs: Date
   endTs: Date | null
+  estimatedEndTs: Date | null
   socStart: number | null
   socEnd: number | null
   energyKwh: number | null
   amountInr: number | null
   source: string
+  queueWaitMin: number | null
+  ocppTxId: number | null
   _count: SessionCountAggregateOutputType | null
   _avg: SessionAvgAggregateOutputType | null
   _sum: SessionSumAggregateOutputType | null
@@ -279,11 +308,14 @@ export type SessionWhereInput = {
   vehicleModelId?: Prisma.StringNullableFilter<"Session"> | string | null
   startTs?: Prisma.DateTimeFilter<"Session"> | Date | string
   endTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
+  estimatedEndTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
   socStart?: Prisma.FloatNullableFilter<"Session"> | number | null
   socEnd?: Prisma.FloatNullableFilter<"Session"> | number | null
   energyKwh?: Prisma.FloatNullableFilter<"Session"> | number | null
   amountInr?: Prisma.FloatNullableFilter<"Session"> | number | null
   source?: Prisma.StringFilter<"Session"> | string
+  queueWaitMin?: Prisma.FloatNullableFilter<"Session"> | number | null
+  ocppTxId?: Prisma.IntNullableFilter<"Session"> | number | null
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
   charger?: Prisma.XOR<Prisma.ChargerScalarRelationFilter, Prisma.ChargerWhereInput>
   driver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -297,11 +329,14 @@ export type SessionOrderByWithRelationInput = {
   vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   startTs?: Prisma.SortOrder
   endTs?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedEndTs?: Prisma.SortOrderInput | Prisma.SortOrder
   socStart?: Prisma.SortOrderInput | Prisma.SortOrder
   socEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   energyKwh?: Prisma.SortOrderInput | Prisma.SortOrder
   amountInr?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrderInput | Prisma.SortOrder
   station?: Prisma.StationOrderByWithRelationInput
   charger?: Prisma.ChargerOrderByWithRelationInput
   driver?: Prisma.UserOrderByWithRelationInput
@@ -318,11 +353,14 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   vehicleModelId?: Prisma.StringNullableFilter<"Session"> | string | null
   startTs?: Prisma.DateTimeFilter<"Session"> | Date | string
   endTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
+  estimatedEndTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
   socStart?: Prisma.FloatNullableFilter<"Session"> | number | null
   socEnd?: Prisma.FloatNullableFilter<"Session"> | number | null
   energyKwh?: Prisma.FloatNullableFilter<"Session"> | number | null
   amountInr?: Prisma.FloatNullableFilter<"Session"> | number | null
   source?: Prisma.StringFilter<"Session"> | string
+  queueWaitMin?: Prisma.FloatNullableFilter<"Session"> | number | null
+  ocppTxId?: Prisma.IntNullableFilter<"Session"> | number | null
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
   charger?: Prisma.XOR<Prisma.ChargerScalarRelationFilter, Prisma.ChargerWhereInput>
   driver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -336,11 +374,14 @@ export type SessionOrderByWithAggregationInput = {
   vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   startTs?: Prisma.SortOrder
   endTs?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedEndTs?: Prisma.SortOrderInput | Prisma.SortOrder
   socStart?: Prisma.SortOrderInput | Prisma.SortOrder
   socEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   energyKwh?: Prisma.SortOrderInput | Prisma.SortOrder
   amountInr?: Prisma.SortOrderInput | Prisma.SortOrder
   source?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SessionCountOrderByAggregateInput
   _avg?: Prisma.SessionAvgOrderByAggregateInput
   _max?: Prisma.SessionMaxOrderByAggregateInput
@@ -359,11 +400,14 @@ export type SessionScalarWhereWithAggregatesInput = {
   vehicleModelId?: Prisma.StringNullableWithAggregatesFilter<"Session"> | string | null
   startTs?: Prisma.DateTimeWithAggregatesFilter<"Session"> | Date | string
   endTs?: Prisma.DateTimeNullableWithAggregatesFilter<"Session"> | Date | string | null
+  estimatedEndTs?: Prisma.DateTimeNullableWithAggregatesFilter<"Session"> | Date | string | null
   socStart?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
   socEnd?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
   energyKwh?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
   amountInr?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
   source?: Prisma.StringWithAggregatesFilter<"Session"> | string
+  queueWaitMin?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
+  ocppTxId?: Prisma.IntNullableWithAggregatesFilter<"Session"> | number | null
 }
 
 export type SessionCreateInput = {
@@ -371,11 +415,14 @@ export type SessionCreateInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
@@ -389,11 +436,14 @@ export type SessionUncheckedCreateInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionUpdateInput = {
@@ -401,11 +451,14 @@ export type SessionUpdateInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
@@ -419,11 +472,14 @@ export type SessionUncheckedUpdateInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionCreateManyInput = {
@@ -434,11 +490,14 @@ export type SessionCreateManyInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionUpdateManyMutationInput = {
@@ -446,11 +505,14 @@ export type SessionUpdateManyMutationInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionUncheckedUpdateManyInput = {
@@ -461,11 +523,14 @@ export type SessionUncheckedUpdateManyInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionListRelationFilter = {
@@ -486,11 +551,14 @@ export type SessionCountOrderByAggregateInput = {
   vehicleModelId?: Prisma.SortOrder
   startTs?: Prisma.SortOrder
   endTs?: Prisma.SortOrder
+  estimatedEndTs?: Prisma.SortOrder
   socStart?: Prisma.SortOrder
   socEnd?: Prisma.SortOrder
   energyKwh?: Prisma.SortOrder
   amountInr?: Prisma.SortOrder
   source?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrder
 }
 
 export type SessionAvgOrderByAggregateInput = {
@@ -498,6 +566,8 @@ export type SessionAvgOrderByAggregateInput = {
   socEnd?: Prisma.SortOrder
   energyKwh?: Prisma.SortOrder
   amountInr?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrder
 }
 
 export type SessionMaxOrderByAggregateInput = {
@@ -508,11 +578,14 @@ export type SessionMaxOrderByAggregateInput = {
   vehicleModelId?: Prisma.SortOrder
   startTs?: Prisma.SortOrder
   endTs?: Prisma.SortOrder
+  estimatedEndTs?: Prisma.SortOrder
   socStart?: Prisma.SortOrder
   socEnd?: Prisma.SortOrder
   energyKwh?: Prisma.SortOrder
   amountInr?: Prisma.SortOrder
   source?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrder
 }
 
 export type SessionMinOrderByAggregateInput = {
@@ -523,11 +596,14 @@ export type SessionMinOrderByAggregateInput = {
   vehicleModelId?: Prisma.SortOrder
   startTs?: Prisma.SortOrder
   endTs?: Prisma.SortOrder
+  estimatedEndTs?: Prisma.SortOrder
   socStart?: Prisma.SortOrder
   socEnd?: Prisma.SortOrder
   energyKwh?: Prisma.SortOrder
   amountInr?: Prisma.SortOrder
   source?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrder
 }
 
 export type SessionSumOrderByAggregateInput = {
@@ -535,6 +611,8 @@ export type SessionSumOrderByAggregateInput = {
   socEnd?: Prisma.SortOrder
   energyKwh?: Prisma.SortOrder
   amountInr?: Prisma.SortOrder
+  queueWaitMin?: Prisma.SortOrder
+  ocppTxId?: Prisma.SortOrder
 }
 
 export type SessionCreateNestedManyWithoutDriverInput = {
@@ -663,20 +741,19 @@ export type SessionUncheckedUpdateManyWithoutChargerNestedInput = {
   deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type SessionCreateWithoutDriverInput = {
   id?: string
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
 }
@@ -688,11 +765,14 @@ export type SessionUncheckedCreateWithoutDriverInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionCreateOrConnectWithoutDriverInput = {
@@ -732,11 +812,14 @@ export type SessionScalarWhereInput = {
   vehicleModelId?: Prisma.StringNullableFilter<"Session"> | string | null
   startTs?: Prisma.DateTimeFilter<"Session"> | Date | string
   endTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
+  estimatedEndTs?: Prisma.DateTimeNullableFilter<"Session"> | Date | string | null
   socStart?: Prisma.FloatNullableFilter<"Session"> | number | null
   socEnd?: Prisma.FloatNullableFilter<"Session"> | number | null
   energyKwh?: Prisma.FloatNullableFilter<"Session"> | number | null
   amountInr?: Prisma.FloatNullableFilter<"Session"> | number | null
   source?: Prisma.StringFilter<"Session"> | string
+  queueWaitMin?: Prisma.FloatNullableFilter<"Session"> | number | null
+  ocppTxId?: Prisma.IntNullableFilter<"Session"> | number | null
 }
 
 export type SessionCreateWithoutStationInput = {
@@ -744,11 +827,14 @@ export type SessionCreateWithoutStationInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
@@ -760,11 +846,14 @@ export type SessionUncheckedCreateWithoutStationInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionCreateOrConnectWithoutStationInput = {
@@ -798,11 +887,14 @@ export type SessionCreateWithoutChargerInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
@@ -814,11 +906,14 @@ export type SessionUncheckedCreateWithoutChargerInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionCreateOrConnectWithoutChargerInput = {
@@ -854,11 +949,14 @@ export type SessionCreateManyDriverInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionUpdateWithoutDriverInput = {
@@ -866,11 +964,14 @@ export type SessionUpdateWithoutDriverInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
 }
@@ -882,11 +983,14 @@ export type SessionUncheckedUpdateWithoutDriverInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionUncheckedUpdateManyWithoutDriverInput = {
@@ -896,11 +1000,14 @@ export type SessionUncheckedUpdateManyWithoutDriverInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionCreateManyStationInput = {
@@ -910,11 +1017,14 @@ export type SessionCreateManyStationInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionUpdateWithoutStationInput = {
@@ -922,11 +1032,14 @@ export type SessionUpdateWithoutStationInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
 }
@@ -938,11 +1051,14 @@ export type SessionUncheckedUpdateWithoutStationInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionUncheckedUpdateManyWithoutStationInput = {
@@ -952,11 +1068,14 @@ export type SessionUncheckedUpdateManyWithoutStationInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionCreateManyChargerInput = {
@@ -966,11 +1085,14 @@ export type SessionCreateManyChargerInput = {
   vehicleModelId?: string | null
   startTs?: Date | string
   endTs?: Date | string | null
+  estimatedEndTs?: Date | string | null
   socStart?: number | null
   socEnd?: number | null
   energyKwh?: number | null
   amountInr?: number | null
   source?: string
+  queueWaitMin?: number | null
+  ocppTxId?: number | null
 }
 
 export type SessionUpdateWithoutChargerInput = {
@@ -978,11 +1100,14 @@ export type SessionUpdateWithoutChargerInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
 }
@@ -994,11 +1119,14 @@ export type SessionUncheckedUpdateWithoutChargerInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type SessionUncheckedUpdateManyWithoutChargerInput = {
@@ -1008,11 +1136,14 @@ export type SessionUncheckedUpdateManyWithoutChargerInput = {
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  estimatedEndTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socStart?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   socEnd?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   energyKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   amountInr?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   source?: Prisma.StringFieldUpdateOperationsInput | string
+  queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -1025,11 +1156,14 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   vehicleModelId?: boolean
   startTs?: boolean
   endTs?: boolean
+  estimatedEndTs?: boolean
   socStart?: boolean
   socEnd?: boolean
   energyKwh?: boolean
   amountInr?: boolean
   source?: boolean
+  queueWaitMin?: boolean
+  ocppTxId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1043,11 +1177,14 @@ export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   vehicleModelId?: boolean
   startTs?: boolean
   endTs?: boolean
+  estimatedEndTs?: boolean
   socStart?: boolean
   socEnd?: boolean
   energyKwh?: boolean
   amountInr?: boolean
   source?: boolean
+  queueWaitMin?: boolean
+  ocppTxId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1061,11 +1198,14 @@ export type SessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   vehicleModelId?: boolean
   startTs?: boolean
   endTs?: boolean
+  estimatedEndTs?: boolean
   socStart?: boolean
   socEnd?: boolean
   energyKwh?: boolean
   amountInr?: boolean
   source?: boolean
+  queueWaitMin?: boolean
+  ocppTxId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1079,14 +1219,17 @@ export type SessionSelectScalar = {
   vehicleModelId?: boolean
   startTs?: boolean
   endTs?: boolean
+  estimatedEndTs?: boolean
   socStart?: boolean
   socEnd?: boolean
   energyKwh?: boolean
   amountInr?: boolean
   source?: boolean
+  queueWaitMin?: boolean
+  ocppTxId?: boolean
 }
 
-export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "chargerId" | "driverUserId" | "vehicleModelId" | "startTs" | "endTs" | "socStart" | "socEnd" | "energyKwh" | "amountInr" | "source", ExtArgs["result"]["session"]>
+export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "chargerId" | "driverUserId" | "vehicleModelId" | "startTs" | "endTs" | "estimatedEndTs" | "socStart" | "socEnd" | "energyKwh" | "amountInr" | "source" | "queueWaitMin" | "ocppTxId", ExtArgs["result"]["session"]>
 export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
@@ -1118,11 +1261,14 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     vehicleModelId: string | null
     startTs: Date
     endTs: Date | null
+    estimatedEndTs: Date | null
     socStart: number | null
     socEnd: number | null
     energyKwh: number | null
     amountInr: number | null
     source: string
+    queueWaitMin: number | null
+    ocppTxId: number | null
   }, ExtArgs["result"]["session"]>
   composites: {}
 }
@@ -1556,11 +1702,14 @@ export interface SessionFieldRefs {
   readonly vehicleModelId: Prisma.FieldRef<"Session", 'String'>
   readonly startTs: Prisma.FieldRef<"Session", 'DateTime'>
   readonly endTs: Prisma.FieldRef<"Session", 'DateTime'>
+  readonly estimatedEndTs: Prisma.FieldRef<"Session", 'DateTime'>
   readonly socStart: Prisma.FieldRef<"Session", 'Float'>
   readonly socEnd: Prisma.FieldRef<"Session", 'Float'>
   readonly energyKwh: Prisma.FieldRef<"Session", 'Float'>
   readonly amountInr: Prisma.FieldRef<"Session", 'Float'>
   readonly source: Prisma.FieldRef<"Session", 'String'>
+  readonly queueWaitMin: Prisma.FieldRef<"Session", 'Float'>
+  readonly ocppTxId: Prisma.FieldRef<"Session", 'Int'>
 }
     
 

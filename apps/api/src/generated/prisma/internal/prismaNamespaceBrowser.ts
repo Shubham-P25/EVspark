@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -66,7 +66,8 @@ export const ModelName = {
   Issue: 'Issue',
   StationMetricHourly: 'StationMetricHourly',
   Forecast: 'Forecast',
-  SimConfig: 'SimConfig'
+  SimConfig: 'SimConfig',
+  VehiclePing: 'VehiclePing'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -87,9 +88,13 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  authId: 'authId',
+  username: 'username',
   name: 'name',
   email: 'email',
+  phone: 'phone',
   role: 'role',
+  onboardedAt: 'onboardedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -114,10 +119,19 @@ export const DriverProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   vehicleModelId: 'vehicleModelId',
+  vehicleRegNo: 'vehicleRegNo',
+  batteryPct: 'batteryPct',
+  city: 'city',
   connectorPref: 'connectorPref',
   rangeKm: 'rangeKm',
   homeLat: 'homeLat',
-  homeLng: 'homeLng'
+  homeLng: 'homeLng',
+  homeLabel: 'homeLabel',
+  workLat: 'workLat',
+  workLng: 'workLng',
+  workLabel: 'workLabel',
+  maxWaitMin: 'maxWaitMin',
+  minKw: 'minKw'
 } as const
 
 export type DriverProfileScalarFieldEnum = (typeof DriverProfileScalarFieldEnum)[keyof typeof DriverProfileScalarFieldEnum]
@@ -127,7 +141,9 @@ export const OperatorProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   businessName: 'businessName',
-  phone: 'phone'
+  contactName: 'contactName',
+  phone: 'phone',
+  gstin: 'gstin'
 } as const
 
 export type OperatorProfileScalarFieldEnum = (typeof OperatorProfileScalarFieldEnum)[keyof typeof OperatorProfileScalarFieldEnum]
@@ -150,6 +166,11 @@ export const StationScalarFieldEnum = {
   amenities: 'amenities',
   status: 'status',
   ratingAvg: 'ratingAvg',
+  datasetSource: 'datasetSource',
+  externalId: 'externalId',
+  googlePlaceId: 'googlePlaceId',
+  photoUrl: 'photoUrl',
+  phone: 'phone',
   createdAt: 'createdAt'
 } as const
 
@@ -189,11 +210,14 @@ export const SessionScalarFieldEnum = {
   vehicleModelId: 'vehicleModelId',
   startTs: 'startTs',
   endTs: 'endTs',
+  estimatedEndTs: 'estimatedEndTs',
   socStart: 'socStart',
   socEnd: 'socEnd',
   energyKwh: 'energyKwh',
   amountInr: 'amountInr',
-  source: 'source'
+  source: 'source',
+  queueWaitMin: 'queueWaitMin',
+  ocppTxId: 'ocppTxId'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -203,8 +227,10 @@ export const QueueEntryScalarFieldEnum = {
   id: 'id',
   stationId: 'stationId',
   vehicleRef: 'vehicleRef',
+  vehicleModelId: 'vehicleModelId',
   connector: 'connector',
   joinedTs: 'joinedTs',
+  etaTs: 'etaTs',
   status: 'status'
 } as const
 
@@ -229,6 +255,7 @@ export const FavoriteScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   stationId: 'stationId',
+  label: 'label',
   createdAt: 'createdAt'
 } as const
 
@@ -293,10 +320,26 @@ export const SimConfigScalarFieldEnum = {
   speed: 'speed',
   surgeStations: 'surgeStations',
   seed: 'seed',
+  arrivalsPerMin: 'arrivalsPerMin',
+  running: 'running',
+  surgeMultiplier: 'surgeMultiplier',
   updatedAt: 'updatedAt'
 } as const
 
 export type SimConfigScalarFieldEnum = (typeof SimConfigScalarFieldEnum)[keyof typeof SimConfigScalarFieldEnum]
+
+
+export const VehiclePingScalarFieldEnum = {
+  id: 'id',
+  vehicleRef: 'vehicleRef',
+  stationId: 'stationId',
+  lat: 'lat',
+  lng: 'lng',
+  ts: 'ts',
+  intent: 'intent'
+} as const
+
+export type VehiclePingScalarFieldEnum = (typeof VehiclePingScalarFieldEnum)[keyof typeof VehiclePingScalarFieldEnum]
 
 
 export const SortOrder = {

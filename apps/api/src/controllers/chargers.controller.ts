@@ -10,9 +10,13 @@ export async function listChargers(req: Request, res: Response) {
   res.json(chargers);
 }
 
+import { AppError } from "../middleware/errorHandler";
+
 export async function getCharger(req: Request, res: Response) {
   const charger = await prisma.charger.findUnique({ where: { id: String(req.params.id) } });
-  if (!charger) return res.status(404).json({ error: "Charger not found" });
+  if (!charger) {
+    throw new AppError(404, "NOT_FOUND", "Charger not found");
+  }
   res.json(charger);
 }
 

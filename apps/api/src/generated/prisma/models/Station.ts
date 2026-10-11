@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Station
@@ -57,6 +57,11 @@ export type StationMinAggregateOutputType = {
   amenities: string | null
   status: $Enums.StationStatus | null
   ratingAvg: number | null
+  datasetSource: string | null
+  externalId: string | null
+  googlePlaceId: string | null
+  photoUrl: string | null
+  phone: string | null
   createdAt: Date | null
 }
 
@@ -77,6 +82,11 @@ export type StationMaxAggregateOutputType = {
   amenities: string | null
   status: $Enums.StationStatus | null
   ratingAvg: number | null
+  datasetSource: string | null
+  externalId: string | null
+  googlePlaceId: string | null
+  photoUrl: string | null
+  phone: string | null
   createdAt: Date | null
 }
 
@@ -97,6 +107,11 @@ export type StationCountAggregateOutputType = {
   amenities: number
   status: number
   ratingAvg: number
+  datasetSource: number
+  externalId: number
+  googlePlaceId: number
+  photoUrl: number
+  phone: number
   createdAt: number
   _all: number
 }
@@ -133,6 +148,11 @@ export type StationMinAggregateInputType = {
   amenities?: true
   status?: true
   ratingAvg?: true
+  datasetSource?: true
+  externalId?: true
+  googlePlaceId?: true
+  photoUrl?: true
+  phone?: true
   createdAt?: true
 }
 
@@ -153,6 +173,11 @@ export type StationMaxAggregateInputType = {
   amenities?: true
   status?: true
   ratingAvg?: true
+  datasetSource?: true
+  externalId?: true
+  googlePlaceId?: true
+  photoUrl?: true
+  phone?: true
   createdAt?: true
 }
 
@@ -173,6 +198,11 @@ export type StationCountAggregateInputType = {
   amenities?: true
   status?: true
   ratingAvg?: true
+  datasetSource?: true
+  externalId?: true
+  googlePlaceId?: true
+  photoUrl?: true
+  phone?: true
   createdAt?: true
   _all?: true
 }
@@ -280,6 +310,11 @@ export type StationGroupByOutputType = {
   amenities: string | null
   status: $Enums.StationStatus
   ratingAvg: number | null
+  datasetSource: string | null
+  externalId: string | null
+  googlePlaceId: string | null
+  photoUrl: string | null
+  phone: string | null
   createdAt: Date
   _count: StationCountAggregateOutputType | null
   _avg: StationAvgAggregateOutputType | null
@@ -323,6 +358,11 @@ export type StationWhereInput = {
   amenities?: Prisma.StringNullableFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusFilter<"Station"> | $Enums.StationStatus
   ratingAvg?: Prisma.FloatNullableFilter<"Station"> | number | null
+  datasetSource?: Prisma.StringNullableFilter<"Station"> | string | null
+  externalId?: Prisma.StringNullableFilter<"Station"> | string | null
+  googlePlaceId?: Prisma.StringNullableFilter<"Station"> | string | null
+  photoUrl?: Prisma.StringNullableFilter<"Station"> | string | null
+  phone?: Prisma.StringNullableFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -333,6 +373,7 @@ export type StationWhereInput = {
   issues?: Prisma.IssueListRelationFilter
   metrics?: Prisma.StationMetricHourlyListRelationFilter
   forecasts?: Prisma.ForecastListRelationFilter
+  vehiclePings?: Prisma.VehiclePingListRelationFilter
 }
 
 export type StationOrderByWithRelationInput = {
@@ -352,6 +393,11 @@ export type StationOrderByWithRelationInput = {
   amenities?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrderInput | Prisma.SortOrder
+  datasetSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  googlePlaceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   chargers?: Prisma.ChargerOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
@@ -362,10 +408,12 @@ export type StationOrderByWithRelationInput = {
   issues?: Prisma.IssueOrderByRelationAggregateInput
   metrics?: Prisma.StationMetricHourlyOrderByRelationAggregateInput
   forecasts?: Prisma.ForecastOrderByRelationAggregateInput
+  vehiclePings?: Prisma.VehiclePingOrderByRelationAggregateInput
 }
 
 export type StationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  externalId?: string
   AND?: Prisma.StationWhereInput | Prisma.StationWhereInput[]
   OR?: Prisma.StationWhereInput[]
   NOT?: Prisma.StationWhereInput | Prisma.StationWhereInput[]
@@ -384,6 +432,10 @@ export type StationWhereUniqueInput = Prisma.AtLeast<{
   amenities?: Prisma.StringNullableFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusFilter<"Station"> | $Enums.StationStatus
   ratingAvg?: Prisma.FloatNullableFilter<"Station"> | number | null
+  datasetSource?: Prisma.StringNullableFilter<"Station"> | string | null
+  googlePlaceId?: Prisma.StringNullableFilter<"Station"> | string | null
+  photoUrl?: Prisma.StringNullableFilter<"Station"> | string | null
+  phone?: Prisma.StringNullableFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -394,7 +446,8 @@ export type StationWhereUniqueInput = Prisma.AtLeast<{
   issues?: Prisma.IssueListRelationFilter
   metrics?: Prisma.StationMetricHourlyListRelationFilter
   forecasts?: Prisma.ForecastListRelationFilter
-}, "id">
+  vehiclePings?: Prisma.VehiclePingListRelationFilter
+}, "id" | "externalId">
 
 export type StationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -413,6 +466,11 @@ export type StationOrderByWithAggregationInput = {
   amenities?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrderInput | Prisma.SortOrder
+  datasetSource?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  googlePlaceId?: Prisma.SortOrderInput | Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StationCountOrderByAggregateInput
   _avg?: Prisma.StationAvgOrderByAggregateInput
@@ -441,6 +499,11 @@ export type StationScalarWhereWithAggregatesInput = {
   amenities?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   status?: Prisma.EnumStationStatusWithAggregatesFilter<"Station"> | $Enums.StationStatus
   ratingAvg?: Prisma.FloatNullableWithAggregatesFilter<"Station"> | number | null
+  datasetSource?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  externalId?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  googlePlaceId?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Station"> | Date | string
 }
 
@@ -461,6 +524,11 @@ export type StationCreateInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -471,6 +539,7 @@ export type StationCreateInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateInput = {
@@ -490,6 +559,11 @@ export type StationUncheckedCreateInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -500,6 +574,7 @@ export type StationUncheckedCreateInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationUpdateInput = {
@@ -519,6 +594,11 @@ export type StationUpdateInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -529,6 +609,7 @@ export type StationUpdateInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateInput = {
@@ -548,6 +629,11 @@ export type StationUncheckedUpdateInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -558,6 +644,7 @@ export type StationUncheckedUpdateInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateManyInput = {
@@ -577,6 +664,11 @@ export type StationCreateManyInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
 }
 
@@ -597,6 +689,11 @@ export type StationUpdateManyMutationInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -617,6 +714,11 @@ export type StationUncheckedUpdateManyInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -637,6 +739,11 @@ export type StationCountOrderByAggregateInput = {
   amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrder
+  datasetSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  googlePlaceId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -664,6 +771,11 @@ export type StationMaxOrderByAggregateInput = {
   amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrder
+  datasetSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  googlePlaceId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -684,6 +796,11 @@ export type StationMinOrderByAggregateInput = {
   amenities?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrder
+  datasetSource?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  googlePlaceId?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -697,6 +814,11 @@ export type StationSumOrderByAggregateInput = {
 export type StationScalarRelationFilter = {
   is?: Prisma.StationWhereInput
   isNot?: Prisma.StationWhereInput
+}
+
+export type StationNullableScalarRelationFilter = {
+  is?: Prisma.StationWhereInput | null
+  isNot?: Prisma.StationWhereInput | null
 }
 
 export type EnumStationStatusFieldUpdateOperationsInput = {
@@ -829,6 +951,22 @@ export type StationUpdateOneRequiredWithoutForecastsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutForecastsInput, Prisma.StationUpdateWithoutForecastsInput>, Prisma.StationUncheckedUpdateWithoutForecastsInput>
 }
 
+export type StationCreateNestedOneWithoutVehiclePingsInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutVehiclePingsInput, Prisma.StationUncheckedCreateWithoutVehiclePingsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutVehiclePingsInput
+  connect?: Prisma.StationWhereUniqueInput
+}
+
+export type StationUpdateOneWithoutVehiclePingsNestedInput = {
+  create?: Prisma.XOR<Prisma.StationCreateWithoutVehiclePingsInput, Prisma.StationUncheckedCreateWithoutVehiclePingsInput>
+  connectOrCreate?: Prisma.StationCreateOrConnectWithoutVehiclePingsInput
+  upsert?: Prisma.StationUpsertWithoutVehiclePingsInput
+  disconnect?: Prisma.StationWhereInput | boolean
+  delete?: Prisma.StationWhereInput | boolean
+  connect?: Prisma.StationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StationUpdateToOneWithWhereWithoutVehiclePingsInput, Prisma.StationUpdateWithoutVehiclePingsInput>, Prisma.StationUncheckedUpdateWithoutVehiclePingsInput>
+}
+
 export type StationCreateWithoutChargersInput = {
   id?: string
   sourceId?: string | null
@@ -846,6 +984,11 @@ export type StationCreateWithoutChargersInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
@@ -855,6 +998,7 @@ export type StationCreateWithoutChargersInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutChargersInput = {
@@ -874,6 +1018,11 @@ export type StationUncheckedCreateWithoutChargersInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
@@ -883,6 +1032,7 @@ export type StationUncheckedCreateWithoutChargersInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutChargersInput = {
@@ -918,6 +1068,11 @@ export type StationUpdateWithoutChargersInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
@@ -927,6 +1082,7 @@ export type StationUpdateWithoutChargersInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutChargersInput = {
@@ -946,6 +1102,11 @@ export type StationUncheckedUpdateWithoutChargersInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
@@ -955,6 +1116,7 @@ export type StationUncheckedUpdateWithoutChargersInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutSessionsInput = {
@@ -974,6 +1136,11 @@ export type StationCreateWithoutSessionsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -983,6 +1150,7 @@ export type StationCreateWithoutSessionsInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutSessionsInput = {
@@ -1002,6 +1170,11 @@ export type StationUncheckedCreateWithoutSessionsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1011,6 +1184,7 @@ export type StationUncheckedCreateWithoutSessionsInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutSessionsInput = {
@@ -1046,6 +1220,11 @@ export type StationUpdateWithoutSessionsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1055,6 +1234,7 @@ export type StationUpdateWithoutSessionsInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutSessionsInput = {
@@ -1074,6 +1254,11 @@ export type StationUncheckedUpdateWithoutSessionsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1083,6 +1268,7 @@ export type StationUncheckedUpdateWithoutSessionsInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutQueueEntriesInput = {
@@ -1102,6 +1288,11 @@ export type StationCreateWithoutQueueEntriesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1111,6 +1302,7 @@ export type StationCreateWithoutQueueEntriesInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutQueueEntriesInput = {
@@ -1130,6 +1322,11 @@ export type StationUncheckedCreateWithoutQueueEntriesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1139,6 +1336,7 @@ export type StationUncheckedCreateWithoutQueueEntriesInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutQueueEntriesInput = {
@@ -1174,6 +1372,11 @@ export type StationUpdateWithoutQueueEntriesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1183,6 +1386,7 @@ export type StationUpdateWithoutQueueEntriesInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutQueueEntriesInput = {
@@ -1202,6 +1406,11 @@ export type StationUncheckedUpdateWithoutQueueEntriesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1211,6 +1420,7 @@ export type StationUncheckedUpdateWithoutQueueEntriesInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutBookingsInput = {
@@ -1230,6 +1440,11 @@ export type StationCreateWithoutBookingsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1239,6 +1454,7 @@ export type StationCreateWithoutBookingsInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutBookingsInput = {
@@ -1258,6 +1474,11 @@ export type StationUncheckedCreateWithoutBookingsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1267,6 +1488,7 @@ export type StationUncheckedCreateWithoutBookingsInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutBookingsInput = {
@@ -1302,6 +1524,11 @@ export type StationUpdateWithoutBookingsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1311,6 +1538,7 @@ export type StationUpdateWithoutBookingsInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutBookingsInput = {
@@ -1330,6 +1558,11 @@ export type StationUncheckedUpdateWithoutBookingsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1339,6 +1572,7 @@ export type StationUncheckedUpdateWithoutBookingsInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutFavoritesInput = {
@@ -1358,6 +1592,11 @@ export type StationCreateWithoutFavoritesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
@@ -1367,6 +1606,7 @@ export type StationCreateWithoutFavoritesInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutFavoritesInput = {
@@ -1386,6 +1626,11 @@ export type StationUncheckedCreateWithoutFavoritesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
@@ -1395,6 +1640,7 @@ export type StationUncheckedCreateWithoutFavoritesInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutFavoritesInput = {
@@ -1430,6 +1676,11 @@ export type StationUpdateWithoutFavoritesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
@@ -1439,6 +1690,7 @@ export type StationUpdateWithoutFavoritesInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutFavoritesInput = {
@@ -1458,6 +1710,11 @@ export type StationUncheckedUpdateWithoutFavoritesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
@@ -1467,6 +1724,7 @@ export type StationUncheckedUpdateWithoutFavoritesInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutReviewsInput = {
@@ -1486,6 +1744,11 @@ export type StationCreateWithoutReviewsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1495,6 +1758,7 @@ export type StationCreateWithoutReviewsInput = {
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutReviewsInput = {
@@ -1514,6 +1778,11 @@ export type StationUncheckedCreateWithoutReviewsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1523,6 +1792,7 @@ export type StationUncheckedCreateWithoutReviewsInput = {
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutReviewsInput = {
@@ -1558,6 +1828,11 @@ export type StationUpdateWithoutReviewsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1567,6 +1842,7 @@ export type StationUpdateWithoutReviewsInput = {
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutReviewsInput = {
@@ -1586,6 +1862,11 @@ export type StationUncheckedUpdateWithoutReviewsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1595,6 +1876,7 @@ export type StationUncheckedUpdateWithoutReviewsInput = {
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutIssuesInput = {
@@ -1614,6 +1896,11 @@ export type StationCreateWithoutIssuesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1623,6 +1910,7 @@ export type StationCreateWithoutIssuesInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutIssuesInput = {
@@ -1642,6 +1930,11 @@ export type StationUncheckedCreateWithoutIssuesInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1651,6 +1944,7 @@ export type StationUncheckedCreateWithoutIssuesInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutIssuesInput = {
@@ -1686,6 +1980,11 @@ export type StationUpdateWithoutIssuesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1695,6 +1994,7 @@ export type StationUpdateWithoutIssuesInput = {
   bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutIssuesInput = {
@@ -1714,6 +2014,11 @@ export type StationUncheckedUpdateWithoutIssuesInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1723,6 +2028,7 @@ export type StationUncheckedUpdateWithoutIssuesInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutMetricsInput = {
@@ -1742,6 +2048,11 @@ export type StationCreateWithoutMetricsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1751,6 +2062,7 @@ export type StationCreateWithoutMetricsInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutMetricsInput = {
@@ -1770,6 +2082,11 @@ export type StationUncheckedCreateWithoutMetricsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1779,6 +2096,7 @@ export type StationUncheckedCreateWithoutMetricsInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutMetricsInput = {
@@ -1814,6 +2132,11 @@ export type StationUpdateWithoutMetricsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1823,6 +2146,7 @@ export type StationUpdateWithoutMetricsInput = {
   bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutMetricsInput = {
@@ -1842,6 +2166,11 @@ export type StationUncheckedUpdateWithoutMetricsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1851,6 +2180,7 @@ export type StationUncheckedUpdateWithoutMetricsInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
 }
 
 export type StationCreateWithoutForecastsInput = {
@@ -1870,6 +2200,11 @@ export type StationCreateWithoutForecastsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1879,6 +2214,7 @@ export type StationCreateWithoutForecastsInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
   issues?: Prisma.IssueCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingCreateNestedManyWithoutStationInput
 }
 
 export type StationUncheckedCreateWithoutForecastsInput = {
@@ -1898,6 +2234,11 @@ export type StationUncheckedCreateWithoutForecastsInput = {
   amenities?: string | null
   status?: $Enums.StationStatus
   ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1907,6 +2248,7 @@ export type StationUncheckedCreateWithoutForecastsInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
   issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
   metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  vehiclePings?: Prisma.VehiclePingUncheckedCreateNestedManyWithoutStationInput
 }
 
 export type StationCreateOrConnectWithoutForecastsInput = {
@@ -1942,6 +2284,11 @@ export type StationUpdateWithoutForecastsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1951,6 +2298,7 @@ export type StationUpdateWithoutForecastsInput = {
   bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
   issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUpdateManyWithoutStationNestedInput
 }
 
 export type StationUncheckedUpdateWithoutForecastsInput = {
@@ -1970,6 +2318,11 @@ export type StationUncheckedUpdateWithoutForecastsInput = {
   amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
   ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1979,6 +2332,159 @@ export type StationUncheckedUpdateWithoutForecastsInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
   issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
   metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  vehiclePings?: Prisma.VehiclePingUncheckedUpdateManyWithoutStationNestedInput
+}
+
+export type StationCreateWithoutVehiclePingsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastCreateNestedManyWithoutStationInput
+}
+
+export type StationUncheckedCreateWithoutVehiclePingsInput = {
+  id?: string
+  sourceId?: string | null
+  operatorUserId?: string | null
+  name: string
+  operatorName: string
+  state?: string | null
+  district?: string | null
+  city?: string | null
+  address?: string | null
+  lat: number
+  lng: number
+  pricePerKwh: number
+  hours?: string | null
+  amenities?: string | null
+  status?: $Enums.StationStatus
+  ratingAvg?: number | null
+  datasetSource?: string | null
+  externalId?: string | null
+  googlePlaceId?: string | null
+  photoUrl?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
+  favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutStationInput
+  queueEntries?: Prisma.QueueEntryUncheckedCreateNestedManyWithoutStationInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutStationInput
+  issues?: Prisma.IssueUncheckedCreateNestedManyWithoutStationInput
+  metrics?: Prisma.StationMetricHourlyUncheckedCreateNestedManyWithoutStationInput
+  forecasts?: Prisma.ForecastUncheckedCreateNestedManyWithoutStationInput
+}
+
+export type StationCreateOrConnectWithoutVehiclePingsInput = {
+  where: Prisma.StationWhereUniqueInput
+  create: Prisma.XOR<Prisma.StationCreateWithoutVehiclePingsInput, Prisma.StationUncheckedCreateWithoutVehiclePingsInput>
+}
+
+export type StationUpsertWithoutVehiclePingsInput = {
+  update: Prisma.XOR<Prisma.StationUpdateWithoutVehiclePingsInput, Prisma.StationUncheckedUpdateWithoutVehiclePingsInput>
+  create: Prisma.XOR<Prisma.StationCreateWithoutVehiclePingsInput, Prisma.StationUncheckedCreateWithoutVehiclePingsInput>
+  where?: Prisma.StationWhereInput
+}
+
+export type StationUpdateToOneWithWhereWithoutVehiclePingsInput = {
+  where?: Prisma.StationWhereInput
+  data: Prisma.XOR<Prisma.StationUpdateWithoutVehiclePingsInput, Prisma.StationUncheckedUpdateWithoutVehiclePingsInput>
+}
+
+export type StationUpdateWithoutVehiclePingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUpdateManyWithoutStationNestedInput
+}
+
+export type StationUncheckedUpdateWithoutVehiclePingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  operatorUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  operatorName?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lat?: Prisma.FloatFieldUpdateOperationsInput | number
+  lng?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.FloatFieldUpdateOperationsInput | number
+  hours?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenities?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumStationStatusFieldUpdateOperationsInput | $Enums.StationStatus
+  ratingAvg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  datasetSource?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
+  favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutStationNestedInput
+  queueEntries?: Prisma.QueueEntryUncheckedUpdateManyWithoutStationNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutStationNestedInput
+  issues?: Prisma.IssueUncheckedUpdateManyWithoutStationNestedInput
+  metrics?: Prisma.StationMetricHourlyUncheckedUpdateManyWithoutStationNestedInput
+  forecasts?: Prisma.ForecastUncheckedUpdateManyWithoutStationNestedInput
 }
 
 
@@ -1996,6 +2502,7 @@ export type StationCountOutputType = {
   issues: number
   metrics: number
   forecasts: number
+  vehiclePings: number
 }
 
 export type StationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2008,6 +2515,7 @@ export type StationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   issues?: boolean | StationCountOutputTypeCountIssuesArgs
   metrics?: boolean | StationCountOutputTypeCountMetricsArgs
   forecasts?: boolean | StationCountOutputTypeCountForecastsArgs
+  vehiclePings?: boolean | StationCountOutputTypeCountVehiclePingsArgs
 }
 
 /**
@@ -2083,6 +2591,13 @@ export type StationCountOutputTypeCountForecastsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.ForecastWhereInput
 }
 
+/**
+ * StationCountOutputType without action
+ */
+export type StationCountOutputTypeCountVehiclePingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VehiclePingWhereInput
+}
+
 
 export type StationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2101,6 +2616,11 @@ export type StationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   amenities?: boolean
   status?: boolean
   ratingAvg?: boolean
+  datasetSource?: boolean
+  externalId?: boolean
+  googlePlaceId?: boolean
+  photoUrl?: boolean
+  phone?: boolean
   createdAt?: boolean
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
@@ -2111,6 +2631,7 @@ export type StationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   issues?: boolean | Prisma.Station$issuesArgs<ExtArgs>
   metrics?: boolean | Prisma.Station$metricsArgs<ExtArgs>
   forecasts?: boolean | Prisma.Station$forecastsArgs<ExtArgs>
+  vehiclePings?: boolean | Prisma.Station$vehiclePingsArgs<ExtArgs>
   _count?: boolean | Prisma.StationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["station"]>
 
@@ -2131,6 +2652,11 @@ export type StationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   amenities?: boolean
   status?: boolean
   ratingAvg?: boolean
+  datasetSource?: boolean
+  externalId?: boolean
+  googlePlaceId?: boolean
+  photoUrl?: boolean
+  phone?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
@@ -2151,6 +2677,11 @@ export type StationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   amenities?: boolean
   status?: boolean
   ratingAvg?: boolean
+  datasetSource?: boolean
+  externalId?: boolean
+  googlePlaceId?: boolean
+  photoUrl?: boolean
+  phone?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
@@ -2171,10 +2702,15 @@ export type StationSelectScalar = {
   amenities?: boolean
   status?: boolean
   ratingAvg?: boolean
+  datasetSource?: boolean
+  externalId?: boolean
+  googlePlaceId?: boolean
+  photoUrl?: boolean
+  phone?: boolean
   createdAt?: boolean
 }
 
-export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sourceId" | "operatorUserId" | "name" | "operatorName" | "state" | "district" | "city" | "address" | "lat" | "lng" | "pricePerKwh" | "hours" | "amenities" | "status" | "ratingAvg" | "createdAt", ExtArgs["result"]["station"]>
+export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sourceId" | "operatorUserId" | "name" | "operatorName" | "state" | "district" | "city" | "address" | "lat" | "lng" | "pricePerKwh" | "hours" | "amenities" | "status" | "ratingAvg" | "datasetSource" | "externalId" | "googlePlaceId" | "photoUrl" | "phone" | "createdAt", ExtArgs["result"]["station"]>
 export type StationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
@@ -2185,6 +2721,7 @@ export type StationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   issues?: boolean | Prisma.Station$issuesArgs<ExtArgs>
   metrics?: boolean | Prisma.Station$metricsArgs<ExtArgs>
   forecasts?: boolean | Prisma.Station$forecastsArgs<ExtArgs>
+  vehiclePings?: boolean | Prisma.Station$vehiclePingsArgs<ExtArgs>
   _count?: boolean | Prisma.StationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2202,6 +2739,7 @@ export type $StationPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     issues: Prisma.$IssuePayload<ExtArgs>[]
     metrics: Prisma.$StationMetricHourlyPayload<ExtArgs>[]
     forecasts: Prisma.$ForecastPayload<ExtArgs>[]
+    vehiclePings: Prisma.$VehiclePingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2220,6 +2758,11 @@ export type $StationPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     amenities: string | null
     status: $Enums.StationStatus
     ratingAvg: number | null
+    datasetSource: string | null
+    externalId: string | null
+    googlePlaceId: string | null
+    photoUrl: string | null
+    phone: string | null
     createdAt: Date
   }, ExtArgs["result"]["station"]>
   composites: {}
@@ -2624,6 +3167,7 @@ export interface Prisma__StationClient<T, Null = never, ExtArgs extends runtime.
   issues<T extends Prisma.Station$issuesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$issuesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   metrics<T extends Prisma.Station$metricsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$metricsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StationMetricHourlyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   forecasts<T extends Prisma.Station$forecastsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$forecastsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ForecastPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  vehiclePings<T extends Prisma.Station$vehiclePingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Station$vehiclePingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VehiclePingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2669,6 +3213,11 @@ export interface StationFieldRefs {
   readonly amenities: Prisma.FieldRef<"Station", 'String'>
   readonly status: Prisma.FieldRef<"Station", 'StationStatus'>
   readonly ratingAvg: Prisma.FieldRef<"Station", 'Float'>
+  readonly datasetSource: Prisma.FieldRef<"Station", 'String'>
+  readonly externalId: Prisma.FieldRef<"Station", 'String'>
+  readonly googlePlaceId: Prisma.FieldRef<"Station", 'String'>
+  readonly photoUrl: Prisma.FieldRef<"Station", 'String'>
+  readonly phone: Prisma.FieldRef<"Station", 'String'>
   readonly createdAt: Prisma.FieldRef<"Station", 'DateTime'>
 }
     
@@ -3276,6 +3825,30 @@ export type Station$forecastsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ForecastScalarFieldEnum | Prisma.ForecastScalarFieldEnum[]
+}
+
+/**
+ * Station.vehiclePings
+ */
+export type Station$vehiclePingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VehiclePing
+   */
+  select?: Prisma.VehiclePingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VehiclePing
+   */
+  omit?: Prisma.VehiclePingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VehiclePingInclude<ExtArgs> | null
+  where?: Prisma.VehiclePingWhereInput
+  orderBy?: Prisma.VehiclePingOrderByWithRelationInput | Prisma.VehiclePingOrderByWithRelationInput[]
+  cursor?: Prisma.VehiclePingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VehiclePingScalarFieldEnum | Prisma.VehiclePingScalarFieldEnum[]
 }
 
 /**

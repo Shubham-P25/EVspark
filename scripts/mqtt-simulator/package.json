@@ -1,0 +1,18 @@
+{
+  "name": "mqtt-simulator",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "lint": "echo \"no lint yet\"",
+    "typecheck": "echo \"no typecheck yet\"",
+    "test": "echo \"no tests yet\""
+  },
+  "dependencies": {
+    "axios": "^1.19.0",
+    "dotenv": "^17.4.2",
+    "socket.io-client": "^4.8.3"
+  }
+}

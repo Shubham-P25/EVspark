@@ -16,10 +16,10 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "../models.js"
-import { type PrismaClient } from "./class.js"
+import type * as Prisma from "../models"
+import { type PrismaClient } from "./class"
 
-export type * from '../models.js'
+export type * from '../models'
 
 export type DMMF = typeof runtime.DMMF
 
@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.9.1
- * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
+ * Prisma Client JS version: 7.10.0
+ * Query Engine version: 0edf323efd1d98336f3f0a68684b56f689b900d3
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.9.1",
-  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
+  client: "7.10.0",
+  engine: "0edf323efd1d98336f3f0a68684b56f689b900d3"
 }
 
 /**
@@ -412,7 +412,8 @@ export const ModelName = {
   Issue: 'Issue',
   StationMetricHourly: 'StationMetricHourly',
   Forecast: 'Forecast',
-  SimConfig: 'SimConfig'
+  SimConfig: 'SimConfig',
+  VehiclePing: 'VehiclePing'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "vehicleModel" | "driverProfile" | "operatorProfile" | "station" | "charger" | "chargerEvent" | "session" | "queueEntry" | "booking" | "favorite" | "review" | "issue" | "stationMetricHourly" | "forecast" | "simConfig"
+    modelProps: "user" | "vehicleModel" | "driverProfile" | "operatorProfile" | "station" | "charger" | "chargerEvent" | "session" | "queueEntry" | "booking" | "favorite" | "review" | "issue" | "stationMetricHourly" | "forecast" | "simConfig" | "vehiclePing"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1616,6 +1617,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VehiclePing: {
+      payload: Prisma.$VehiclePingPayload<ExtArgs>
+      fields: Prisma.VehiclePingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VehiclePingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VehiclePingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        findFirst: {
+          args: Prisma.VehiclePingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VehiclePingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        findMany: {
+          args: Prisma.VehiclePingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>[]
+        }
+        create: {
+          args: Prisma.VehiclePingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        createMany: {
+          args: Prisma.VehiclePingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VehiclePingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>[]
+        }
+        delete: {
+          args: Prisma.VehiclePingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        update: {
+          args: Prisma.VehiclePingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        deleteMany: {
+          args: Prisma.VehiclePingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VehiclePingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VehiclePingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>[]
+        }
+        upsert: {
+          args: Prisma.VehiclePingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VehiclePingPayload>
+        }
+        aggregate: {
+          args: Prisma.VehiclePingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVehiclePing>
+        }
+        groupBy: {
+          args: Prisma.VehiclePingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VehiclePingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VehiclePingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VehiclePingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1657,9 +1732,13 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  authId: 'authId',
+  username: 'username',
   name: 'name',
   email: 'email',
+  phone: 'phone',
   role: 'role',
+  onboardedAt: 'onboardedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -1684,10 +1763,19 @@ export const DriverProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   vehicleModelId: 'vehicleModelId',
+  vehicleRegNo: 'vehicleRegNo',
+  batteryPct: 'batteryPct',
+  city: 'city',
   connectorPref: 'connectorPref',
   rangeKm: 'rangeKm',
   homeLat: 'homeLat',
-  homeLng: 'homeLng'
+  homeLng: 'homeLng',
+  homeLabel: 'homeLabel',
+  workLat: 'workLat',
+  workLng: 'workLng',
+  workLabel: 'workLabel',
+  maxWaitMin: 'maxWaitMin',
+  minKw: 'minKw'
 } as const
 
 export type DriverProfileScalarFieldEnum = (typeof DriverProfileScalarFieldEnum)[keyof typeof DriverProfileScalarFieldEnum]
@@ -1697,7 +1785,9 @@ export const OperatorProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   businessName: 'businessName',
-  phone: 'phone'
+  contactName: 'contactName',
+  phone: 'phone',
+  gstin: 'gstin'
 } as const
 
 export type OperatorProfileScalarFieldEnum = (typeof OperatorProfileScalarFieldEnum)[keyof typeof OperatorProfileScalarFieldEnum]
@@ -1720,6 +1810,11 @@ export const StationScalarFieldEnum = {
   amenities: 'amenities',
   status: 'status',
   ratingAvg: 'ratingAvg',
+  datasetSource: 'datasetSource',
+  externalId: 'externalId',
+  googlePlaceId: 'googlePlaceId',
+  photoUrl: 'photoUrl',
+  phone: 'phone',
   createdAt: 'createdAt'
 } as const
 
@@ -1759,11 +1854,14 @@ export const SessionScalarFieldEnum = {
   vehicleModelId: 'vehicleModelId',
   startTs: 'startTs',
   endTs: 'endTs',
+  estimatedEndTs: 'estimatedEndTs',
   socStart: 'socStart',
   socEnd: 'socEnd',
   energyKwh: 'energyKwh',
   amountInr: 'amountInr',
-  source: 'source'
+  source: 'source',
+  queueWaitMin: 'queueWaitMin',
+  ocppTxId: 'ocppTxId'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -1773,8 +1871,10 @@ export const QueueEntryScalarFieldEnum = {
   id: 'id',
   stationId: 'stationId',
   vehicleRef: 'vehicleRef',
+  vehicleModelId: 'vehicleModelId',
   connector: 'connector',
   joinedTs: 'joinedTs',
+  etaTs: 'etaTs',
   status: 'status'
 } as const
 
@@ -1799,6 +1899,7 @@ export const FavoriteScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   stationId: 'stationId',
+  label: 'label',
   createdAt: 'createdAt'
 } as const
 
@@ -1863,10 +1964,26 @@ export const SimConfigScalarFieldEnum = {
   speed: 'speed',
   surgeStations: 'surgeStations',
   seed: 'seed',
+  arrivalsPerMin: 'arrivalsPerMin',
+  running: 'running',
+  surgeMultiplier: 'surgeMultiplier',
   updatedAt: 'updatedAt'
 } as const
 
 export type SimConfigScalarFieldEnum = (typeof SimConfigScalarFieldEnum)[keyof typeof SimConfigScalarFieldEnum]
+
+
+export const VehiclePingScalarFieldEnum = {
+  id: 'id',
+  vehicleRef: 'vehicleRef',
+  stationId: 'stationId',
+  lat: 'lat',
+  lng: 'lng',
+  ts: 'ts',
+  intent: 'intent'
+} as const
+
+export type VehiclePingScalarFieldEnum = (typeof VehiclePingScalarFieldEnum)[keyof typeof VehiclePingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1956,6 +2073,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'StationStatus'
  */
 export type EnumStationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StationStatus'>
@@ -1998,20 +2129,6 @@ export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
  * Reference to a field of type 'IssueStatus'
  */
 export type EnumIssueStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IssueStatus'>
@@ -2022,6 +2139,13 @@ export type EnumIssueStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'IssueStatus[]'
  */
 export type ListEnumIssueStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IssueStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**
@@ -2191,6 +2315,7 @@ export type GlobalOmitConfig = {
   stationMetricHourly?: Prisma.StationMetricHourlyOmit
   forecast?: Prisma.ForecastOmit
   simConfig?: Prisma.SimConfigOmit
+  vehiclePing?: Prisma.VehiclePingOmit
 }
 
 /* Types for Logging */

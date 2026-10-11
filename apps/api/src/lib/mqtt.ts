@@ -1,6 +1,7 @@
 import mqtt from "mqtt";
 import prisma from "./prisma";
 import { getIO } from "./socket";
+import logger from "./logger";
 
 export type ChargerStatus = "FREE" | "BUSY" | "MAINTENANCE" | "FAULTED" | "OFFLINE";
 
@@ -9,7 +10,7 @@ const TOPIC = "evtwin/chargers/+/status";
 export function initMqtt() {
   const brokerUrl = process.env.MQTT_BROKER_URL;
   if (!brokerUrl) {
-    console.warn("[MQTT] MQTT_BROKER_URL not set — skipping MQTT consumer");
+    logger.warn("[MQTT] MQTT_BROKER_URL not set — skipping MQTT consumer");
     return;
   }
 
@@ -19,9 +20,9 @@ export function initMqtt() {
   });
 
   client.on("connect", () => {
-    console.log("[MQTT] Connected to broker");
+    logger.info("[MQTT] Connected to broker");
     client.subscribe(TOPIC, (err) => {
-      if (err) console.error("[MQTT] Subscribe error:", err);
+      if (err) logger.error({ err }, "[MQTT] Subscribe error");
     });
   });
 
@@ -38,12 +39,12 @@ export function initMqtt() {
 
       getIO().emit("charger:update", updated);
     } catch (err) {
-      console.error("[MQTT] Failed to process message:", err);
+      logger.error({ err }, "[MQTT] Failed to process message");
     }
   });
 
   client.on("error", (err) => {
-    console.error("[MQTT] Client error:", err);
+    logger.error({ err }, "[MQTT] Client error");
   });
 
   return client;

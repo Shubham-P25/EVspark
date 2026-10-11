@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model SimConfig
@@ -29,11 +29,15 @@ export type AggregateSimConfig = {
 export type SimConfigAvgAggregateOutputType = {
   speed: number | null
   seed: number | null
+  arrivalsPerMin: number | null
+  surgeMultiplier: number | null
 }
 
 export type SimConfigSumAggregateOutputType = {
   speed: number | null
   seed: number | null
+  arrivalsPerMin: number | null
+  surgeMultiplier: number | null
 }
 
 export type SimConfigMinAggregateOutputType = {
@@ -41,6 +45,9 @@ export type SimConfigMinAggregateOutputType = {
   speed: number | null
   surgeStations: string | null
   seed: number | null
+  arrivalsPerMin: number | null
+  running: boolean | null
+  surgeMultiplier: number | null
   updatedAt: Date | null
 }
 
@@ -49,6 +56,9 @@ export type SimConfigMaxAggregateOutputType = {
   speed: number | null
   surgeStations: string | null
   seed: number | null
+  arrivalsPerMin: number | null
+  running: boolean | null
+  surgeMultiplier: number | null
   updatedAt: Date | null
 }
 
@@ -57,6 +67,9 @@ export type SimConfigCountAggregateOutputType = {
   speed: number
   surgeStations: number
   seed: number
+  arrivalsPerMin: number
+  running: number
+  surgeMultiplier: number
   updatedAt: number
   _all: number
 }
@@ -65,11 +78,15 @@ export type SimConfigCountAggregateOutputType = {
 export type SimConfigAvgAggregateInputType = {
   speed?: true
   seed?: true
+  arrivalsPerMin?: true
+  surgeMultiplier?: true
 }
 
 export type SimConfigSumAggregateInputType = {
   speed?: true
   seed?: true
+  arrivalsPerMin?: true
+  surgeMultiplier?: true
 }
 
 export type SimConfigMinAggregateInputType = {
@@ -77,6 +94,9 @@ export type SimConfigMinAggregateInputType = {
   speed?: true
   surgeStations?: true
   seed?: true
+  arrivalsPerMin?: true
+  running?: true
+  surgeMultiplier?: true
   updatedAt?: true
 }
 
@@ -85,6 +105,9 @@ export type SimConfigMaxAggregateInputType = {
   speed?: true
   surgeStations?: true
   seed?: true
+  arrivalsPerMin?: true
+  running?: true
+  surgeMultiplier?: true
   updatedAt?: true
 }
 
@@ -93,6 +116,9 @@ export type SimConfigCountAggregateInputType = {
   speed?: true
   surgeStations?: true
   seed?: true
+  arrivalsPerMin?: true
+  running?: true
+  surgeMultiplier?: true
   updatedAt?: true
   _all?: true
 }
@@ -188,6 +214,9 @@ export type SimConfigGroupByOutputType = {
   speed: number
   surgeStations: string
   seed: number
+  arrivalsPerMin: number
+  running: boolean
+  surgeMultiplier: number
   updatedAt: Date
   _count: SimConfigCountAggregateOutputType | null
   _avg: SimConfigAvgAggregateOutputType | null
@@ -219,6 +248,9 @@ export type SimConfigWhereInput = {
   speed?: Prisma.FloatFilter<"SimConfig"> | number
   surgeStations?: Prisma.StringFilter<"SimConfig"> | string
   seed?: Prisma.IntFilter<"SimConfig"> | number
+  arrivalsPerMin?: Prisma.FloatFilter<"SimConfig"> | number
+  running?: Prisma.BoolFilter<"SimConfig"> | boolean
+  surgeMultiplier?: Prisma.FloatFilter<"SimConfig"> | number
   updatedAt?: Prisma.DateTimeFilter<"SimConfig"> | Date | string
 }
 
@@ -227,6 +259,9 @@ export type SimConfigOrderByWithRelationInput = {
   speed?: Prisma.SortOrder
   surgeStations?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  running?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -238,6 +273,9 @@ export type SimConfigWhereUniqueInput = Prisma.AtLeast<{
   speed?: Prisma.FloatFilter<"SimConfig"> | number
   surgeStations?: Prisma.StringFilter<"SimConfig"> | string
   seed?: Prisma.IntFilter<"SimConfig"> | number
+  arrivalsPerMin?: Prisma.FloatFilter<"SimConfig"> | number
+  running?: Prisma.BoolFilter<"SimConfig"> | boolean
+  surgeMultiplier?: Prisma.FloatFilter<"SimConfig"> | number
   updatedAt?: Prisma.DateTimeFilter<"SimConfig"> | Date | string
 }, "id">
 
@@ -246,6 +284,9 @@ export type SimConfigOrderByWithAggregationInput = {
   speed?: Prisma.SortOrder
   surgeStations?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  running?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SimConfigCountOrderByAggregateInput
   _avg?: Prisma.SimConfigAvgOrderByAggregateInput
@@ -262,6 +303,9 @@ export type SimConfigScalarWhereWithAggregatesInput = {
   speed?: Prisma.FloatWithAggregatesFilter<"SimConfig"> | number
   surgeStations?: Prisma.StringWithAggregatesFilter<"SimConfig"> | string
   seed?: Prisma.IntWithAggregatesFilter<"SimConfig"> | number
+  arrivalsPerMin?: Prisma.FloatWithAggregatesFilter<"SimConfig"> | number
+  running?: Prisma.BoolWithAggregatesFilter<"SimConfig"> | boolean
+  surgeMultiplier?: Prisma.FloatWithAggregatesFilter<"SimConfig"> | number
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SimConfig"> | Date | string
 }
 
@@ -270,6 +314,9 @@ export type SimConfigCreateInput = {
   speed?: number
   surgeStations?: string
   seed?: number
+  arrivalsPerMin?: number
+  running?: boolean
+  surgeMultiplier?: number
   updatedAt?: Date | string
 }
 
@@ -278,6 +325,9 @@ export type SimConfigUncheckedCreateInput = {
   speed?: number
   surgeStations?: string
   seed?: number
+  arrivalsPerMin?: number
+  running?: boolean
+  surgeMultiplier?: number
   updatedAt?: Date | string
 }
 
@@ -286,6 +336,9 @@ export type SimConfigUpdateInput = {
   speed?: Prisma.FloatFieldUpdateOperationsInput | number
   surgeStations?: Prisma.StringFieldUpdateOperationsInput | string
   seed?: Prisma.IntFieldUpdateOperationsInput | number
+  arrivalsPerMin?: Prisma.FloatFieldUpdateOperationsInput | number
+  running?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  surgeMultiplier?: Prisma.FloatFieldUpdateOperationsInput | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -294,6 +347,9 @@ export type SimConfigUncheckedUpdateInput = {
   speed?: Prisma.FloatFieldUpdateOperationsInput | number
   surgeStations?: Prisma.StringFieldUpdateOperationsInput | string
   seed?: Prisma.IntFieldUpdateOperationsInput | number
+  arrivalsPerMin?: Prisma.FloatFieldUpdateOperationsInput | number
+  running?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  surgeMultiplier?: Prisma.FloatFieldUpdateOperationsInput | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -302,6 +358,9 @@ export type SimConfigCreateManyInput = {
   speed?: number
   surgeStations?: string
   seed?: number
+  arrivalsPerMin?: number
+  running?: boolean
+  surgeMultiplier?: number
   updatedAt?: Date | string
 }
 
@@ -310,6 +369,9 @@ export type SimConfigUpdateManyMutationInput = {
   speed?: Prisma.FloatFieldUpdateOperationsInput | number
   surgeStations?: Prisma.StringFieldUpdateOperationsInput | string
   seed?: Prisma.IntFieldUpdateOperationsInput | number
+  arrivalsPerMin?: Prisma.FloatFieldUpdateOperationsInput | number
+  running?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  surgeMultiplier?: Prisma.FloatFieldUpdateOperationsInput | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -318,6 +380,9 @@ export type SimConfigUncheckedUpdateManyInput = {
   speed?: Prisma.FloatFieldUpdateOperationsInput | number
   surgeStations?: Prisma.StringFieldUpdateOperationsInput | string
   seed?: Prisma.IntFieldUpdateOperationsInput | number
+  arrivalsPerMin?: Prisma.FloatFieldUpdateOperationsInput | number
+  running?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  surgeMultiplier?: Prisma.FloatFieldUpdateOperationsInput | number
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -326,12 +391,17 @@ export type SimConfigCountOrderByAggregateInput = {
   speed?: Prisma.SortOrder
   surgeStations?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  running?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type SimConfigAvgOrderByAggregateInput = {
   speed?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
 }
 
 export type SimConfigMaxOrderByAggregateInput = {
@@ -339,6 +409,9 @@ export type SimConfigMaxOrderByAggregateInput = {
   speed?: Prisma.SortOrder
   surgeStations?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  running?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -347,12 +420,21 @@ export type SimConfigMinOrderByAggregateInput = {
   speed?: Prisma.SortOrder
   surgeStations?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  running?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type SimConfigSumOrderByAggregateInput = {
   speed?: Prisma.SortOrder
   seed?: Prisma.SortOrder
+  arrivalsPerMin?: Prisma.SortOrder
+  surgeMultiplier?: Prisma.SortOrder
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 
@@ -362,6 +444,9 @@ export type SimConfigSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   speed?: boolean
   surgeStations?: boolean
   seed?: boolean
+  arrivalsPerMin?: boolean
+  running?: boolean
+  surgeMultiplier?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["simConfig"]>
 
@@ -370,6 +455,9 @@ export type SimConfigSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   speed?: boolean
   surgeStations?: boolean
   seed?: boolean
+  arrivalsPerMin?: boolean
+  running?: boolean
+  surgeMultiplier?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["simConfig"]>
 
@@ -378,6 +466,9 @@ export type SimConfigSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   speed?: boolean
   surgeStations?: boolean
   seed?: boolean
+  arrivalsPerMin?: boolean
+  running?: boolean
+  surgeMultiplier?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["simConfig"]>
 
@@ -386,10 +477,13 @@ export type SimConfigSelectScalar = {
   speed?: boolean
   surgeStations?: boolean
   seed?: boolean
+  arrivalsPerMin?: boolean
+  running?: boolean
+  surgeMultiplier?: boolean
   updatedAt?: boolean
 }
 
-export type SimConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "speed" | "surgeStations" | "seed" | "updatedAt", ExtArgs["result"]["simConfig"]>
+export type SimConfigOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "speed" | "surgeStations" | "seed" | "arrivalsPerMin" | "running" | "surgeMultiplier" | "updatedAt", ExtArgs["result"]["simConfig"]>
 
 export type $SimConfigPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SimConfig"
@@ -399,6 +493,9 @@ export type $SimConfigPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     speed: number
     surgeStations: string
     seed: number
+    arrivalsPerMin: number
+    running: boolean
+    surgeMultiplier: number
     updatedAt: Date
   }, ExtArgs["result"]["simConfig"]>
   composites: {}
@@ -827,6 +924,9 @@ export interface SimConfigFieldRefs {
   readonly speed: Prisma.FieldRef<"SimConfig", 'Float'>
   readonly surgeStations: Prisma.FieldRef<"SimConfig", 'String'>
   readonly seed: Prisma.FieldRef<"SimConfig", 'Int'>
+  readonly arrivalsPerMin: Prisma.FieldRef<"SimConfig", 'Float'>
+  readonly running: Prisma.FieldRef<"SimConfig", 'Boolean'>
+  readonly surgeMultiplier: Prisma.FieldRef<"SimConfig", 'Float'>
   readonly updatedAt: Prisma.FieldRef<"SimConfig", 'DateTime'>
 }
     

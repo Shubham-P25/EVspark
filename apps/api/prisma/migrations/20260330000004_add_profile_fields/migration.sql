@@ -1,0 +1,31 @@
+-- AlterTable User
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "username" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "phone" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "onboardedAt" TIMESTAMP(3);
+CREATE UNIQUE INDEX IF NOT EXISTS "User_username_key" ON "User"("username");
+
+-- AlterTable DriverProfile
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "vehicleRegNo" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "batteryPct" DOUBLE PRECISION;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "city" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "homeLabel" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "workLat" DOUBLE PRECISION;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "workLng" DOUBLE PRECISION;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "workLabel" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "maxWaitMin" INTEGER;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "minKw" DOUBLE PRECISION;
+
+-- AlterTable OperatorProfile
+ALTER TABLE "OperatorProfile" ADD COLUMN IF NOT EXISTS "contactName" TEXT;
+ALTER TABLE "OperatorProfile" ADD COLUMN IF NOT EXISTS "gstin" TEXT;
+
+-- AlterTable Station
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "googlePlaceId" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "photoUrl" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "phone" TEXT;
+
+-- AlterTable Session
+ALTER TABLE "Session" ADD COLUMN IF NOT EXISTS "estimatedEndTs" TIMESTAMP(3);
+
+-- AlterTable Favorite
+ALTER TABLE "Favorite" ADD COLUMN IF NOT EXISTS "label" TEXT;

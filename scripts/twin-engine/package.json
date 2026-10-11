@@ -1,0 +1,22 @@
+{
+  "name": "twin-engine",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx index.ts",
+    "start": "tsx index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@evspark/shared": "workspace:*",
+    "dotenv": "^16.4.7",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.5.14",
+    "tsx": "^4.23.11",
+    "typescript": "^5.7.0"
+  }
+}

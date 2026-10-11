@@ -1,0 +1,22 @@
+{
+  "mae": 0.22,
+  "mape": 9.47,
+  "r2": 0.989,
+  "accuracy_pct": 90.5,
+  "training_samples": 4800,
+  "test_samples": 1200,
+  "version": "1.2.0-histgb",
+  "trained_at": "2026-10-10T08:02:54.843122",
+  "features": [
+    "hour",
+    "day_of_week",
+    "is_weekend",
+    "sin_hour",
+    "cos_hour",
+    "occupied_ratio",
+    "queue_length",
+    "total_chargers",
+    "avg_power_kw",
+    "historical_avg_duration"
+  ]
+}

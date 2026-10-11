@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model DriverProfile
@@ -27,89 +27,163 @@ export type AggregateDriverProfile = {
 }
 
 export type DriverProfileAvgAggregateOutputType = {
+  batteryPct: number | null
   rangeKm: number | null
   homeLat: number | null
   homeLng: number | null
+  workLat: number | null
+  workLng: number | null
+  maxWaitMin: number | null
+  minKw: number | null
 }
 
 export type DriverProfileSumAggregateOutputType = {
+  batteryPct: number | null
   rangeKm: number | null
   homeLat: number | null
   homeLng: number | null
+  workLat: number | null
+  workLng: number | null
+  maxWaitMin: number | null
+  minKw: number | null
 }
 
 export type DriverProfileMinAggregateOutputType = {
   id: string | null
   userId: string | null
   vehicleModelId: string | null
+  vehicleRegNo: string | null
+  batteryPct: number | null
+  city: string | null
   connectorPref: string | null
   rangeKm: number | null
   homeLat: number | null
   homeLng: number | null
+  homeLabel: string | null
+  workLat: number | null
+  workLng: number | null
+  workLabel: string | null
+  maxWaitMin: number | null
+  minKw: number | null
 }
 
 export type DriverProfileMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   vehicleModelId: string | null
+  vehicleRegNo: string | null
+  batteryPct: number | null
+  city: string | null
   connectorPref: string | null
   rangeKm: number | null
   homeLat: number | null
   homeLng: number | null
+  homeLabel: string | null
+  workLat: number | null
+  workLng: number | null
+  workLabel: string | null
+  maxWaitMin: number | null
+  minKw: number | null
 }
 
 export type DriverProfileCountAggregateOutputType = {
   id: number
   userId: number
   vehicleModelId: number
+  vehicleRegNo: number
+  batteryPct: number
+  city: number
   connectorPref: number
   rangeKm: number
   homeLat: number
   homeLng: number
+  homeLabel: number
+  workLat: number
+  workLng: number
+  workLabel: number
+  maxWaitMin: number
+  minKw: number
   _all: number
 }
 
 
 export type DriverProfileAvgAggregateInputType = {
+  batteryPct?: true
   rangeKm?: true
   homeLat?: true
   homeLng?: true
+  workLat?: true
+  workLng?: true
+  maxWaitMin?: true
+  minKw?: true
 }
 
 export type DriverProfileSumAggregateInputType = {
+  batteryPct?: true
   rangeKm?: true
   homeLat?: true
   homeLng?: true
+  workLat?: true
+  workLng?: true
+  maxWaitMin?: true
+  minKw?: true
 }
 
 export type DriverProfileMinAggregateInputType = {
   id?: true
   userId?: true
   vehicleModelId?: true
+  vehicleRegNo?: true
+  batteryPct?: true
+  city?: true
   connectorPref?: true
   rangeKm?: true
   homeLat?: true
   homeLng?: true
+  homeLabel?: true
+  workLat?: true
+  workLng?: true
+  workLabel?: true
+  maxWaitMin?: true
+  minKw?: true
 }
 
 export type DriverProfileMaxAggregateInputType = {
   id?: true
   userId?: true
   vehicleModelId?: true
+  vehicleRegNo?: true
+  batteryPct?: true
+  city?: true
   connectorPref?: true
   rangeKm?: true
   homeLat?: true
   homeLng?: true
+  homeLabel?: true
+  workLat?: true
+  workLng?: true
+  workLabel?: true
+  maxWaitMin?: true
+  minKw?: true
 }
 
 export type DriverProfileCountAggregateInputType = {
   id?: true
   userId?: true
   vehicleModelId?: true
+  vehicleRegNo?: true
+  batteryPct?: true
+  city?: true
   connectorPref?: true
   rangeKm?: true
   homeLat?: true
   homeLng?: true
+  homeLabel?: true
+  workLat?: true
+  workLng?: true
+  workLabel?: true
+  maxWaitMin?: true
+  minKw?: true
   _all?: true
 }
 
@@ -203,10 +277,19 @@ export type DriverProfileGroupByOutputType = {
   id: string
   userId: string
   vehicleModelId: string | null
+  vehicleRegNo: string | null
+  batteryPct: number | null
+  city: string | null
   connectorPref: string | null
   rangeKm: number | null
   homeLat: number | null
   homeLng: number | null
+  homeLabel: string | null
+  workLat: number | null
+  workLng: number | null
+  workLabel: string | null
+  maxWaitMin: number | null
+  minKw: number | null
   _count: DriverProfileCountAggregateOutputType | null
   _avg: DriverProfileAvgAggregateOutputType | null
   _sum: DriverProfileSumAggregateOutputType | null
@@ -236,10 +319,19 @@ export type DriverProfileWhereInput = {
   id?: Prisma.StringFilter<"DriverProfile"> | string
   userId?: Prisma.StringFilter<"DriverProfile"> | string
   vehicleModelId?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  vehicleRegNo?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  batteryPct?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  city?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   connectorPref?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   rangeKm?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   homeLat?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   homeLng?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  homeLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  workLat?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  workLng?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  workLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  maxWaitMin?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
+  minKw?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -247,10 +339,19 @@ export type DriverProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleRegNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  batteryPct?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorPref?: Prisma.SortOrderInput | Prisma.SortOrder
   rangeKm?: Prisma.SortOrderInput | Prisma.SortOrder
   homeLat?: Prisma.SortOrderInput | Prisma.SortOrder
   homeLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  homeLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLat?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  minKw?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -261,10 +362,19 @@ export type DriverProfileWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DriverProfileWhereInput[]
   NOT?: Prisma.DriverProfileWhereInput | Prisma.DriverProfileWhereInput[]
   vehicleModelId?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  vehicleRegNo?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  batteryPct?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  city?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   connectorPref?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   rangeKm?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   homeLat?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   homeLng?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  homeLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  workLat?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  workLng?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  workLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  maxWaitMin?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
+  minKw?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -272,10 +382,19 @@ export type DriverProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   vehicleModelId?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleRegNo?: Prisma.SortOrderInput | Prisma.SortOrder
+  batteryPct?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorPref?: Prisma.SortOrderInput | Prisma.SortOrder
   rangeKm?: Prisma.SortOrderInput | Prisma.SortOrder
   homeLat?: Prisma.SortOrderInput | Prisma.SortOrder
   homeLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  homeLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLat?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLng?: Prisma.SortOrderInput | Prisma.SortOrder
+  workLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  minKw?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DriverProfileCountOrderByAggregateInput
   _avg?: Prisma.DriverProfileAvgOrderByAggregateInput
   _max?: Prisma.DriverProfileMaxOrderByAggregateInput
@@ -290,19 +409,37 @@ export type DriverProfileScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"DriverProfile"> | string
   userId?: Prisma.StringWithAggregatesFilter<"DriverProfile"> | string
   vehicleModelId?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  vehicleRegNo?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  batteryPct?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
   connectorPref?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
   rangeKm?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
   homeLat?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
   homeLng?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  homeLabel?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  workLat?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  workLng?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  workLabel?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  maxWaitMin?: Prisma.IntNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  minKw?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
 }
 
 export type DriverProfileCreateInput = {
   id?: string
   vehicleModelId?: string | null
+  vehicleRegNo?: string | null
+  batteryPct?: number | null
+  city?: string | null
   connectorPref?: string | null
   rangeKm?: number | null
   homeLat?: number | null
   homeLng?: number | null
+  homeLabel?: string | null
+  workLat?: number | null
+  workLng?: number | null
+  workLabel?: string | null
+  maxWaitMin?: number | null
+  minKw?: number | null
   user: Prisma.UserCreateNestedOneWithoutDriverProfileInput
 }
 
@@ -310,19 +447,37 @@ export type DriverProfileUncheckedCreateInput = {
   id?: string
   userId: string
   vehicleModelId?: string | null
+  vehicleRegNo?: string | null
+  batteryPct?: number | null
+  city?: string | null
   connectorPref?: string | null
   rangeKm?: number | null
   homeLat?: number | null
   homeLng?: number | null
+  homeLabel?: string | null
+  workLat?: number | null
+  workLng?: number | null
+  workLabel?: string | null
+  maxWaitMin?: number | null
+  minKw?: number | null
 }
 
 export type DriverProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   user?: Prisma.UserUpdateOneRequiredWithoutDriverProfileNestedInput
 }
 
@@ -330,39 +485,75 @@ export type DriverProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type DriverProfileCreateManyInput = {
   id?: string
   userId: string
   vehicleModelId?: string | null
+  vehicleRegNo?: string | null
+  batteryPct?: number | null
+  city?: string | null
   connectorPref?: string | null
   rangeKm?: number | null
   homeLat?: number | null
   homeLng?: number | null
+  homeLabel?: string | null
+  workLat?: number | null
+  workLng?: number | null
+  workLabel?: string | null
+  maxWaitMin?: number | null
+  minKw?: number | null
 }
 
 export type DriverProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type DriverProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type DriverProfileNullableScalarRelationFilter = {
@@ -374,42 +565,79 @@ export type DriverProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   vehicleModelId?: Prisma.SortOrder
+  vehicleRegNo?: Prisma.SortOrder
+  batteryPct?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   connectorPref?: Prisma.SortOrder
   rangeKm?: Prisma.SortOrder
   homeLat?: Prisma.SortOrder
   homeLng?: Prisma.SortOrder
+  homeLabel?: Prisma.SortOrder
+  workLat?: Prisma.SortOrder
+  workLng?: Prisma.SortOrder
+  workLabel?: Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrder
+  minKw?: Prisma.SortOrder
 }
 
 export type DriverProfileAvgOrderByAggregateInput = {
+  batteryPct?: Prisma.SortOrder
   rangeKm?: Prisma.SortOrder
   homeLat?: Prisma.SortOrder
   homeLng?: Prisma.SortOrder
+  workLat?: Prisma.SortOrder
+  workLng?: Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrder
+  minKw?: Prisma.SortOrder
 }
 
 export type DriverProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   vehicleModelId?: Prisma.SortOrder
+  vehicleRegNo?: Prisma.SortOrder
+  batteryPct?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   connectorPref?: Prisma.SortOrder
   rangeKm?: Prisma.SortOrder
   homeLat?: Prisma.SortOrder
   homeLng?: Prisma.SortOrder
+  homeLabel?: Prisma.SortOrder
+  workLat?: Prisma.SortOrder
+  workLng?: Prisma.SortOrder
+  workLabel?: Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrder
+  minKw?: Prisma.SortOrder
 }
 
 export type DriverProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   vehicleModelId?: Prisma.SortOrder
+  vehicleRegNo?: Prisma.SortOrder
+  batteryPct?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   connectorPref?: Prisma.SortOrder
   rangeKm?: Prisma.SortOrder
   homeLat?: Prisma.SortOrder
   homeLng?: Prisma.SortOrder
+  homeLabel?: Prisma.SortOrder
+  workLat?: Prisma.SortOrder
+  workLng?: Prisma.SortOrder
+  workLabel?: Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrder
+  minKw?: Prisma.SortOrder
 }
 
 export type DriverProfileSumOrderByAggregateInput = {
+  batteryPct?: Prisma.SortOrder
   rangeKm?: Prisma.SortOrder
   homeLat?: Prisma.SortOrder
   homeLng?: Prisma.SortOrder
+  workLat?: Prisma.SortOrder
+  workLng?: Prisma.SortOrder
+  maxWaitMin?: Prisma.SortOrder
+  minKw?: Prisma.SortOrder
 }
 
 export type DriverProfileCreateNestedOneWithoutUserInput = {
@@ -452,22 +680,48 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type DriverProfileCreateWithoutUserInput = {
   id?: string
   vehicleModelId?: string | null
+  vehicleRegNo?: string | null
+  batteryPct?: number | null
+  city?: string | null
   connectorPref?: string | null
   rangeKm?: number | null
   homeLat?: number | null
   homeLng?: number | null
+  homeLabel?: string | null
+  workLat?: number | null
+  workLng?: number | null
+  workLabel?: string | null
+  maxWaitMin?: number | null
+  minKw?: number | null
 }
 
 export type DriverProfileUncheckedCreateWithoutUserInput = {
   id?: string
   vehicleModelId?: string | null
+  vehicleRegNo?: string | null
+  batteryPct?: number | null
+  city?: string | null
   connectorPref?: string | null
   rangeKm?: number | null
   homeLat?: number | null
   homeLng?: number | null
+  homeLabel?: string | null
+  workLat?: number | null
+  workLng?: number | null
+  workLabel?: string | null
+  maxWaitMin?: number | null
+  minKw?: number | null
 }
 
 export type DriverProfileCreateOrConnectWithoutUserInput = {
@@ -489,19 +743,37 @@ export type DriverProfileUpdateToOneWithWhereWithoutUserInput = {
 export type DriverProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type DriverProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   vehicleModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleRegNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  batteryPct?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rangeKm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   homeLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  homeLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workLat?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLng?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 
@@ -510,10 +782,19 @@ export type DriverProfileSelect<ExtArgs extends runtime.Types.Extensions.Interna
   id?: boolean
   userId?: boolean
   vehicleModelId?: boolean
+  vehicleRegNo?: boolean
+  batteryPct?: boolean
+  city?: boolean
   connectorPref?: boolean
   rangeKm?: boolean
   homeLat?: boolean
   homeLng?: boolean
+  homeLabel?: boolean
+  workLat?: boolean
+  workLng?: boolean
+  workLabel?: boolean
+  maxWaitMin?: boolean
+  minKw?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -521,10 +802,19 @@ export type DriverProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   userId?: boolean
   vehicleModelId?: boolean
+  vehicleRegNo?: boolean
+  batteryPct?: boolean
+  city?: boolean
   connectorPref?: boolean
   rangeKm?: boolean
   homeLat?: boolean
   homeLng?: boolean
+  homeLabel?: boolean
+  workLat?: boolean
+  workLng?: boolean
+  workLabel?: boolean
+  maxWaitMin?: boolean
+  minKw?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -532,10 +822,19 @@ export type DriverProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   id?: boolean
   userId?: boolean
   vehicleModelId?: boolean
+  vehicleRegNo?: boolean
+  batteryPct?: boolean
+  city?: boolean
   connectorPref?: boolean
   rangeKm?: boolean
   homeLat?: boolean
   homeLng?: boolean
+  homeLabel?: boolean
+  workLat?: boolean
+  workLng?: boolean
+  workLabel?: boolean
+  maxWaitMin?: boolean
+  minKw?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -543,13 +842,22 @@ export type DriverProfileSelectScalar = {
   id?: boolean
   userId?: boolean
   vehicleModelId?: boolean
+  vehicleRegNo?: boolean
+  batteryPct?: boolean
+  city?: boolean
   connectorPref?: boolean
   rangeKm?: boolean
   homeLat?: boolean
   homeLng?: boolean
+  homeLabel?: boolean
+  workLat?: boolean
+  workLng?: boolean
+  workLabel?: boolean
+  maxWaitMin?: boolean
+  minKw?: boolean
 }
 
-export type DriverProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleModelId" | "connectorPref" | "rangeKm" | "homeLat" | "homeLng", ExtArgs["result"]["driverProfile"]>
+export type DriverProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleModelId" | "vehicleRegNo" | "batteryPct" | "city" | "connectorPref" | "rangeKm" | "homeLat" | "homeLng" | "homeLabel" | "workLat" | "workLng" | "workLabel" | "maxWaitMin" | "minKw", ExtArgs["result"]["driverProfile"]>
 export type DriverProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -569,10 +877,19 @@ export type $DriverProfilePayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     userId: string
     vehicleModelId: string | null
+    vehicleRegNo: string | null
+    batteryPct: number | null
+    city: string | null
     connectorPref: string | null
     rangeKm: number | null
     homeLat: number | null
     homeLng: number | null
+    homeLabel: string | null
+    workLat: number | null
+    workLng: number | null
+    workLabel: string | null
+    maxWaitMin: number | null
+    minKw: number | null
   }, ExtArgs["result"]["driverProfile"]>
   composites: {}
 }
@@ -1000,10 +1317,19 @@ export interface DriverProfileFieldRefs {
   readonly id: Prisma.FieldRef<"DriverProfile", 'String'>
   readonly userId: Prisma.FieldRef<"DriverProfile", 'String'>
   readonly vehicleModelId: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly vehicleRegNo: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly batteryPct: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly city: Prisma.FieldRef<"DriverProfile", 'String'>
   readonly connectorPref: Prisma.FieldRef<"DriverProfile", 'String'>
   readonly rangeKm: Prisma.FieldRef<"DriverProfile", 'Float'>
   readonly homeLat: Prisma.FieldRef<"DriverProfile", 'Float'>
   readonly homeLng: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly homeLabel: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly workLat: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly workLng: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly workLabel: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly maxWaitMin: Prisma.FieldRef<"DriverProfile", 'Int'>
+  readonly minKw: Prisma.FieldRef<"DriverProfile", 'Float'>
 }
     
 

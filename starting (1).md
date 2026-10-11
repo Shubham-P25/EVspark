@@ -10,28 +10,28 @@ A phased checklist to take the repo from "scaffolded" to "deployed." Based on a 
 - Monorepo with npm workspaces: `apps/web`, `apps/api`, `scripts/mqtt-simulator`
 - `apps/api`: Prisma 7 schema defined (User, Station, Charger, Favorite, Review), `prisma.config.ts` correctly configured, `prisma.ts` client wired with the `pg` adapter, `.env.example` lists all needed vars
 - `apps/web`: Next.js 16 app created, but still the default `create-next-app` scaffold (no real pages yet)
-- `apps/models` (FastAPI ML service): only `.env.example` exists — no Python code yet
+- `apps/ml-service` (FastAPI ML service): only `.env.example` exists — no Python code yet
 
 **Missing / broken — fix these first**
 1. **No Express entry point in `apps/api`** — no `index.ts`/`server.ts`, no routes, no controllers, no CORS/Socket.io/MQTT wiring, despite the dependencies (`express`, `cors`, `socket.io`, `mqtt`) already installed.
-2. **`apps/models` is empty** — no `main.py`, no `requirements.txt`, nothing runnable.
-3. **`scripts/MQTT-simulator` folder casing mismatch** — root `package.json` workspaces list `scripts/mqtt-simulator` (lowercase), but the actual folder is `scripts/MQTT-simulator`. Works on Windows (case-insensitive FS) but **will break on Vercel/Linux deploys**. Rename the folder to match exactly.
-4. **`scripts/MQTT-simulator/package.json` has no dependencies** — no `mqtt` package installed, and no actual simulator script exists yet.
+2. **`apps/ml-service` is empty** — no `main.py`, no `requirements.txt`, nothing runnable.
+3. **`scripts/mqtt-simulator` folder casing mismatch** — root `package.json` workspaces list `scripts/mqtt-simulator` (lowercase), but the actual folder is `scripts/mqtt-simulator`. Works on Windows (case-insensitive FS) but **will break on Vercel/Linux deploys**. Rename the folder to match exactly.
+4. **`scripts/mqtt-simulator/package.json` has no dependencies** — no `mqtt` package installed, and no actual simulator script exists yet.
 5. **Neon Auth (`@neondatabase/auth`) is installed in `apps/api` only** — it's not wired anywhere, and for a Next.js app it's normally driven from `apps/web`.
-6. No visible `.gitignore` in the dump — confirm one exists and covers `node_modules`, `.env`, `apps/models/venv`, `.next`, `dist`.
+6. No visible `.gitignore` in the dump — confirm one exists and covers `node_modules`, `.env`, `apps/ml-service/venv`, `.next`, `dist`.
 
 ---
 
 ## Phase 0 — Quick fixes (do these before anything else)
 
-- [ ] Rename `scripts/MQTT-simulator` → `scripts/mqtt-simulator` so it matches `package.json` workspaces exactly
+- [ ] Rename `scripts/mqtt-simulator` → `scripts/mqtt-simulator` so it matches `package.json` workspaces exactly
 - [ ] Add/verify root `.gitignore`:
   ```
   node_modules/
   .env
   .env.local
-  apps/models/venv/
-  apps/models/__pycache__/
+  apps/ml-service/venv/
+  apps/ml-service/__pycache__/
   .next/
   dist/
   ```
@@ -50,7 +50,7 @@ A phased checklist to take the repo from "scaffolded" to "deployed." Based on a 
 
 ---
 
-## Phase 2 — `apps/models`: FastAPI forecasting service
+## Phase 2 — `apps/ml-service`: FastAPI forecasting service
 
 - [ ] `requirements.txt` — fastapi, uvicorn, pandas, prophet (or whatever the forecasting approach ends up being), python-dotenv
 - [ ] `main.py` — app instance, a `/health` endpoint, and a stub `/forecast` endpoint that accepts a station/charger id and returns a placeholder wait-time estimate
@@ -122,7 +122,7 @@ Three different runtimes here, so three different targets:
 |---|---|---|
 | `apps/web` (Next.js) | **Vercel** | Native Next.js support, zero-config |
 | `apps/api` (Express + Socket.io + MQTT) | **Railway** or **Render** | Needs a long-running process for Socket.io connections and the MQTT subscriber — not a fit for Vercel's serverless functions |
-| `apps/models` (FastAPI) | **Railway** or **Render** | Same reasoning — long-running Python process |
+| `apps/ml-service` (FastAPI) | **Railway** or **Render** | Same reasoning — long-running Python process |
 | `scripts/mqtt-simulator` | **Railway** (background worker) | Not user-facing, just needs to keep running |
 | Database | **Neon** (already your DB) | Already in use for Prisma |
 

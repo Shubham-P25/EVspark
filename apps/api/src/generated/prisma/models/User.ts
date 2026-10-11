@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model User
@@ -26,25 +26,37 @@ export type AggregateUser = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
+  authId: string | null
+  username: string | null
   name: string | null
   email: string | null
+  phone: string | null
   role: $Enums.Role | null
+  onboardedAt: Date | null
   createdAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
+  authId: string | null
+  username: string | null
   name: string | null
   email: string | null
+  phone: string | null
   role: $Enums.Role | null
+  onboardedAt: Date | null
   createdAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
+  authId: number
+  username: number
   name: number
   email: number
+  phone: number
   role: number
+  onboardedAt: number
   createdAt: number
   _all: number
 }
@@ -52,25 +64,37 @@ export type UserCountAggregateOutputType = {
 
 export type UserMinAggregateInputType = {
   id?: true
+  authId?: true
+  username?: true
   name?: true
   email?: true
+  phone?: true
   role?: true
+  onboardedAt?: true
   createdAt?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
+  authId?: true
+  username?: true
   name?: true
   email?: true
+  phone?: true
   role?: true
+  onboardedAt?: true
   createdAt?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
+  authId?: true
+  username?: true
   name?: true
   email?: true
+  phone?: true
   role?: true
+  onboardedAt?: true
   createdAt?: true
   _all?: true
 }
@@ -149,9 +173,13 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
+  authId: string | null
+  username: string | null
   name: string | null
   email: string
+  phone: string | null
   role: $Enums.Role
+  onboardedAt: Date | null
   createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
@@ -178,9 +206,13 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
+  authId?: Prisma.StringNullableFilter<"User"> | string | null
+  username?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringNullableFilter<"User"> | string | null
   email?: Prisma.StringFilter<"User"> | string
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   driverProfile?: Prisma.XOR<Prisma.DriverProfileNullableScalarRelationFilter, Prisma.DriverProfileWhereInput> | null
   operatorProfile?: Prisma.XOR<Prisma.OperatorProfileNullableScalarRelationFilter, Prisma.OperatorProfileWhereInput> | null
@@ -193,9 +225,13 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  authId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   driverProfile?: Prisma.DriverProfileOrderByWithRelationInput
   operatorProfile?: Prisma.OperatorProfileOrderByWithRelationInput
@@ -208,12 +244,16 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  authId?: string
+  username?: string
   email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   driverProfile?: Prisma.XOR<Prisma.DriverProfileNullableScalarRelationFilter, Prisma.DriverProfileWhereInput> | null
   operatorProfile?: Prisma.XOR<Prisma.OperatorProfileNullableScalarRelationFilter, Prisma.OperatorProfileWhereInput> | null
@@ -222,13 +262,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.SessionListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   issues?: Prisma.IssueListRelationFilter
-}, "id" | "email">
+}, "id" | "authId" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  authId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -240,17 +284,25 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
+  authId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  username?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  onboardedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
 export type UserCreateInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -263,9 +315,13 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -278,9 +334,13 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -293,9 +353,13 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -308,49 +372,73 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  authId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  authId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  authId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -374,6 +462,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -482,9 +574,13 @@ export type UserUpdateOneRequiredWithoutIssuesNestedInput = {
 
 export type UserCreateWithoutDriverProfileInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
@@ -496,9 +592,13 @@ export type UserCreateWithoutDriverProfileInput = {
 
 export type UserUncheckedCreateWithoutDriverProfileInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
@@ -526,9 +626,13 @@ export type UserUpdateToOneWithWhereWithoutDriverProfileInput = {
 
 export type UserUpdateWithoutDriverProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
@@ -540,9 +644,13 @@ export type UserUpdateWithoutDriverProfileInput = {
 
 export type UserUncheckedUpdateWithoutDriverProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -554,9 +662,13 @@ export type UserUncheckedUpdateWithoutDriverProfileInput = {
 
 export type UserCreateWithoutOperatorProfileInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput
@@ -568,9 +680,13 @@ export type UserCreateWithoutOperatorProfileInput = {
 
 export type UserUncheckedCreateWithoutOperatorProfileInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
@@ -598,9 +714,13 @@ export type UserUpdateToOneWithWhereWithoutOperatorProfileInput = {
 
 export type UserUpdateWithoutOperatorProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
@@ -612,9 +732,13 @@ export type UserUpdateWithoutOperatorProfileInput = {
 
 export type UserUncheckedUpdateWithoutOperatorProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -626,9 +750,13 @@ export type UserUncheckedUpdateWithoutOperatorProfileInput = {
 
 export type UserCreateWithoutSessionsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -640,9 +768,13 @@ export type UserCreateWithoutSessionsInput = {
 
 export type UserUncheckedCreateWithoutSessionsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -670,9 +802,13 @@ export type UserUpdateToOneWithWhereWithoutSessionsInput = {
 
 export type UserUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -684,9 +820,13 @@ export type UserUpdateWithoutSessionsInput = {
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -698,9 +838,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
 
 export type UserCreateWithoutBookingsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -712,9 +856,13 @@ export type UserCreateWithoutBookingsInput = {
 
 export type UserUncheckedCreateWithoutBookingsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -742,9 +890,13 @@ export type UserUpdateToOneWithWhereWithoutBookingsInput = {
 
 export type UserUpdateWithoutBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -756,9 +908,13 @@ export type UserUpdateWithoutBookingsInput = {
 
 export type UserUncheckedUpdateWithoutBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -770,9 +926,13 @@ export type UserUncheckedUpdateWithoutBookingsInput = {
 
 export type UserCreateWithoutFavoritesInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -784,9 +944,13 @@ export type UserCreateWithoutFavoritesInput = {
 
 export type UserUncheckedCreateWithoutFavoritesInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -814,9 +978,13 @@ export type UserUpdateToOneWithWhereWithoutFavoritesInput = {
 
 export type UserUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -828,9 +996,13 @@ export type UserUpdateWithoutFavoritesInput = {
 
 export type UserUncheckedUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -842,9 +1014,13 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
 
 export type UserCreateWithoutReviewsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -856,9 +1032,13 @@ export type UserCreateWithoutReviewsInput = {
 
 export type UserUncheckedCreateWithoutReviewsInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -886,9 +1066,13 @@ export type UserUpdateToOneWithWhereWithoutReviewsInput = {
 
 export type UserUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -900,9 +1084,13 @@ export type UserUpdateWithoutReviewsInput = {
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -914,9 +1102,13 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
 
 export type UserCreateWithoutIssuesInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileCreateNestedOneWithoutUserInput
@@ -928,9 +1120,13 @@ export type UserCreateWithoutIssuesInput = {
 
 export type UserUncheckedCreateWithoutIssuesInput = {
   id?: string
+  authId?: string | null
+  username?: string | null
   name?: string | null
   email: string
+  phone?: string | null
   role?: $Enums.Role
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   driverProfile?: Prisma.DriverProfileUncheckedCreateNestedOneWithoutUserInput
   operatorProfile?: Prisma.OperatorProfileUncheckedCreateNestedOneWithoutUserInput
@@ -958,9 +1154,13 @@ export type UserUpdateToOneWithWhereWithoutIssuesInput = {
 
 export type UserUpdateWithoutIssuesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUpdateOneWithoutUserNestedInput
@@ -972,9 +1172,13 @@ export type UserUpdateWithoutIssuesInput = {
 
 export type UserUncheckedUpdateWithoutIssuesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  authId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driverProfile?: Prisma.DriverProfileUncheckedUpdateOneWithoutUserNestedInput
   operatorProfile?: Prisma.OperatorProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1053,9 +1257,13 @@ export type UserCountOutputTypeCountIssuesArgs<ExtArgs extends runtime.Types.Ext
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  authId?: boolean
+  username?: boolean
   name?: boolean
   email?: boolean
+  phone?: boolean
   role?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
   driverProfile?: boolean | Prisma.User$driverProfileArgs<ExtArgs>
   operatorProfile?: boolean | Prisma.User$operatorProfileArgs<ExtArgs>
@@ -1069,29 +1277,41 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  authId?: boolean
+  username?: boolean
   name?: boolean
   email?: boolean
+  phone?: boolean
   role?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  authId?: boolean
+  username?: boolean
   name?: boolean
   email?: boolean
+  phone?: boolean
   role?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
+  authId?: boolean
+  username?: boolean
   name?: boolean
   email?: boolean
+  phone?: boolean
   role?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "role" | "createdAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authId" | "username" | "name" | "email" | "phone" | "role" | "onboardedAt" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   driverProfile?: boolean | Prisma.User$driverProfileArgs<ExtArgs>
   operatorProfile?: boolean | Prisma.User$operatorProfileArgs<ExtArgs>
@@ -1118,9 +1338,13 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    authId: string | null
+    username: string | null
     name: string | null
     email: string
+    phone: string | null
     role: $Enums.Role
+    onboardedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -1553,9 +1777,13 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
+  readonly authId: Prisma.FieldRef<"User", 'String'>
+  readonly username: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly onboardedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     

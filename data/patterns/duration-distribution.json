@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "generatedAt": "2026-10-10T07:14:26.690Z",
+    "distribution": "log-normal",
+    "description": "Session duration distribution parameters for charging sessions"
+  },
+  "meanMinutes": 38,
+  "stdMinutes": 18,
+  "minMinutes": 10,
+  "maxMinutes": 90,
+  "parameters": {
+    "mu": 3.5364,
+    "sigma": 0.4499
+  },
+  "quantiles": {
+    "p10": 19,
+    "p25": 25,
+    "p50": 35,
+    "p75": 48,
+    "p90": 62,
+    "p99": 85
+  }
+}

@@ -1,5 +1,6 @@
 import "dotenv/config";
 import prisma from "./lib/prisma";
+import logger from "./lib/logger";
 
 const VEHICLE_MODELS = [
   { make: "Tata", model: "Nexon EV Max", batteryKwh: 40.5, maxAcKw: 7.2, maxDcKw: 50.0, connectors: "CCS2,Type2" },
@@ -402,7 +403,7 @@ const SEED_STATIONS = [
 ];
 
 async function main() {
-  console.log("🌱 Starting EVspark database seeding...");
+  logger.info("🌱 Starting EVspark database seeding...");
 
   // 1. SimConfig
   await prisma.simConfig.upsert({
@@ -410,7 +411,7 @@ async function main() {
     update: { speed: 10, seed: 42 },
     create: { id: "default", speed: 10, seed: 42, surgeStations: "" }
   });
-  console.log("✓ SimConfig seeded");
+  logger.info("✓ SimConfig seeded");
 
   // 2. Vehicle Models
   for (const v of VEHICLE_MODELS) {
@@ -421,7 +422,7 @@ async function main() {
       await prisma.vehicleModel.create({ data: v });
     }
   }
-  console.log(`✓ ${VEHICLE_MODELS.length} Vehicle Models seeded`);
+  logger.info(`✓ ${VEHICLE_MODELS.length} Vehicle Models seeded`);
 
   // 3. Demo Users
   const driverUser = await prisma.user.upsert({
@@ -454,7 +455,7 @@ async function main() {
     update: { businessName: "GreenCharge Hub", phone: "+91 98200 12345" },
     create: { userId: operatorUser.id, businessName: "GreenCharge Hub", phone: "+91 98200 12345" }
   });
-  console.log("✓ Demo Users & Profiles seeded (driver, operator, admin)");
+  logger.info("✓ Demo Users & Profiles seeded (driver, operator, admin)");
 
   // 4. Stations & Chargers
   let createdCount = 0;
@@ -502,7 +503,7 @@ async function main() {
       }
     }
   }
-  console.log(`✓ Stations processed (${createdCount} new stations created, total ${SEED_STATIONS.length})`);
+  logger.info(`✓ Stations processed (${createdCount} new stations created, total ${SEED_STATIONS.length})`);
 
   // 5. Add initial reviews for top stations
   const sampleStations = await prisma.station.findMany({ take: 3 });
@@ -520,14 +521,14 @@ async function main() {
       });
     }
   }
-  console.log("✓ Sample reviews seeded");
+  logger.info("✓ Sample reviews seeded");
 
-  console.log("🎉 EVspark database seeding successfully completed!");
+  logger.info("🎉 EVspark database seeding successfully completed!");
 }
 
 main()
   .catch((e) => {
-    console.error("❌ Seeding error:", e);
+    logger.error({ err: e }, "❌ Seeding error");
     process.exit(1);
   })
   .finally(async () => {

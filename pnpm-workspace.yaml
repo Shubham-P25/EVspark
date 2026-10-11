@@ -1,0 +1,17 @@
+packages:
+  - 'apps/api'
+  - 'apps/ml'
+  - 'apps/ml-service'
+  - 'apps/web'
+  - 'packages/*'
+  - 'scripts/*'
+
+allowBuilds:
+  '@prisma/engines': true
+  core-js: true
+  esbuild: true
+  prisma: true
+  unrs-resolver: true
+
+minimumReleaseAgeExclude:
+  - lucide-react@1.55.0
