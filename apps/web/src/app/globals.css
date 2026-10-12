@@ -59,27 +59,27 @@
 /* Default theme styles (used when no data-theme-preset is set or when 'default' is selected).
 These serve as the fallback; there is no separate default.css file. */
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --card: #FFFFFF;
-  --card-foreground: #202124;
+  --card-foreground: #0B1220;
   --popover: #FFFFFF;
-  --popover-foreground: #202124;
-  --primary: #1A73E8;
+  --popover-foreground: #0B1220;
+  --primary: #1D6BFF;
   --primary-foreground: #FFFFFF;
-  --secondary: #F8F9FA;
-  --secondary-foreground: #202124;
-  --muted: #F8F9FA;
-  --muted-foreground: #5F6368;
-  --accent: #F8F9FA;
-  --accent-foreground: #202124;
-  --destructive: #D93025;
-  --border: #DADCE0;
-  --input: #DADCE0;
-  --ring: #1A73E8;
-  --ev-available: #1E8E3E;
-  --ev-busy: #F9AB00;
-  --ev-overload: #D93025;
-  --ev-offline: #80868B;
+  --secondary: #F7F9FC;
+  --secondary-foreground: #0B1220;
+  --muted: #F7F9FC;
+  --muted-foreground: #8A94A6;
+  --accent: #F7F9FC;
+  --accent-foreground: #0B1220;
+  --destructive: #EF4444;
+  --border: #E6EAF2;
+  --input: #E6EAF2;
+  --ring: #1D6BFF;
+  --ev-available: #16C784;
+  --ev-busy: #F5A524;
+  --ev-overload: #EF4444;
+  --ev-offline: #8A94A6;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -94,11 +94,22 @@ These serve as the fallback; there is no separate default.css file. */
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
+  /* EVspark Design System Tokens */
+  --ev-primary: #1D6BFF;
+  --ev-primary-hover: #4F8CFF;
+  --ev-heading: #0B1220;
+  --ev-body: #4A5568;
+  --ev-muted: #8A94A6;
+  --ev-surface: #F7F9FC;
+  --ev-border: #E6EAF2;
+  --ev-card-shadow: 0 8px 30px rgba(16, 40, 90, 0.06);
+  --ev-card-shadow-hover: 0 12px 40px rgba(16, 40, 90, 0.10);
+
   /* fonts */
-  --font-sans: var(--font-geist);
+  --font-sans: var(--font-inter, var(--font-geist));
   --font-mono: var(--font-geist-mono);
-  --background: #F8F9FA;
-  --foreground: #202124;
+  --background: #FFFFFF;
+  --foreground: #0B1220;
 }
 
 body {
@@ -106,39 +117,7 @@ body {
   line-height: 1.6;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
+/* Dark mode intentionally omitted – light theme only per design spec */
 
 @layer base {
   * {

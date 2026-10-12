@@ -167,7 +167,7 @@ cp .env.example .env
 | `DIRECT_URL` | Same as `DATABASE_URL` | Direct connection string for Prisma migrations |
 | `PORT` | `4000` | Express API port |
 | `NODE_ENV` | `development` | Runtime environment (`development`, `production`, `test`) |
-| `JWT_SECRET` | `evspark-super-secret-jwt-key-256bit` | Secret for verifying auth tokens |
+| `JWT_SECRET` | *(generate a secure random 256-bit string)* | Secret for verifying auth tokens |
 | `UPSTASH_REDIS_REST_URL` | *(optional)* | Upstash Redis REST URL (falls back to local/in-memory) |
 | `UPSTASH_REDIS_REST_TOKEN` | *(optional)* | Upstash Redis REST token |
 | `ML_SERVICE_URL` | `http://localhost:8000` | FastAPI ML service URL |

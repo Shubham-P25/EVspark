@@ -2,9 +2,10 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { X, GasPump, Star, Lightning, ArrowRight } from "@phosphor-icons/react";
+import { X, GasPump, Star, Lightning, ArrowRight, CheckCircle } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
 import { inr, mins, km } from "@/lib/format";
+import { getPrimaryStationPhoto } from "@/lib/station-photos";
 
 interface RecommendedStation {
   stationId: string;
@@ -119,32 +120,53 @@ export function BestChargersPanel({
                     : "border-[#DADCE0] hover:border-[#1A73E8] bg-white"
                 }`}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`size-6 rounded-full flex items-center justify-center font-bold text-xs ${
-                        isTop ? "bg-[#1E8E3E] text-white" : "bg-slate-100 text-[#5F6368]"
-                      }`}
-                    >
-                      #{idx + 1}
-                    </span>
-                    <h3 className="font-bold text-sm text-[#202124] hover:text-[#1A73E8]">
-                      {stName}
-                    </h3>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="relative size-10 rounded-xl overflow-hidden shrink-0 bg-slate-200 border border-slate-200 shadow-2xs">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={getPrimaryStationPhoto({ id: stId, name: stName })}
+                        alt={stName}
+                        className="size-full object-cover"
+                      />
+                      <span
+                        className={`absolute top-0.5 left-0.5 size-4 rounded-full flex items-center justify-center font-bold text-[9px] shadow-xs ${
+                          isTop ? "bg-[#1E8E3E] text-white" : "bg-black/60 text-white"
+                        }`}
+                      >
+                        #{idx + 1}
+                      </span>
+                    </div>
+
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-sm text-[#202124] hover:text-[#1A73E8] truncate">
+                        {stName}
+                      </h3>
+                      <div className="flex items-center gap-2 text-xs text-[#5F6368]">
+                        <span>Drive: <b>{mins(driveMin)}</b></span>
+                        <span>•</span>
+                        <span className="font-mono">{inr(price)}/kWh</span>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-mono font-semibold text-[#202124]">
-                    {inr(price)}/kWh
-                  </span>
+
+                  <div className="text-right shrink-0">
+                    {avail > 0 || waitMin === 0 ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold shadow-2xs">
+                        <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Free Station Available
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold shadow-2xs">
+                        ⏱ {waitMin}m Wait
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs text-[#5F6368] flex-wrap">
-                  <span>Drive: <b>{mins(driveMin)}</b></span>
-                  <span>•</span>
-                  <span className="text-[#1E8E3E] font-semibold">
-                    Wait: {waitMin === 0 ? "0m (Free)" : mins(waitMin)}
-                  </span>
-                  <span>•</span>
-                  <span>{avail} of {total} free</span>
+                <div className="flex items-center justify-between text-xs text-[#5F6368] pt-0.5">
+                  <span className="text-emerald-700 font-semibold">{avail} of {total} chargers free</span>
+                  <span className="text-slate-400 font-medium">Total: {mins(totalMin)}</span>
                 </div>
 
                 {reason && (

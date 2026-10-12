@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 const FAQS = [
   {
@@ -32,49 +33,80 @@ const FAQS = [
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const reducedMotion = useReducedMotion();
 
   return (
-    <section id="faq" className="border-b border-[#DADCE0] bg-white py-20">
+    <section id="faq" className="bg-white py-24">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4">
-          <span className="rounded-full bg-[#E8F0FE] px-3.5 py-1 text-xs font-semibold text-[#1A73E8]">
+        <motion.div
+          className="text-center space-y-5"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="inline-flex items-center rounded-full bg-[#1D6BFF]/8 px-4 py-1.5 text-xs font-semibold text-[#1D6BFF]">
             Got Questions?
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-[#202124]">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-[-0.02em] text-[#0B1220]">
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg text-[#5F6368]">
+          <p className="text-base sm:text-lg text-[#4A5568]">
             Everything you need to know about EVspark predictive charging.
           </p>
-        </div>
+        </motion.div>
 
         <div className="mt-12 space-y-4">
           {FAQS.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <div
+              <motion.div
                 key={faq.q}
-                className="overflow-hidden rounded-2xl border border-[#DADCE0] bg-[#F8F9FA] transition"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={
+                  reducedMotion
+                    ? { duration: 0 }
+                    : { delay: i * 0.05, duration: 0.4 }
+                }
+                className="overflow-hidden rounded-2xl border border-[#E6EAF2] bg-[#F7F9FC] transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(16,40,90,0.04)]"
               >
                 <button
                   type="button"
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between p-5 sm:p-6 text-left font-semibold text-[#202124] hover:text-[#1A73E8]"
+                  className="flex w-full items-center justify-between p-5 sm:p-6 text-left font-semibold text-[#0B1220] hover:text-[#1D6BFF] transition-colors duration-200"
                 >
-                  <span className="text-base sm:text-lg">{faq.q}</span>
-                  <CaretDown
-                    size={20}
-                    className={`shrink-0 text-[#5F6368] transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-[#1A73E8]" : ""
-                    }`}
-                  />
+                  <span className="text-base sm:text-lg pr-4">{faq.q}</span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="shrink-0"
+                  >
+                    <CaretDown
+                      size={20}
+                      className={`transition-colors duration-200 ${
+                        isOpen ? "text-[#1D6BFF]" : "text-[#8A94A6]"
+                      }`}
+                    />
+                  </motion.span>
                 </button>
-                {isOpen && (
-                  <div className="border-t border-[#DADCE0] bg-white p-5 sm:p-6 text-sm leading-relaxed text-[#5F6368]">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
+                <AnimatePresence mode="wait">
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: reducedMotion ? 0 : 0.25, ease: "easeOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="border-t border-[#E6EAF2] bg-white p-5 sm:p-6 text-sm leading-relaxed text-[#4A5568]">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>

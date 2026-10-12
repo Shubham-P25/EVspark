@@ -459,8 +459,18 @@ async function main() {
 
   // 4. Stations & Chargers
   let createdCount = 0;
+  const defaultPhotos = [
+    "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1558441719-72f5341cfab0?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1647427017067-8f33cd449248?auto=format&fit=crop&w=1200&q=80",
+    "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1200&q=80"
+  ];
+
   for (const item of SEED_STATIONS) {
     const { chargers, ...stationData } = item;
+    const photoUrl = (stationData as any).photoUrl || defaultPhotos[createdCount % defaultPhotos.length];
     let station = await prisma.station.findFirst({
       where: { name: stationData.name }
     });
@@ -469,6 +479,7 @@ async function main() {
       station = await prisma.station.create({
         data: {
           ...stationData,
+          photoUrl,
           operatorUserId: item.operatorName === "GreenCharge Hub" ? operatorUser.id : null,
           chargers: {
             create: chargers.map(c => ({
@@ -483,6 +494,12 @@ async function main() {
       });
       createdCount++;
     } else {
+      if (!station.photoUrl) {
+        await prisma.station.update({
+          where: { id: station.id },
+          data: { photoUrl }
+        });
+      }
       // update chargers if needed
       for (const c of chargers) {
         const existingCharger = await prisma.charger.findFirst({

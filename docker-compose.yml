@@ -28,6 +28,15 @@ services:
       timeout: 3s
       retries: 5
 
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./infra/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquittodata:/mosquitto/data
+
   api:
     build:
       context: .
@@ -73,3 +82,4 @@ services:
 
 volumes:
   pgdata:
+  mosquittodata:

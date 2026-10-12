@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { Me } from "@/components/map/user-location";
 
 export type GeoStatus = "idle" | "ok" | "denied" | "unavailable";
@@ -8,14 +8,20 @@ export type GeoStatus = "idle" | "ok" | "denied" | "unavailable";
 export function useGeolocation() {
   const [me, setMe] = useState<Me | null>(null);
   const [status, setStatus] = useState<GeoStatus>("idle");
+  const [showConsent, setShowConsent] = useState(false);
+  const watchIdRef = useRef<number | null>(null);
 
-  useEffect(() => {
+  const startWatching = () => {
     if (typeof window === "undefined" || !("geolocation" in navigator)) {
       setStatus("unavailable");
       return;
     }
 
-    const id = navigator.geolocation.watchPosition(
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+    }
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
       (p) => {
         setMe({
           lat: p.coords.latitude,
@@ -28,9 +34,39 @@ export function useGeolocation() {
       (e) => setStatus(e.code === e.PERMISSION_DENIED ? "denied" : "unavailable"),
       { enableHighAccuracy: true, maximumAge: 10_000, timeout: 15_000 }
     );
+  };
 
-    return () => navigator.geolocation.clearWatch(id);
+  useEffect(() => {
+    if (typeof window === "undefined" || !("geolocation" in navigator)) {
+      setStatus("unavailable");
+      return;
+    }
+
+    const consent = localStorage.getItem("evspark-location-consent");
+    if (consent === "not_now") {
+      setStatus("denied");
+      return;
+    }
+
+    startWatching();
+
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
+    };
   }, []);
 
-  return { me, status };
+  const handleConsent = (allow: boolean) => {
+    setShowConsent(false);
+    if (allow) {
+      localStorage.setItem("evspark-location-consent", "allow");
+      startWatching();
+    } else {
+      localStorage.setItem("evspark-location-consent", "not_now");
+      setStatus("denied");
+    }
+  };
+
+  return { me, status, showConsent, handleConsent };
 }

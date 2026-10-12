@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,6 +27,13 @@ const geistMono = Geist_Mono({
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-plus-jakarta",
+  weight: ["600", "700", "800"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <ClerkProvider
       appearance={{
         variables: {
-          colorPrimary: "#1A73E8",
+          colorPrimary: "#1D6BFF",
         },
       }}
     >
@@ -65,7 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <ThemeBootScript />
         </head>
         <body
-          className={`${geist.variable} ${geistMono.variable} ${plusJakartaSans.variable} font-sans min-h-screen antialiased bg-[#F8F9FA] text-[#202124] text-[16px] leading-[1.6]`}
+          className={`${geist.variable} ${geistMono.variable} ${plusJakartaSans.variable} ${inter.variable} font-sans min-h-screen antialiased bg-white text-[#0B1220] text-[16px] leading-[1.6]`}
         >
           <ClerkAuthProvider>
             <AuthBridge />

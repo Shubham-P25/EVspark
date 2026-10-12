@@ -111,7 +111,10 @@ export default function OnboardingPage() {
     apiFetch<any>("/api/me/profile")
       .then((res) => {
         if (res?.onboarded) {
-          window.location.href = res.user?.role === "OPERATOR" ? "/station" : "/driver";
+          const roleToUse = res.user?.role === "OPERATOR" ? "OPERATOR" : "DRIVER";
+          document.cookie = `evspark_onboarded=true; path=/; max-age=31536000; SameSite=Lax`;
+          document.cookie = `evspark_role=${roleToUse}; path=/; max-age=31536000; SameSite=Lax`;
+          window.location.href = roleToUse === "OPERATOR" ? "/station" : "/driver";
         }
       })
       .catch(() => {
@@ -122,8 +125,9 @@ export default function OnboardingPage() {
     if (user.fullName && !fullName) setFullName(user.fullName);
     if (user.fullName && !contactName) setContactName(user.fullName);
 
-    // Initial role from Clerk metadata
-    const userRole = (user.unsafeMetadata?.role as string) || (user.publicMetadata?.role as string);
+    // Initial role from Clerk metadata or pre-oauth cookie
+    const cookieRole = typeof document !== "undefined" && document.cookie.includes("evspark_role=OPERATOR") ? "OPERATOR" : null;
+    const userRole = (user.unsafeMetadata?.role as string) || (user.publicMetadata?.role as string) || cookieRole;
     if (userRole === "OPERATOR") setRole("OPERATOR");
   }, [isLoaded, user, router]);
 
@@ -295,6 +299,8 @@ export default function OnboardingPage() {
         document.cookie = `evspark_role=${role}; path=/; max-age=31536000; SameSite=Lax`;
       }
 
+      const userEmail = user?.primaryEmailAddress?.emailAddress || user?.emailAddresses?.[0]?.emailAddress;
+
       // 2. Persist to API database
       try {
         if (role === "DRIVER") {
@@ -302,6 +308,7 @@ export default function OnboardingPage() {
             method: "PUT",
             body: JSON.stringify({
               role: "DRIVER",
+              email: userEmail,
               fullName: fullName.trim(),
               phone: phone.replace(/\D/g, ""),
               city,
@@ -326,6 +333,7 @@ export default function OnboardingPage() {
             method: "PUT",
             body: JSON.stringify({
               role: "OPERATOR",
+              email: userEmail,
               businessName: businessName.trim(),
               contactName: contactName.trim(),
               phone: operatorPhone.replace(/\D/g, ""),
@@ -389,13 +397,13 @@ export default function OnboardingPage() {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white border border-[#DADCE0] rounded-2xl p-8 text-center shadow-sm">
-          <div className="w-16 h-16 rounded-full bg-green-50 text-[#1E8E3E] flex items-center justify-center mx-auto mb-5">
+      <div className="min-h-screen bg-[#F7F9FC] flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white border border-[#E6EAF2] rounded-2xl p-8 text-center shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-green-50 text-[#16C784] flex items-center justify-center mx-auto mb-5">
             <CheckCircle size={36} weight="fill" />
           </div>
-          <h1 className="text-2xl font-bold text-[#202124]">Onboarding Complete!</h1>
-          <p className="text-sm text-[#5F6368] mt-2 leading-relaxed">
+          <h1 className="text-2xl font-bold text-[#0B1220]">Onboarding Complete!</h1>
+          <p className="text-sm text-[#4A5568] mt-2 leading-relaxed">
             {role === "DRIVER"
               ? "Your EV profile and home station preferences have been saved to the network."
               : "Your charging hub is configured and ready for hardware digital twin operations."}
@@ -405,7 +413,7 @@ export default function OnboardingPage() {
             onClick={() => {
               window.location.href = role === "OPERATOR" ? "/station" : "/driver";
             }}
-            className="w-full h-11 rounded-xl bg-[#1A73E8] hover:bg-[#1557b0] text-white font-medium text-sm mt-8 transition-colors shadow-sm cursor-pointer"
+            className="w-full h-11 rounded-xl bg-[#1D6BFF] hover:bg-[#1557b0] text-white font-medium text-sm mt-8 transition-colors shadow-sm cursor-pointer"
           >
             Go to {role === "OPERATOR" ? "Station Operator Hub" : "Driver Map"}
           </button>
@@ -415,15 +423,15 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex flex-col justify-center items-center p-4 sm:p-8">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col justify-center items-center p-4 sm:p-8">
       <div className="w-full max-w-2xl">
         {/* Brand Bar */}
         <div className="flex items-center justify-center gap-2.5 mb-8">
-          <div className="w-9 h-9 rounded-xl bg-[#1A73E8] flex items-center justify-center text-white">
+          <div className="w-9 h-9 rounded-xl bg-[#1D6BFF] flex items-center justify-center text-white">
             <Lightning size={22} weight="fill" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-[#202124]">
-            EV<span className="text-[#1A73E8]">spark</span> Setup
+          <span className="text-xl font-bold tracking-tight text-[#0B1220]">
+            EV<span className="text-[#1D6BFF]">spark</span> Setup
           </span>
         </div>
 
@@ -447,8 +455,8 @@ export default function OnboardingPage() {
           {stepIndex === 0 && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Select your account type</h3>
-                <p className="text-xs text-[#5F6368] mt-1">
+                <h3 className="text-base font-semibold text-[#0B1220]">Select your account type</h3>
+                <p className="text-xs text-[#4A5568] mt-1">
                   Choose how you will be using the EVspark charging network.
                 </p>
               </div>
@@ -459,15 +467,15 @@ export default function OnboardingPage() {
                   onClick={() => setRole("DRIVER")}
                   className={`p-5 rounded-2xl border text-left transition-all ${
                     role === "DRIVER"
-                      ? "border-[#1A73E8] bg-blue-50/30 ring-2 ring-[#1A73E8]/20"
-                      : "border-[#DADCE0] bg-white hover:border-slate-300"
+                      ? "border-[#1D6BFF] bg-blue-50/30 ring-2 ring-[#1D6BFF]/20"
+                      : "border-[#E6EAF2] bg-white hover:border-slate-300"
                   }`}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#1A73E8] flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 text-[#1D6BFF] flex items-center justify-center mb-4">
                     <Car size={26} weight="bold" />
                   </div>
-                  <h4 className="text-sm font-bold text-[#202124]">EV Driver</h4>
-                  <p className="text-xs text-[#5F6368] mt-1 leading-relaxed">
+                  <h4 className="text-sm font-bold text-[#0B1220]">EV Driver</h4>
+                  <p className="text-xs text-[#4A5568] mt-1 leading-relaxed">
                     Find chargers with live AI wait times, navigate with along-route stops, and book charging bays.
                   </p>
                 </button>
@@ -477,15 +485,15 @@ export default function OnboardingPage() {
                   onClick={() => setRole("OPERATOR")}
                   className={`p-5 rounded-2xl border text-left transition-all ${
                     role === "OPERATOR"
-                      ? "border-[#1A73E8] bg-blue-50/30 ring-2 ring-[#1A73E8]/20"
-                      : "border-[#DADCE0] bg-white hover:border-slate-300"
+                      ? "border-[#1D6BFF] bg-blue-50/30 ring-2 ring-[#1D6BFF]/20"
+                      : "border-[#E6EAF2] bg-white hover:border-slate-300"
                   }`}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-green-100 text-[#1E8E3E] flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-green-100 text-[#16C784] flex items-center justify-center mb-4">
                     <ChargingStation size={26} weight="bold" />
                   </div>
-                  <h4 className="text-sm font-bold text-[#202124]">Station Operator (CPO)</h4>
-                  <p className="text-xs text-[#5F6368] mt-1 leading-relaxed">
+                  <h4 className="text-sm font-bold text-[#0B1220]">Station Operator (CPO)</h4>
+                  <p className="text-xs text-[#4A5568] mt-1 leading-relaxed">
                     Manage charger hardware, monitor live revenue and kilowatt throughput, and resolve vehicle queues.
                   </p>
                 </button>
@@ -497,12 +505,12 @@ export default function OnboardingPage() {
           {role === "DRIVER" && stepIndex === 1 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Personal details</h3>
-                <p className="text-xs text-[#5F6368] mt-1">Used for reservation alerts and receipts.</p>
+                <h3 className="text-base font-semibold text-[#0B1220]">Personal details</h3>
+                <p className="text-xs text-[#4A5568] mt-1">Used for reservation alerts and receipts.</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Full Name
                 </label>
                 <input
@@ -510,16 +518,16 @@ export default function OnboardingPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Rohit Deshmukh"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Mobile Number (Indian 10-Digit)
                 </label>
                 <div className="flex">
-                  <span className="h-11 px-3.5 rounded-l-xl border border-r-0 border-[#DADCE0] bg-slate-50 text-sm text-[#5F6368] flex items-center font-mono">
+                  <span className="h-11 px-3.5 rounded-l-xl border border-r-0 border-[#E6EAF2] bg-slate-50 text-sm text-[#4A5568] flex items-center font-mono">
                     +91
                   </span>
                   <input
@@ -528,17 +536,17 @@ export default function OnboardingPage() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                     placeholder="9876543210"
-                    className="w-full h-11 px-3.5 rounded-r-xl border border-[#DADCE0] text-sm text-[#202124] font-mono focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                    className="w-full h-11 px-3.5 rounded-r-xl border border-[#E6EAF2] text-sm text-[#0B1220] font-mono focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">City</label>
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">City</label>
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] bg-white focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] bg-white focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 >
                   {INDIAN_CITIES.map((c) => (
                     <option key={c} value={c}>
@@ -554,14 +562,14 @@ export default function OnboardingPage() {
           {role === "DRIVER" && stepIndex === 2 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Vehicle specifications</h3>
-                <p className="text-xs text-[#5F6368] mt-1">
+                <h3 className="text-base font-semibold text-[#0B1220]">Vehicle specifications</h3>
+                <p className="text-xs text-[#4A5568] mt-1">
                   Required to filter compatible charging connectors and battery estimates.
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Select Model
                 </label>
                 <select
@@ -575,7 +583,7 @@ export default function OnboardingPage() {
                       setSelectedConnectors(list);
                     }
                   }}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] bg-white focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] bg-white focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 >
                   {vehicles.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -586,7 +594,7 @@ export default function OnboardingPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Vehicle Registration Number
                 </label>
                 <input
@@ -594,16 +602,16 @@ export default function OnboardingPage() {
                   value={regNo}
                   onChange={(e) => setRegNo(e.target.value.toUpperCase().replace(/\s+/g, ""))}
                   placeholder="e.g. MH02AB1234"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] font-mono uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] font-mono uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="text-xs font-semibold text-[#202124] uppercase">
+                  <label className="text-xs font-semibold text-[#0B1220] uppercase">
                     Current Battery Charge
                   </label>
-                  <span className="text-sm font-bold text-[#1A73E8] font-mono">{batteryPct}%</span>
+                  <span className="text-sm font-bold text-[#1D6BFF] font-mono">{batteryPct}%</span>
                 </div>
                 <input
                   type="range"
@@ -612,12 +620,12 @@ export default function OnboardingPage() {
                   step={5}
                   value={batteryPct}
                   onChange={(e) => setBatteryPct(Number(e.target.value))}
-                  className="w-full accent-[#1A73E8]"
+                  className="w-full accent-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Supported Connectors
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -638,8 +646,8 @@ export default function OnboardingPage() {
                         }}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                           isSelected
-                            ? "bg-blue-50 border-[#1A73E8] text-[#1A73E8] font-semibold"
-                            : "bg-white border-[#DADCE0] text-[#5F6368] hover:border-slate-300"
+                            ? "bg-blue-50 border-[#1D6BFF] text-[#1D6BFF] font-semibold"
+                            : "bg-white border-[#E6EAF2] text-[#4A5568] hover:border-slate-300"
                         }`}
                       >
                         {c}
@@ -655,22 +663,22 @@ export default function OnboardingPage() {
           {role === "DRIVER" && stepIndex === 3 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Saved locations</h3>
-                <p className="text-xs text-[#5F6368] mt-1">
+                <h3 className="text-base font-semibold text-[#0B1220]">Saved locations</h3>
+                <p className="text-xs text-[#4A5568] mt-1">
                   We use your home and work base to recommend convenient neighborhood charging hubs.
                 </p>
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1.5">
-                  <label className="text-xs font-semibold text-[#202124] uppercase flex items-center gap-1.5">
-                    <House size={14} weight="bold" className="text-[#1A73E8]" />
+                  <label className="text-xs font-semibold text-[#0B1220] uppercase flex items-center gap-1.5">
+                    <House size={14} weight="bold" className="text-[#1D6BFF]" />
                     Home Address (Required)
                   </label>
                   <button
                     type="button"
                     onClick={useCurrentLocation}
-                    className="text-xs text-[#1A73E8] hover:underline font-medium flex items-center gap-1"
+                    className="text-xs text-[#1D6BFF] hover:underline font-medium flex items-center gap-1"
                   >
                     <MapPin size={12} />
                     Use current location
@@ -681,13 +689,13 @@ export default function OnboardingPage() {
                   value={homeLabel}
                   onChange={(e) => setHomeLabel(e.target.value)}
                   placeholder="e.g. Bandra West, Mumbai"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5 flex items-center gap-1.5">
-                  <Briefcase size={14} weight="bold" className="text-[#5F6368]" />
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5 flex items-center gap-1.5">
+                  <Briefcase size={14} weight="bold" className="text-[#4A5568]" />
                   Work Address (Optional)
                 </label>
                 <input
@@ -695,7 +703,7 @@ export default function OnboardingPage() {
                   value={workLabel}
                   onChange={(e) => setWorkLabel(e.target.value)}
                   placeholder="e.g. BKC Commercial Complex, Mumbai"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
             </div>
@@ -705,42 +713,42 @@ export default function OnboardingPage() {
           {role === "DRIVER" && stepIndex === 4 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Review your profile</h3>
-                <p className="text-xs text-[#5F6368] mt-1">
+                <h3 className="text-base font-semibold text-[#0B1220]">Review your profile</h3>
+                <p className="text-xs text-[#4A5568] mt-1">
                   Confirm your settings before finishing setup.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 border border-[#DADCE0] space-y-3 text-sm">
+              <div className="p-4 rounded-xl bg-slate-50 border border-[#E6EAF2] space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-[#5F6368]">Driver</span>
-                  <span className="font-semibold text-[#202124]">{fullName}</span>
+                  <span className="text-[#4A5568]">Driver</span>
+                  <span className="font-semibold text-[#0B1220]">{fullName}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#5F6368]">Vehicle</span>
-                  <span className="font-semibold text-[#202124]">
+                  <span className="text-[#4A5568]">Vehicle</span>
+                  <span className="font-semibold text-[#0B1220]">
                     {activeVehicle?.make} {activeVehicle?.model} ({regNo})
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#5F6368]">Battery</span>
-                  <span className="font-mono text-[#1A73E8]">{batteryPct}% ({activeVehicle?.batteryKwh} kWh)</span>
+                  <span className="text-[#4A5568]">Battery</span>
+                  <span className="font-mono text-[#1D6BFF]">{batteryPct}% ({activeVehicle?.batteryKwh} kWh)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#5F6368]">Home Base</span>
-                  <span className="font-semibold text-[#202124] truncate max-w-[220px]">{homeLabel}</span>
+                  <span className="text-[#4A5568]">Home Base</span>
+                  <span className="font-semibold text-[#0B1220] truncate max-w-[220px]">{homeLabel}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#202124] uppercase mb-1">
+                  <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1">
                     Max Acceptable Wait
                   </label>
                   <select
                     value={maxWaitMin}
                     onChange={(e) => setMaxWaitMin(Number(e.target.value))}
-                    className="w-full h-10 px-3 rounded-xl border border-[#DADCE0] text-xs text-[#202124] bg-white"
+                    className="w-full h-10 px-3 rounded-xl border border-[#E6EAF2] text-xs text-[#0B1220] bg-white"
                   >
                     <option value={10}>10 minutes</option>
                     <option value={15}>15 minutes</option>
@@ -750,13 +758,13 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#202124] uppercase mb-1">
+                  <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1">
                     Min Charger Power
                   </label>
                   <select
                     value={minKw}
                     onChange={(e) => setMinKw(Number(e.target.value))}
-                    className="w-full h-10 px-3 rounded-xl border border-[#DADCE0] text-xs text-[#202124] bg-white"
+                    className="w-full h-10 px-3 rounded-xl border border-[#E6EAF2] text-xs text-[#0B1220] bg-white"
                   >
                     <option value={30}>30 kW (Fast DC)</option>
                     <option value={50}>50 kW (Rapid DC)</option>
@@ -772,12 +780,12 @@ export default function OnboardingPage() {
           {role === "OPERATOR" && stepIndex === 1 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Business & CPO Profile</h3>
-                <p className="text-xs text-[#5F6368] mt-1">Details of your charging network operations.</p>
+                <h3 className="text-base font-semibold text-[#0B1220]">Business & CPO Profile</h3>
+                <p className="text-xs text-[#4A5568] mt-1">Details of your charging network operations.</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Business / CPO Name
                 </label>
                 <input
@@ -785,12 +793,12 @@ export default function OnboardingPage() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="e.g. SparkPower Charging Network"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Contact Person Name
                 </label>
                 <input
@@ -798,12 +806,12 @@ export default function OnboardingPage() {
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="e.g. Vikram Malhotra"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Mobile Number
                 </label>
                 <input
@@ -812,12 +820,12 @@ export default function OnboardingPage() {
                   value={operatorPhone}
                   onChange={(e) => setOperatorPhone(e.target.value.replace(/\D/g, ""))}
                   placeholder="9876543210"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] font-mono focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] font-mono focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   GSTIN (Optional)
                 </label>
                 <input
@@ -825,7 +833,7 @@ export default function OnboardingPage() {
                   value={gstin}
                   onChange={(e) => setGstin(e.target.value.toUpperCase())}
                   placeholder="e.g. 27AAAAA0000A1Z5"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
             </div>
@@ -835,12 +843,12 @@ export default function OnboardingPage() {
           {role === "OPERATOR" && stepIndex === 2 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Charging Hub Details</h3>
-                <p className="text-xs text-[#5F6368] mt-1">Location of your primary charging station.</p>
+                <h3 className="text-base font-semibold text-[#0B1220]">Charging Hub Details</h3>
+                <p className="text-xs text-[#4A5568] mt-1">Location of your primary charging station.</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Station Name
                 </label>
                 <input
@@ -848,12 +856,12 @@ export default function OnboardingPage() {
                   value={stationName}
                   onChange={(e) => setStationName(e.target.value)}
                   placeholder="e.g. SparkPower BKC Fast Charging Hub"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Full Address
                 </label>
                 <input
@@ -861,19 +869,19 @@ export default function OnboardingPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="e.g. G Block, BKC, Bandra East, Mumbai"
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                  <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                     City
                   </label>
                   <select
                     value={stationCity}
                     onChange={(e) => setStationCity(e.target.value)}
-                    className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] bg-white"
+                    className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] bg-white"
                   >
                     {INDIAN_CITIES.map((c) => (
                       <option key={c} value={c}>
@@ -884,10 +892,10 @@ export default function OnboardingPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                  <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                     Coordinates (Lat, Lng)
                   </label>
-                  <div className="h-11 px-3.5 rounded-xl border border-[#DADCE0] bg-slate-50 text-xs font-mono text-[#5F6368] flex items-center">
+                  <div className="h-11 px-3.5 rounded-xl border border-[#E6EAF2] bg-slate-50 text-xs font-mono text-[#4A5568] flex items-center">
                     {stationLat.toFixed(4)}, {stationLng.toFixed(4)}
                   </div>
                 </div>
@@ -900,8 +908,8 @@ export default function OnboardingPage() {
             <div className="space-y-5">
               <div className="flex justify-between items-center">
                 <div>
-                  <h3 className="text-base font-semibold text-[#202124]">Charger Bays</h3>
-                  <p className="text-xs text-[#5F6368] mt-1">Configure bays for live digital twin telemetry.</p>
+                  <h3 className="text-base font-semibold text-[#0B1220]">Charger Bays</h3>
+                  <p className="text-xs text-[#4A5568] mt-1">Configure bays for live digital twin telemetry.</p>
                 </div>
                 <button
                   type="button"
@@ -911,7 +919,7 @@ export default function OnboardingPage() {
                       { label: `Bay ${chargers.length + 1}`, connectorType: "CCS2", powerKw: 60 },
                     ])
                   }
-                  className="h-9 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#1A73E8] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="h-9 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#1D6BFF] text-xs font-semibold flex items-center gap-1.5 transition-colors"
                 >
                   <Plus size={14} weight="bold" />
                   Add Charger
@@ -922,7 +930,7 @@ export default function OnboardingPage() {
                 {chargers.map((c, index) => (
                   <div
                     key={index}
-                    className="p-3.5 rounded-xl border border-[#DADCE0] bg-white grid grid-cols-12 gap-3 items-center"
+                    className="p-3.5 rounded-xl border border-[#E6EAF2] bg-white grid grid-cols-12 gap-3 items-center"
                   >
                     <div className="col-span-4">
                       <input
@@ -933,7 +941,7 @@ export default function OnboardingPage() {
                           copy[index].label = e.target.value;
                           setChargers(copy);
                         }}
-                        className="w-full h-9 px-2.5 rounded-lg border border-[#DADCE0] text-xs text-[#202124]"
+                        className="w-full h-9 px-2.5 rounded-lg border border-[#E6EAF2] text-xs text-[#0B1220]"
                       />
                     </div>
                     <div className="col-span-4">
@@ -944,7 +952,7 @@ export default function OnboardingPage() {
                           copy[index].connectorType = e.target.value;
                           setChargers(copy);
                         }}
-                        className="w-full h-9 px-2.5 rounded-lg border border-[#DADCE0] text-xs text-[#202124] bg-white"
+                        className="w-full h-9 px-2.5 rounded-lg border border-[#E6EAF2] text-xs text-[#0B1220] bg-white"
                       >
                         {CONNECTOR_OPTIONS.map((opt) => (
                           <option key={opt} value={opt}>
@@ -963,9 +971,9 @@ export default function OnboardingPage() {
                             copy[index].powerKw = Number(e.target.value);
                             setChargers(copy);
                           }}
-                          className="w-full h-9 px-2.5 rounded-l-lg border border-r-0 border-[#DADCE0] text-xs text-[#202124] font-mono"
+                          className="w-full h-9 px-2.5 rounded-l-lg border border-r-0 border-[#E6EAF2] text-xs text-[#0B1220] font-mono"
                         />
-                        <span className="h-9 px-2 bg-slate-50 border border-[#DADCE0] rounded-r-lg text-[10px] text-[#5F6368] flex items-center">
+                        <span className="h-9 px-2 bg-slate-50 border border-[#E6EAF2] rounded-r-lg text-[10px] text-[#4A5568] flex items-center">
                           kW
                         </span>
                       </div>
@@ -991,35 +999,35 @@ export default function OnboardingPage() {
           {role === "OPERATOR" && stepIndex === 4 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-base font-semibold text-[#202124]">Tariff and Operating Hours</h3>
-                <p className="text-xs text-[#5F6368] mt-1">Set rates and amenities for visiting drivers.</p>
+                <h3 className="text-base font-semibold text-[#0B1220]">Tariff and Operating Hours</h3>
+                <p className="text-xs text-[#4A5568] mt-1">Set rates and amenities for visiting drivers.</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Tariff (₹ / kWh)
                 </label>
                 <div className="flex items-center">
-                  <span className="h-11 px-3.5 rounded-l-xl border border-r-0 border-[#DADCE0] bg-slate-50 text-sm text-[#5F6368] flex items-center font-bold">
+                  <span className="h-11 px-3.5 rounded-l-xl border border-r-0 border-[#E6EAF2] bg-slate-50 text-sm text-[#4A5568] flex items-center font-bold">
                     ₹
                   </span>
                   <input
                     type="number"
                     value={tariff}
                     onChange={(e) => setTariff(Number(e.target.value))}
-                    className="w-full h-11 px-3.5 rounded-r-xl border border-[#DADCE0] text-sm text-[#202124] font-mono focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+                    className="w-full h-11 px-3.5 rounded-r-xl border border-[#E6EAF2] text-sm text-[#0B1220] font-mono focus:outline-none focus:ring-2 focus:ring-[#1D6BFF]/20 focus:border-[#1D6BFF]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202124] uppercase mb-1.5">
+                <label className="block text-xs font-semibold text-[#0B1220] uppercase mb-1.5">
                   Operating Hours
                 </label>
                 <select
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl border border-[#DADCE0] text-sm text-[#202124] bg-white"
+                  className="w-full h-11 px-3.5 rounded-xl border border-[#E6EAF2] text-sm text-[#0B1220] bg-white"
                 >
                   <option value="24/7">24 Hours / 7 Days</option>
                   <option value="6:00 AM - 11:00 PM">6:00 AM - 11:00 PM</option>
@@ -1027,7 +1035,7 @@ export default function OnboardingPage() {
                 </select>
               </div>
 
-              <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-[#1A73E8] leading-relaxed">
+              <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-[#1D6BFF] leading-relaxed">
                 ℹ️ Your station will be reviewed by platform administrators before appearing in driver search results unless instant demo approval is active.
               </div>
             </div>

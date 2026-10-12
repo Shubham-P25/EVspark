@@ -9,7 +9,17 @@ export async function runRetentionCleanup(): Promise<void> {
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
 
-    // 1. Delete ChargerEvent older than 7 days if hourly rollup exists
+    // 1. Delete VehiclePing older than 7 days
+    const pingRes = await prisma.vehiclePing.deleteMany({
+      where: { ts: { lt: sevenDaysAgo } },
+    });
+
+    // 2. Delete ChargerEvent older than 90 days
+    const eventRes = await prisma.chargerEvent.deleteMany({
+      where: { ts: { lt: ninetyDaysAgo } },
+    });
+
+    // 3. Delete ChargerEvent older than 7 days if hourly rollup exists
     const eventsToDelete = await prisma.chargerEvent.findMany({
       where: {
         ts: { lt: sevenDaysAgo },
@@ -67,6 +77,6 @@ export async function runRetentionCleanup(): Promise<void> {
       }
     }
 
-    logger.info({ deletedEvents, deletedSessions }, "Retention cleanup job completed.");
+    logger.info({ deletedPings: pingRes.count, deletedEvents: deletedEvents + eventRes.count, deletedSessions }, "Retention cleanup job completed.");
   });
 }

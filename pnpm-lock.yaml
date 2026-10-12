@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      framer-motion:
+        specifier: ^14.1.0
+        version: 14.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
     devDependencies:
       '@types/supertest':
         specifier: ^7.2.1
@@ -228,6 +232,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.3.0)
+      framer-motion:
+        specifier: ^14.1.0
+        version: 14.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       geist:
         specifier: ^1.7.2
         version: 1.7.2(next@16.3.8(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@22.20.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))
@@ -363,6 +370,25 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  scripts/ghost-drivers:
+    dependencies:
+      '@evspark/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.5
+      tsx:
+        specifier: ^4.23.11
+        version: 4.23.15
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
   scripts/mqtt-simulator:
     dependencies:
       axios:
@@ -374,6 +400,25 @@ importers:
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.4
+
+  scripts/station-feed:
+    dependencies:
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
+      mqtt:
+        specifier: ^5.15.2
+        version: 5.16.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.5
+      tsx:
+        specifier: ^4.23.11
+        version: 4.23.15
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
 
   scripts/twin-engine:
     dependencies:

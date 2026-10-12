@@ -12,6 +12,7 @@ import {
   updateChargerStatus,
   getRevenueAnalytics,
   getHeatmapAnalytics,
+  getBreakdownAnalytics,
   getLiveSessions,
   replyToReview,
   getOperatorStationLive,
@@ -27,6 +28,7 @@ router.patch("/stations/:id/pricing", validate({ body: updatePricingSchema }), u
 router.patch("/chargers/:id/status", validate({ body: updateChargerStatusSchema }), updateChargerStatus);
 router.get("/analytics/revenue", getRevenueAnalytics);
 router.get("/analytics/heatmap", getHeatmapAnalytics);
+router.get("/analytics/breakdown", getBreakdownAnalytics);
 router.get("/analytics/sessions", getLiveSessions);
 router.get("/analytics/chargers", getLiveSessions);
 router.post("/reviews/:id/reply", validate({ body: replyReviewSchema }), replyToReview);

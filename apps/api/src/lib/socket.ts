@@ -6,6 +6,7 @@ import { getRedis } from "./redis.js";
 import { verifyAndAttachUser } from "../middleware/auth.js";
 import prisma from "./prisma.js";
 import { computeWaitTime, latLngToTile } from "@evspark/shared";
+import { getGeofenceCounts } from "./geofence.js";
 
 let io: SocketIOServer | undefined;
 const pendingDeltas = new Map<string, any>();
@@ -193,12 +194,14 @@ export async function flushDeltas() {
       },
     });
 
+    const geoCounts = await getGeofenceCounts(stationIds);
     const changedSummaries: any[] = [];
 
     for (const st of stations) {
       const waitInfo = computeWaitTime({
         chargers: st.chargers as any,
         queueLength: st.queueEntries.length,
+        geofenceVehicleCount: geoCounts.get(st.id) ?? 0,
       });
 
       const summary = {
@@ -208,6 +211,7 @@ export async function flushDeltas() {
         availableChargers: waitInfo.availableChargers,
         totalChargers: st.chargers.length,
         isOverloaded: waitInfo.isOverloaded,
+        incomingVehicles: geoCounts.get(st.id) ?? 0,
       };
 
       changedSummaries.push(summary);

@@ -5,6 +5,7 @@ export interface WaitTimeInput {
   queueLength: number;
   targetConnector?: string;
   defaultAvgSessionMinutes?: number;
+  geofenceVehicleCount?: number;
 }
 
 export interface WaitTimeResult {
@@ -13,6 +14,7 @@ export interface WaitTimeResult {
   totalCompatibleChargers: number;
   markerColor: 'green' | 'yellow' | 'red';
   isOverloaded: boolean;
+  incomingVehicles?: number;
 }
 
 export interface ActiveSessionInfo {
@@ -187,10 +189,12 @@ export function computeWaitTime({
   queueLength,
   targetConnector,
   defaultAvgSessionMinutes = 30,
+  geofenceVehicleCount = 0,
 }: WaitTimeInput): WaitTimeResult {
   const blended = computeBlendedWait({
     chargerStates: chargers,
     explicitQueueLength: queueLength,
+    geofenceVehicleCount,
     targetConnector,
     avgSessionDuration: defaultAvgSessionMinutes,
   });
@@ -201,5 +205,6 @@ export function computeWaitTime({
     totalCompatibleChargers: blended.totalCompatibleChargers,
     markerColor: blended.markerColor,
     isOverloaded: blended.isOverloaded,
+    incomingVehicles: geofenceVehicleCount,
   };
 }

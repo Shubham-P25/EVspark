@@ -91,7 +91,7 @@ export function ClusterLayer({
             key={s.id}
             s={s}
             selected={s.id === selectedId}
-            showLabel={zoom >= 14}
+            showLabel={zoom >= 12}
             onSelect={onSelect}
           />
         ) : null;

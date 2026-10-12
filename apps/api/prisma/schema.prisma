@@ -179,6 +179,7 @@ model Session {
   source         String    @default("twin") // "real" | "twin"
   queueWaitMin   Float?
   ocppTxId       Int?
+  externalId     String?   @unique
   station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
   charger        Charger   @relation(fields: [chargerId], references: [id], onDelete: Cascade)
   driver         User?     @relation(fields: [driverUserId], references: [id], onDelete: SetNull)

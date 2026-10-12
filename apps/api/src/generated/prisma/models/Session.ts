@@ -60,6 +60,7 @@ export type SessionMinAggregateOutputType = {
   source: string | null
   queueWaitMin: number | null
   ocppTxId: number | null
+  externalId: string | null
 }
 
 export type SessionMaxAggregateOutputType = {
@@ -78,6 +79,7 @@ export type SessionMaxAggregateOutputType = {
   source: string | null
   queueWaitMin: number | null
   ocppTxId: number | null
+  externalId: string | null
 }
 
 export type SessionCountAggregateOutputType = {
@@ -96,6 +98,7 @@ export type SessionCountAggregateOutputType = {
   source: number
   queueWaitMin: number
   ocppTxId: number
+  externalId: number
   _all: number
 }
 
@@ -134,6 +137,7 @@ export type SessionMinAggregateInputType = {
   source?: true
   queueWaitMin?: true
   ocppTxId?: true
+  externalId?: true
 }
 
 export type SessionMaxAggregateInputType = {
@@ -152,6 +156,7 @@ export type SessionMaxAggregateInputType = {
   source?: true
   queueWaitMin?: true
   ocppTxId?: true
+  externalId?: true
 }
 
 export type SessionCountAggregateInputType = {
@@ -170,6 +175,7 @@ export type SessionCountAggregateInputType = {
   source?: true
   queueWaitMin?: true
   ocppTxId?: true
+  externalId?: true
   _all?: true
 }
 
@@ -275,6 +281,7 @@ export type SessionGroupByOutputType = {
   source: string
   queueWaitMin: number | null
   ocppTxId: number | null
+  externalId: string | null
   _count: SessionCountAggregateOutputType | null
   _avg: SessionAvgAggregateOutputType | null
   _sum: SessionSumAggregateOutputType | null
@@ -316,6 +323,7 @@ export type SessionWhereInput = {
   source?: Prisma.StringFilter<"Session"> | string
   queueWaitMin?: Prisma.FloatNullableFilter<"Session"> | number | null
   ocppTxId?: Prisma.IntNullableFilter<"Session"> | number | null
+  externalId?: Prisma.StringNullableFilter<"Session"> | string | null
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
   charger?: Prisma.XOR<Prisma.ChargerScalarRelationFilter, Prisma.ChargerWhereInput>
   driver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -337,6 +345,7 @@ export type SessionOrderByWithRelationInput = {
   source?: Prisma.SortOrder
   queueWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   ocppTxId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
   station?: Prisma.StationOrderByWithRelationInput
   charger?: Prisma.ChargerOrderByWithRelationInput
   driver?: Prisma.UserOrderByWithRelationInput
@@ -344,6 +353,7 @@ export type SessionOrderByWithRelationInput = {
 
 export type SessionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  externalId?: string
   AND?: Prisma.SessionWhereInput | Prisma.SessionWhereInput[]
   OR?: Prisma.SessionWhereInput[]
   NOT?: Prisma.SessionWhereInput | Prisma.SessionWhereInput[]
@@ -364,7 +374,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
   charger?: Prisma.XOR<Prisma.ChargerScalarRelationFilter, Prisma.ChargerWhereInput>
   driver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-}, "id">
+}, "id" | "externalId">
 
 export type SessionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -382,6 +392,7 @@ export type SessionOrderByWithAggregationInput = {
   source?: Prisma.SortOrder
   queueWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   ocppTxId?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SessionCountOrderByAggregateInput
   _avg?: Prisma.SessionAvgOrderByAggregateInput
   _max?: Prisma.SessionMaxOrderByAggregateInput
@@ -408,6 +419,7 @@ export type SessionScalarWhereWithAggregatesInput = {
   source?: Prisma.StringWithAggregatesFilter<"Session"> | string
   queueWaitMin?: Prisma.FloatNullableWithAggregatesFilter<"Session"> | number | null
   ocppTxId?: Prisma.IntNullableWithAggregatesFilter<"Session"> | number | null
+  externalId?: Prisma.StringNullableWithAggregatesFilter<"Session"> | string | null
 }
 
 export type SessionCreateInput = {
@@ -423,6 +435,7 @@ export type SessionCreateInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
@@ -444,6 +457,7 @@ export type SessionUncheckedCreateInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionUpdateInput = {
@@ -459,6 +473,7 @@ export type SessionUpdateInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
@@ -480,6 +495,7 @@ export type SessionUncheckedUpdateInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionCreateManyInput = {
@@ -498,6 +514,7 @@ export type SessionCreateManyInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionUpdateManyMutationInput = {
@@ -513,6 +530,7 @@ export type SessionUpdateManyMutationInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyInput = {
@@ -531,6 +549,7 @@ export type SessionUncheckedUpdateManyInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionListRelationFilter = {
@@ -559,6 +578,7 @@ export type SessionCountOrderByAggregateInput = {
   source?: Prisma.SortOrder
   queueWaitMin?: Prisma.SortOrder
   ocppTxId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
 }
 
 export type SessionAvgOrderByAggregateInput = {
@@ -586,6 +606,7 @@ export type SessionMaxOrderByAggregateInput = {
   source?: Prisma.SortOrder
   queueWaitMin?: Prisma.SortOrder
   ocppTxId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
 }
 
 export type SessionMinOrderByAggregateInput = {
@@ -604,6 +625,7 @@ export type SessionMinOrderByAggregateInput = {
   source?: Prisma.SortOrder
   queueWaitMin?: Prisma.SortOrder
   ocppTxId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
 }
 
 export type SessionSumOrderByAggregateInput = {
@@ -754,6 +776,7 @@ export type SessionCreateWithoutDriverInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
 }
@@ -773,6 +796,7 @@ export type SessionUncheckedCreateWithoutDriverInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionCreateOrConnectWithoutDriverInput = {
@@ -820,6 +844,7 @@ export type SessionScalarWhereInput = {
   source?: Prisma.StringFilter<"Session"> | string
   queueWaitMin?: Prisma.FloatNullableFilter<"Session"> | number | null
   ocppTxId?: Prisma.IntNullableFilter<"Session"> | number | null
+  externalId?: Prisma.StringNullableFilter<"Session"> | string | null
 }
 
 export type SessionCreateWithoutStationInput = {
@@ -835,6 +860,7 @@ export type SessionCreateWithoutStationInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
   charger: Prisma.ChargerCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
@@ -854,6 +880,7 @@ export type SessionUncheckedCreateWithoutStationInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionCreateOrConnectWithoutStationInput = {
@@ -895,6 +922,7 @@ export type SessionCreateWithoutChargerInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
   station: Prisma.StationCreateNestedOneWithoutSessionsInput
   driver?: Prisma.UserCreateNestedOneWithoutSessionsInput
 }
@@ -914,6 +942,7 @@ export type SessionUncheckedCreateWithoutChargerInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionCreateOrConnectWithoutChargerInput = {
@@ -957,6 +986,7 @@ export type SessionCreateManyDriverInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionUpdateWithoutDriverInput = {
@@ -972,6 +1002,7 @@ export type SessionUpdateWithoutDriverInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
 }
@@ -991,6 +1022,7 @@ export type SessionUncheckedUpdateWithoutDriverInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyWithoutDriverInput = {
@@ -1008,6 +1040,7 @@ export type SessionUncheckedUpdateManyWithoutDriverInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionCreateManyStationInput = {
@@ -1025,6 +1058,7 @@ export type SessionCreateManyStationInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionUpdateWithoutStationInput = {
@@ -1040,6 +1074,7 @@ export type SessionUpdateWithoutStationInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   charger?: Prisma.ChargerUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
 }
@@ -1059,6 +1094,7 @@ export type SessionUncheckedUpdateWithoutStationInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyWithoutStationInput = {
@@ -1076,6 +1112,7 @@ export type SessionUncheckedUpdateManyWithoutStationInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionCreateManyChargerInput = {
@@ -1093,6 +1130,7 @@ export type SessionCreateManyChargerInput = {
   source?: string
   queueWaitMin?: number | null
   ocppTxId?: number | null
+  externalId?: string | null
 }
 
 export type SessionUpdateWithoutChargerInput = {
@@ -1108,6 +1146,7 @@ export type SessionUpdateWithoutChargerInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   station?: Prisma.StationUpdateOneRequiredWithoutSessionsNestedInput
   driver?: Prisma.UserUpdateOneWithoutSessionsNestedInput
 }
@@ -1127,6 +1166,7 @@ export type SessionUncheckedUpdateWithoutChargerInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyWithoutChargerInput = {
@@ -1144,6 +1184,7 @@ export type SessionUncheckedUpdateManyWithoutChargerInput = {
   source?: Prisma.StringFieldUpdateOperationsInput | string
   queueWaitMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   ocppTxId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  externalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1164,6 +1205,7 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   source?: boolean
   queueWaitMin?: boolean
   ocppTxId?: boolean
+  externalId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1185,6 +1227,7 @@ export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   source?: boolean
   queueWaitMin?: boolean
   ocppTxId?: boolean
+  externalId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1206,6 +1249,7 @@ export type SessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   source?: boolean
   queueWaitMin?: boolean
   ocppTxId?: boolean
+  externalId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.Session$driverArgs<ExtArgs>
@@ -1227,9 +1271,10 @@ export type SessionSelectScalar = {
   source?: boolean
   queueWaitMin?: boolean
   ocppTxId?: boolean
+  externalId?: boolean
 }
 
-export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "chargerId" | "driverUserId" | "vehicleModelId" | "startTs" | "endTs" | "estimatedEndTs" | "socStart" | "socEnd" | "energyKwh" | "amountInr" | "source" | "queueWaitMin" | "ocppTxId", ExtArgs["result"]["session"]>
+export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "chargerId" | "driverUserId" | "vehicleModelId" | "startTs" | "endTs" | "estimatedEndTs" | "socStart" | "socEnd" | "energyKwh" | "amountInr" | "source" | "queueWaitMin" | "ocppTxId" | "externalId", ExtArgs["result"]["session"]>
 export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   charger?: boolean | Prisma.ChargerDefaultArgs<ExtArgs>
@@ -1269,6 +1314,7 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     source: string
     queueWaitMin: number | null
     ocppTxId: number | null
+    externalId: string | null
   }, ExtArgs["result"]["session"]>
   composites: {}
 }
@@ -1710,6 +1756,7 @@ export interface SessionFieldRefs {
   readonly source: Prisma.FieldRef<"Session", 'String'>
   readonly queueWaitMin: Prisma.FieldRef<"Session", 'Float'>
   readonly ocppTxId: Prisma.FieldRef<"Session", 'Int'>
+  readonly externalId: Prisma.FieldRef<"Session", 'String'>
 }
     
 

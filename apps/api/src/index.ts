@@ -16,6 +16,9 @@ import prisma from "./lib/prisma";
 import { checkRedisHealth } from "./lib/redis";
 import { httpLogger, logger } from "./lib/logger";
 import { globalLimiter, expensiveLimiter, writeLimiter } from "./middleware/rateLimiter";
+import { assertProductionEnv } from "./lib/env";
+
+assertProductionEnv();
 
 export const app = express();
 const httpServer = createServer(app);

@@ -18,7 +18,9 @@
     "db:migrate": "pnpm --filter api db:migrate",
     "db:seed": "pnpm --filter api db:seed",
     "sim": "pnpm --filter twin-engine dev",
-    "twin": "pnpm --filter twin-engine dev"
+    "twin": "pnpm --filter twin-engine dev",
+    "feed": "pnpm --filter station-feed dev",
+    "ghosts": "pnpm --filter ghost-drivers dev"
   },
   "devDependencies": {
     "@types/supertest": "^7.2.1",
@@ -27,5 +29,8 @@
     "supertest": "^7.3.1",
     "turbo": "^2.4.4",
     "vitest": "^5.0.3"
+  },
+  "dependencies": {
+    "framer-motion": "^14.1.0"
   }
 }

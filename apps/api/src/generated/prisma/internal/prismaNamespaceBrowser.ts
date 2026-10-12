@@ -217,7 +217,8 @@ export const SessionScalarFieldEnum = {
   amountInr: 'amountInr',
   source: 'source',
   queueWaitMin: 'queueWaitMin',
-  ocppTxId: 'ocppTxId'
+  ocppTxId: 'ocppTxId',
+  externalId: 'externalId'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]

@@ -46,21 +46,22 @@ export default function StationAnalyticsPage() {
     queryFn: () => api.get("/api/operator/analytics/sessions"),
   });
 
-  const revenueByDay = revenueData?.revenueByDay || [
-    { day: "Mon", revenue: 4200, kwh: 280, sessions: 35 },
-    { day: "Tue", revenue: 4800, kwh: 310, sessions: 39 },
-    { day: "Wed", revenue: 5300, kwh: 350, sessions: 42 },
-    { day: "Thu", revenue: 4900, kwh: 320, sessions: 38 },
-    { day: "Fri", revenue: 6100, kwh: 410, sessions: 48 },
-    { day: "Sat", revenue: 7400, kwh: 490, sessions: 56 },
-    { day: "Sun", revenue: 6800, kwh: 460, sessions: 52 },
-  ];
+  const { data: breakdownData } = useQuery<any>({
+    queryKey: ["operator-analytics-breakdown"],
+    queryFn: () => api.get("/api/operator/analytics/breakdown"),
+  });
 
-  const connectorData = [
-    { name: "CCS2 (DC Fast)", value: 68 },
-    { name: "Type 2 (AC)", value: 24 },
-    { name: "CHAdeMO", value: 8 },
-  ];
+  const revenueByDay = revenueData?.revenueByDay ?? [];
+
+  const connectorData = (breakdownData?.connectorSplit ?? []).map((c: any) => ({
+    name: c.name,
+    value: c.value,
+  }));
+
+  const waitRows = (heatmapData || []).filter((h: any) => h.avgWaitMin > 0);
+  const avgWait = waitRows.length
+    ? (waitRows.reduce((a: number, h: any) => a + h.avgWaitMin, 0) / waitRows.length).toFixed(1)
+    : "0.0";
 
   const occupancyCurve = (heatmapData || []).map((h) => ({
     hour: h.hour,
@@ -98,6 +99,10 @@ export default function StationAnalyticsPage() {
         </div>
       </div>
 
+      {revenueData?.summary?.stationCount === 0 && (
+        <p className="text-sm text-[#5F6368]">No stations yet. Add a station to see analytics.</p>
+      )}
+
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-2xl bg-white p-5 border border-[#DADCE0] shadow-sm">
@@ -106,9 +111,11 @@ export default function StationAnalyticsPage() {
             <CurrencyInr size={18} className="text-[#1E8E3E]" />
           </div>
           <p className="font-mono text-2xl font-bold text-[#202124]">
-            {inr(revenueData?.summary?.totalRevenue ?? 39500)}
+            {inr(revenueData?.summary?.totalRevenue ?? 0)}
           </p>
-          <span className="text-[11px] text-[#1E8E3E] font-semibold">+14.2% vs prev week</span>
+          <span className="text-[11px] text-[#1E8E3E] font-semibold">
+            Monthly {inr(revenueData?.summary?.monthlyRevenue ?? 0)}
+          </span>
         </div>
 
         <div className="rounded-2xl bg-white p-5 border border-[#DADCE0] shadow-sm">
@@ -117,9 +124,12 @@ export default function StationAnalyticsPage() {
             <Lightning size={18} className="text-[#1A73E8]" />
           </div>
           <p className="font-mono text-2xl font-bold text-[#202124]">
-            {num(2620, 0)} <span className="text-xs font-sans text-[#5F6368]">kWh</span>
+            {num((revenueData?.revenueByDay ?? []).reduce((a: number, d: any) => a + (d.kwh || 0), 0), 0)}{" "}
+            <span className="text-xs font-sans text-[#5F6368]">kWh</span>
           </p>
-          <span className="text-[11px] text-[#1A73E8] font-semibold">+9.8% vs prev week</span>
+          <span className="text-[11px] text-[#1A73E8] font-semibold">
+            Uptime {revenueData?.summary?.avgUptime ?? 0}%
+          </span>
         </div>
 
         <div className="rounded-2xl bg-white p-5 border border-[#DADCE0] shadow-sm">
@@ -128,9 +138,11 @@ export default function StationAnalyticsPage() {
             <Car size={18} className="text-[#5F6368]" />
           </div>
           <p className="font-mono text-2xl font-bold text-[#202124]">
-            {revenueData?.summary?.totalSessions ?? 310}
+            {revenueData?.summary?.totalSessions ?? 0}
           </p>
-          <span className="text-[11px] text-[#5F6368]">Avg {inr(127)} / session</span>
+          <span className="text-[11px] text-[#5F6368]">
+            Avg {inr(revenueData?.summary?.avgSessionRevenue ?? 0)} / session
+          </span>
         </div>
 
         <div className="rounded-2xl bg-white p-5 border border-[#DADCE0] shadow-sm">
@@ -139,9 +151,11 @@ export default function StationAnalyticsPage() {
             <Clock size={18} className="text-[#F9AB00]" />
           </div>
           <p className="font-mono text-2xl font-bold text-[#202124]">
-            6.4 <span className="text-xs font-sans text-[#5F6368]">min</span>
+            {avgWait} <span className="text-xs font-sans text-[#5F6368]">min</span>
           </p>
-          <span className="text-[11px] text-[#1E8E3E] font-semibold">-2.1 min peak reduction</span>
+          <span className="text-[11px] text-[#1E8E3E] font-semibold">
+            {revenueData?.summary?.stationCount ?? 0} active stations
+          </span>
         </div>
       </div>
 
@@ -216,7 +230,7 @@ export default function StationAnalyticsPage() {
                   paddingAngle={4}
                   dataKey="value"
                 >
-                  {connectorData.map((_, i) => (
+                  {connectorData.map((_: any, i: number) => (
                     <Cell key={`cell-${i}`} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}
                 </Pie>
@@ -225,11 +239,11 @@ export default function StationAnalyticsPage() {
             </ResponsiveContainer>
           </div>
           <div className="flex justify-center gap-4 text-xs mt-2">
-            {connectorData.map((d, i) => (
+            {connectorData.map((d: any, i: number) => (
               <span key={d.name} className="flex items-center gap-1.5 text-[#5F6368]">
                 <span
                   className="size-2.5 rounded-full"
-                  style={{ backgroundColor: PIE_COLORS[i] }}
+                  style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
                 />
                 {d.name} ({d.value}%)
               </span>
@@ -256,9 +270,9 @@ export default function StationAnalyticsPage() {
                     <td className="py-2.5 font-semibold text-[#202124]">
                       {s.charger?.label ?? "Bay"}
                     </td>
-                    <td className="py-2.5 font-mono">{num(s.energyKwh || 24, 1)} kWh</td>
+                    <td className="py-2.5 font-mono">{num(s.energyKwh || 0, 1)} kWh</td>
                     <td className="py-2.5 font-mono font-semibold text-[#1E8E3E]">
-                      {inr(s.amountInr || 450)}
+                      {inr(s.amountInr || 0)}
                     </td>
                     <td className="py-2.5 text-[#5F6368]">
                       {new Date(s.startTs).toLocaleTimeString("en-IN", {

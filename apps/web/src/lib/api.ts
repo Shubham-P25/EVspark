@@ -15,11 +15,17 @@ export class ApiError extends Error {
 }
 
 type TokenGetter = () => Promise<string | null>;
+type EmailGetter = () => string | null;
 
 let globalTokenGetter: TokenGetter | null = null;
+let globalEmailGetter: EmailGetter | null = null;
 
 export function setTokenGetter(getter: TokenGetter | null) {
   globalTokenGetter = getter;
+}
+
+export function setUserEmailGetter(getter: EmailGetter | null) {
+  globalEmailGetter = getter;
 }
 
 export type ApiOptions = RequestInit & { json?: unknown };
@@ -53,6 +59,17 @@ export async function apiFetch<T>(
       }
     } catch {
       // Proceed without token if retrieval fails
+    }
+  }
+
+  if (globalEmailGetter && !headers.has("X-User-Email")) {
+    try {
+      const email = globalEmailGetter();
+      if (email) {
+        headers.set("X-User-Email", email);
+      }
+    } catch {
+      // Ignore error
     }
   }
 

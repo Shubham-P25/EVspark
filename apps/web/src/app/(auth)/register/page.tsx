@@ -1,10 +1,19 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSignUp, useClerk } from "@clerk/nextjs";
-import { Eye, EyeSlash, CircleNotch, Car, ChargingStation } from "@phosphor-icons/react";
+import {
+  Eye,
+  EyeSlash,
+  CircleNotch,
+  Car,
+  ChargingStation,
+  EnvelopeSimple,
+  ArrowLeft,
+  CheckCircle,
+} from "@phosphor-icons/react";
 import { siGoogle, siGithub } from "simple-icons";
 import { z } from "zod";
 
@@ -16,9 +25,8 @@ const registerFormSchema = z.object({
     .regex(/^[a-z0-9_]+$/, "Username must be lowercase letters, numbers, and underscores only"),
   email: z
     .string()
-    .email("Please enter a valid email address")
-    .optional()
-    .or(z.literal("")),
+    .min(1, "Email address is required")
+    .email("Please enter a valid email address"),
   fullName: z
     .string()
     .min(2, "Full name must be at least 2 characters")
@@ -43,6 +51,20 @@ export default function RegisterPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Verification state
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   const strengthScore = useMemo(() => {
     if (!password) return 0;
@@ -100,8 +122,12 @@ export default function RegisterPage() {
       const firstName = parts[0];
       const lastName = parts.slice(1).join(" ") || "";
 
+      // In Clerk, attributes.username is disabled in this instance.
+      // Top-level 'username' must NOT be passed to signUp.create(),
+      // otherwise Clerk returns "username is not a valid parameter for this request."
+      // Instead, we pass emailAddress, password, firstName, lastName, and store username in unsafeMetadata.
       const signUpPayload: any = {
-        username: username.toLowerCase().trim(),
+        emailAddress: email.trim().toLowerCase(),
         password,
         firstName,
         lastName,
@@ -111,16 +137,12 @@ export default function RegisterPage() {
         },
       };
 
-      if (email.trim()) {
-        signUpPayload.emailAddress = email.trim().toLowerCase();
-      }
-
       const result = await signUp.create(signUpPayload);
 
       if (result.error) {
         const errorMsg = result.error.message || "Failed to create account.";
         if (result.error.code === "form_identifier_exists") {
-          setFieldErrors({ username: "That username or email is already taken. Please choose another." });
+          setFieldErrors({ email: "An account with this email already exists. Please log in or use another email." });
         } else {
           setGeneralError(errorMsg);
         }
@@ -134,6 +156,18 @@ export default function RegisterPage() {
 
       if (signUp.status === "complete" && signUp.createdSessionId) {
         await setActive({ session: signUp.createdSessionId });
+        router.push("/onboarding");
+        return;
+      }
+
+      // If email verification is required
+      if (
+        signUp.status === "missing_requirements" ||
+        signUp.unverifiedFields?.includes("email_address")
+      ) {
+        setPendingVerification(true);
+        setResendCooldown(60);
+        return;
       }
 
       router.push("/onboarding");
@@ -144,14 +178,183 @@ export default function RegisterPage() {
     }
   };
 
-  const handleOAuth = (strategy: "oauth_google" | "oauth_github") => {
-    if (!isLoaded || !signUp) return;
-    signUp.sso({
-      strategy,
-      redirectUrl: "/sso-callback",
-      redirectCallbackUrl: "/onboarding",
-    });
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!verificationCode.trim() || !signUp) return;
+
+    setIsVerifying(true);
+    setGeneralError(null);
+
+    try {
+      const res = await signUp.verifications.verifyEmailCode({
+        code: verificationCode.trim(),
+      });
+
+      if (res?.error) {
+        setGeneralError(res.error.message || "Invalid or expired verification code.");
+        return;
+      }
+
+      if (signUp.status === "complete" && signUp.createdSessionId) {
+        await setActive({ session: signUp.createdSessionId });
+        document.cookie = "evspark_onboarded=; path=/; max-age=0";
+        document.cookie = "evspark_onboarding_complete=; path=/; max-age=0";
+        document.cookie = `evspark_role=${role}; path=/; max-age=31536000; SameSite=Lax`;
+        router.push("/onboarding");
+      } else {
+        const finRes = await signUp.finalize();
+        if (finRes?.error) {
+          setGeneralError(finRes.error.message || "Failed to finalize account.");
+        } else {
+          router.push("/onboarding");
+        }
+      }
+    } catch (err: any) {
+      setGeneralError(err?.message || "Verification failed. Please try again.");
+    } finally {
+      setIsVerifying(false);
+    }
   };
+
+  const handleResendCode = async () => {
+    if (!signUp || resendCooldown > 0) return;
+    try {
+      await signUp.verifications.sendEmailCode();
+      setResendCooldown(60);
+    } catch (err: any) {
+      setGeneralError(err?.message || "Failed to resend code.");
+    }
+  };
+
+  const handleBackToForm = async () => {
+    if (signUp) {
+      try {
+        await signUp.reset();
+      } catch (e) {
+        // ignore
+      }
+    }
+    setPendingVerification(false);
+    setVerificationCode("");
+    setGeneralError(null);
+  };
+
+  const [oauthLoading, setOauthLoading] = useState<string | null>(null);
+
+  const handleOAuth = async (strategy: "oauth_google" | "oauth_github") => {
+    if (!isLoaded || !signUp) return;
+    setGeneralError(null);
+    setOauthLoading(strategy);
+
+    try {
+      // Store selected role in cookie so onboarding defaults to this role after OAuth redirect
+      document.cookie = `evspark_role=${role}; path=/; max-age=31536000; SameSite=Lax`;
+
+      const res = await signUp.sso({
+        strategy,
+        redirectUrl: "/onboarding",
+        redirectCallbackUrl: "/sso-callback",
+      });
+
+      if (res?.error) {
+        console.error("OAuth sign-up error:", res.error);
+        const message =
+          res.error.longMessage ||
+          res.error.message ||
+          `Failed to sign up with ${strategy === "oauth_google" ? "Google" : "GitHub"}.`;
+        setGeneralError(message);
+        setOauthLoading(null);
+      }
+    } catch (err: any) {
+      console.error("OAuth sign-up exception:", err);
+      const message =
+        err?.errors?.[0]?.longMessage ||
+        err?.errors?.[0]?.message ||
+        err?.message ||
+        `Failed to sign up with ${strategy === "oauth_google" ? "Google" : "GitHub"}.`;
+      setGeneralError(message);
+      setOauthLoading(null);
+    }
+  };
+
+  // Render Verification OTP Step
+  if (pendingVerification) {
+    return (
+      <div className="w-full bg-white border border-[#DADCE0] rounded-2xl p-6 sm:p-8 shadow-sm">
+        <button
+          type="button"
+          onClick={handleBackToForm}
+          className="inline-flex items-center gap-1.5 text-xs text-[#5F6368] hover:text-[#202124] mb-4 cursor-pointer"
+        >
+          <ArrowLeft size={14} /> Back
+        </button>
+
+        <div className="text-center mb-6">
+          <div className="w-12 h-12 bg-blue-50 text-[#1A73E8] rounded-full flex items-center justify-center mx-auto mb-3">
+            <EnvelopeSimple size={24} weight="duotone" />
+          </div>
+          <h1 className="text-2xl font-bold text-[#202124]">Verify your email</h1>
+          <p className="text-sm text-[#5F6368] mt-1.5">
+            We sent a 6-digit verification code to <span className="font-semibold text-[#202124]">{email}</span>.
+          </p>
+        </div>
+
+        {generalError && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-[#D93025] text-center"
+          >
+            {generalError}
+          </div>
+        )}
+
+        <form onSubmit={handleVerifyCode} className="space-y-4">
+          <div>
+            <label
+              htmlFor="verificationCode"
+              className="block text-xs font-semibold text-[#202124] uppercase tracking-wider mb-1.5 text-center"
+            >
+              Enter Verification Code
+            </label>
+            <input
+              id="verificationCode"
+              type="text"
+              inputMode="numeric"
+              maxLength={8}
+              autoFocus
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              disabled={isVerifying}
+              className="w-full h-12 px-4 rounded-xl border border-[#DADCE0] text-center text-xl font-mono tracking-widest text-[#202124] placeholder-[#80868B] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1A73E8]/20 focus:border-[#1A73E8]"
+              placeholder="123456"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isVerifying || !verificationCode.trim()}
+            className="w-full h-11 rounded-xl bg-[#1A73E8] hover:bg-[#1557b0] active:bg-[#174ea6] text-white font-medium text-sm flex items-center justify-center gap-2 shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            {isVerifying && <CircleNotch size={18} className="animate-spin" />}
+            <span>{isVerifying ? "Verifying..." : "Verify & Continue"}</span>
+          </button>
+        </form>
+
+        <div className="mt-5 text-center text-xs text-[#5F6368]">
+          Didn&apos;t receive the code?{" "}
+          <button
+            type="button"
+            onClick={handleResendCode}
+            disabled={resendCooldown > 0}
+            className="text-[#1A73E8] font-semibold hover:underline disabled:opacity-50 cursor-pointer"
+          >
+            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend code"}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-white border border-[#DADCE0] rounded-2xl p-6 sm:p-8 shadow-sm">
@@ -238,7 +441,7 @@ export default function RegisterPage() {
             htmlFor="email"
             className="block text-xs font-semibold text-[#202124] uppercase tracking-wider mb-1.5"
           >
-            Email Address <span className="text-[10px] font-normal text-[#5F6368] normal-case">(optional, for invoices & password recovery)</span>
+            Email Address
           </label>
           <input
             id="email"
@@ -384,25 +587,33 @@ export default function RegisterPage() {
         <button
           type="button"
           onClick={() => handleOAuth("oauth_google")}
-          disabled={!isLoaded}
+          disabled={!isLoaded || isSubmitting || !!oauthLoading}
           className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
         >
-          <svg className="w-4 h-4" viewBox="0 0 24 24">
-            <path fill="#4285F4" d={siGoogle.path} />
-          </svg>
-          <span>Google</span>
+          {oauthLoading === "oauth_google" ? (
+            <CircleNotch size={16} className="animate-spin text-[#1A73E8]" />
+          ) : (
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <path fill="#4285F4" d={siGoogle.path} />
+            </svg>
+          )}
+          <span>{oauthLoading === "oauth_google" ? "Connecting..." : "Google"}</span>
         </button>
 
         <button
           type="button"
           onClick={() => handleOAuth("oauth_github")}
-          disabled={!isLoaded}
+          disabled={!isLoaded || isSubmitting || !!oauthLoading}
           className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
         >
-          <svg className="w-4 h-4 fill-[#202124]" viewBox="0 0 24 24">
-            <path d={siGithub.path} />
-          </svg>
-          <span>GitHub</span>
+          {oauthLoading === "oauth_github" ? (
+            <CircleNotch size={16} className="animate-spin text-[#202124]" />
+          ) : (
+            <svg className="w-4 h-4 fill-[#202124]" viewBox="0 0 24 24">
+              <path d={siGithub.path} />
+            </svg>
+          )}
+          <span>{oauthLoading === "oauth_github" ? "Connecting..." : "GitHub"}</span>
         </button>
       </div>
 

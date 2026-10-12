@@ -24,6 +24,7 @@ interface DirectionsPanelProps {
   initialDestination?: { lat: number; lng: number; name: string } | null;
   onSelectStation?: (stationId: string) => void;
   onRoutesComputed?: (routes: RouteOption[], selectedIndex: number) => void;
+  onSearchStart?: (origin: any) => void;
   batteryPct?: number;
   batteryRangeKm?: number;
 }
@@ -34,6 +35,7 @@ export function DirectionsPanel({
   initialDestination,
   onSelectStation,
   onRoutesComputed,
+  onSearchStart,
   batteryPct = 80,
   batteryRangeKm = 250,
 }: DirectionsPanelProps) {
@@ -96,6 +98,7 @@ export function DirectionsPanel({
     e.preventDefault();
     if (!originText || !destinationText) return;
     const orig = originText === "Your location" && userLocation ? userLocation : originText;
+    onSearchStart?.(orig);
     plan(orig, destinationText, viaCoord);
   };
 

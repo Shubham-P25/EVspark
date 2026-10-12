@@ -25,6 +25,7 @@ function createAdaptiveLimiter(options: {
   limit: number;
   message: string;
   keyGenerator?: (req: Request) => string;
+  skip?: (req: Request) => boolean;
 }) {
   const inMemory = rateLimit({
     windowMs: options.windowMs,
@@ -33,12 +34,17 @@ function createAdaptiveLimiter(options: {
     legacyHeaders: false,
     validate: { keyGeneratorIpFallback: false },
     keyGenerator: options.keyGenerator,
+    skip: options.skip,
     handler: rateLimitHandler(options.message),
   });
 
   let redisLimiter: any = null;
 
   return (req: Request, res: Response, next: NextFunction) => {
+    if (options.skip && options.skip(req)) {
+      return next();
+    }
+
     let client;
     try {
       client = getRedis();
@@ -55,6 +61,7 @@ function createAdaptiveLimiter(options: {
             standardHeaders: true,
             legacyHeaders: false,
             keyGenerator: options.keyGenerator,
+            skip: options.skip,
             store: new RedisStore({
               sendCommand: (...args: string[]) => client.call(args[0], ...args.slice(1)) as any,
             }),
@@ -84,6 +91,7 @@ export const globalLimiter = createAdaptiveLimiter({
   windowMs: 60 * 1000,
   limit: 300,
   message: "Global rate limit exceeded (300 requests/minute).",
+  skip: (req) => !!process.env.TWIN_SECRET && req.headers["x-twin-key"] === process.env.TWIN_SECRET,
 });
 
 export const writeLimiter = createAdaptiveLimiter({

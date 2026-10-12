@@ -20,6 +20,7 @@ export default function LoginPage() {
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [identifierError, setIdentifierError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [suggestGoogle, setSuggestGoogle] = useState(false);
 
   const handleSignOutAndReset = async () => {
     document.cookie = "evspark_onboarded=; path=/; max-age=0";
@@ -34,9 +35,11 @@ export default function LoginPage() {
     setGeneralError(null);
     setIdentifierError(null);
     setPasswordError(null);
+    setSuggestGoogle(false);
 
+    const cleanIdentifier = identifier.trim();
     let hasError = false;
-    if (!identifier.trim()) {
+    if (!cleanIdentifier) {
       setIdentifierError("Please enter your username or email.");
       hasError = true;
     }
@@ -56,8 +59,40 @@ export default function LoginPage() {
         await signOut();
       }
 
+      // Fast email path vs username lookup
+      let emailToUse = cleanIdentifier;
+      if (!cleanIdentifier.includes("@")) {
+        try {
+          const resolveRes = await fetch("/api/auth/resolve-identifier", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier: cleanIdentifier }),
+          });
+          const resolved = await resolveRes.json();
+          if (resolved.found) {
+            if (!resolved.passwordEnabled && resolved.isGoogle) {
+              setSuggestGoogle(true);
+              setGeneralError(
+                `The account "${resolved.username || cleanIdentifier}" was registered with Google Sign-In. Please click the Google button below to continue.`
+              );
+              setIsSubmitting(false);
+              return;
+            }
+            if (resolved.email) {
+              emailToUse = resolved.email;
+            }
+          } else {
+            setIdentifierError("No account found with this username. Please check your spelling or use your email address.");
+            setIsSubmitting(false);
+            return;
+          }
+        } catch (resErr) {
+          console.warn("Identifier resolution warning:", resErr);
+        }
+      }
+
       const result = await signIn.create({
-        identifier: identifier.trim(),
+        identifier: emailToUse,
         password,
       });
 
@@ -67,6 +102,9 @@ export default function LoginPage() {
           setIdentifierError("No account found with this username or email.");
         } else if (result.error.code === "form_password_incorrect") {
           setPasswordError("Incorrect password. Please try again.");
+        } else if (result.error.code === "form_password_not_set") {
+          setSuggestGoogle(true);
+          setGeneralError("This account uses Google Sign-In. Please click the Google button below to sign in.");
         } else {
           setGeneralError(errorMsg);
         }
@@ -87,13 +125,39 @@ export default function LoginPage() {
     }
   };
 
-  const handleOAuth = (strategy: "oauth_google" | "oauth_github") => {
+  const [oauthLoading, setOauthLoading] = useState<string | null>(null);
+
+  const handleOAuth = async (strategy: "oauth_google" | "oauth_github") => {
     if (!isLoaded || !signIn) return;
-    signIn.sso({
-      strategy,
-      redirectUrl: "/sso-callback",
-      redirectCallbackUrl: "/onboarding",
-    });
+    setGeneralError(null);
+    setOauthLoading(strategy);
+
+    try {
+      const res = await signIn.sso({
+        strategy,
+        redirectUrl: "/driver",
+        redirectCallbackUrl: "/sso-callback",
+      });
+
+      if (res?.error) {
+        console.error("OAuth sign-in error:", res.error);
+        const message =
+          res.error.longMessage ||
+          res.error.message ||
+          `Failed to sign in with ${strategy === "oauth_google" ? "Google" : "GitHub"}.`;
+        setGeneralError(message);
+        setOauthLoading(null);
+      }
+    } catch (err: any) {
+      console.error("OAuth sign-in exception:", err);
+      const message =
+        err?.errors?.[0]?.longMessage ||
+        err?.errors?.[0]?.message ||
+        err?.message ||
+        `Failed to sign in with ${strategy === "oauth_google" ? "Google" : "GitHub"}.`;
+      setGeneralError(message);
+      setOauthLoading(null);
+    }
   };
 
   return (
@@ -225,25 +289,37 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={() => handleOAuth("oauth_google")}
-          disabled={!isLoaded}
-          className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
+          disabled={!isLoaded || isSubmitting || !!oauthLoading}
+          className={`h-10 px-4 rounded-xl border text-xs font-medium flex items-center justify-center gap-2.5 transition-all disabled:opacity-50 cursor-pointer ${
+            suggestGoogle
+              ? "border-[#1A73E8] bg-blue-50/70 text-[#1A73E8] ring-2 ring-[#1A73E8]/30 font-semibold shadow-sm"
+              : "border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124]"
+          }`}
         >
-          <svg className="w-4 h-4" viewBox="0 0 24 24">
-            <path fill="#4285F4" d={siGoogle.path} />
-          </svg>
-          <span>Google</span>
+          {oauthLoading === "oauth_google" ? (
+            <CircleNotch size={16} className="animate-spin text-[#1A73E8]" />
+          ) : (
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <path fill="#4285F4" d={siGoogle.path} />
+            </svg>
+          )}
+          <span>{oauthLoading === "oauth_google" ? "Connecting..." : suggestGoogle ? "Sign in with Google" : "Google"}</span>
         </button>
 
         <button
           type="button"
           onClick={() => handleOAuth("oauth_github")}
-          disabled={!isLoaded}
+          disabled={!isLoaded || isSubmitting || !!oauthLoading}
           className="h-10 px-4 rounded-xl border border-[#DADCE0] bg-white hover:bg-slate-50 text-[#202124] text-xs font-medium flex items-center justify-center gap-2.5 transition-colors disabled:opacity-50 cursor-pointer"
         >
-          <svg className="w-4 h-4 fill-[#202124]" viewBox="0 0 24 24">
-            <path d={siGithub.path} />
-          </svg>
-          <span>GitHub</span>
+          {oauthLoading === "oauth_github" ? (
+            <CircleNotch size={16} className="animate-spin text-[#202124]" />
+          ) : (
+            <svg className="w-4 h-4 fill-[#202124]" viewBox="0 0 24 24">
+              <path d={siGithub.path} />
+            </svg>
+          )}
+          <span>{oauthLoading === "oauth_github" ? "Connecting..." : "GitHub"}</span>
         </button>
       </div>
 

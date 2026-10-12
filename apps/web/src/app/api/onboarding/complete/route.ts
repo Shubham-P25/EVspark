@@ -13,10 +13,14 @@ export async function POST(req: Request) {
 
     try {
       const client = await clerkClient();
+      const clerkUser = await client.users.getUser(userId);
+      const email = clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)?.emailAddress ||
+                    clerkUser.emailAddresses?.[0]?.emailAddress;
       await client.users.updateUser(userId, {
         publicMetadata: {
           role,
           onboardingComplete: true,
+          email,
         },
       });
     } catch (clerkErr) {

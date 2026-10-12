@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { List, MagnifyingGlass, NavigationArrow, X, Clock, MapPin } from "@phosphor-icons/react";
+import { getPrimaryStationPhoto } from "@/lib/station-photos";
 
 interface SearchCardProps {
   onMenuClick: () => void;
@@ -9,7 +10,7 @@ interface SearchCardProps {
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onSelectStation?: (stationId: string) => void;
-  matchingStations?: { id: string; name: string; address?: string | null }[];
+  matchingStations?: { id: string; name: string; address?: string | null; photoUrl?: string | null }[];
 }
 
 export function SearchCard({
@@ -109,12 +110,19 @@ export function SearchCard({
                     setIsFocused(false);
                     onSelectStation?.(st.id);
                   }}
-                  className="w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-[#F8F9FA] text-left text-xs text-[#202124] cursor-pointer"
+                  className="w-full flex items-center gap-2.5 p-2 rounded-xl hover:bg-[#F8F9FA] text-left text-xs text-[#202124] cursor-pointer group"
                 >
-                  <MapPin size={16} className="text-[#1A73E8] shrink-0" />
-                  <div className="overflow-hidden">
-                    <p className="font-bold truncate">{st.name}</p>
-                    <p className="text-[11px] text-[#5F6368] truncate">{st.address}</p>
+                  <div className="size-9 rounded-lg overflow-hidden shrink-0 bg-slate-200 border border-slate-200 shadow-2xs">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={getPrimaryStationPhoto(st)}
+                      alt={st.name}
+                      className="size-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="overflow-hidden min-w-0">
+                    <p className="font-bold truncate text-[#202124]">{st.name}</p>
+                    <p className="text-[11px] text-[#5F6368] truncate">{st.address || "Mumbai, India"}</p>
                   </div>
                 </button>
               ))}

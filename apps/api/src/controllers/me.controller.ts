@@ -50,9 +50,15 @@ export async function updateOnboarding(req: Request, res: Response) {
     throw new AppError(403, "FORBIDDEN", "Cannot onboard as admin");
   }
 
+  const clientEmail = ((body.email as string) || (req.headers["x-user-email"] as string) || "").trim().toLowerCase();
+  const validEmail = clientEmail.includes("@") ? clientEmail : undefined;
+
   if (body.role === "DRIVER") {
     const input = body as DriverOnboardingInput;
     const now = new Date();
+
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    const shouldUpdateEmail = validEmail && currentUser && currentUser.email.endsWith("@evspark.local");
 
     const [updatedUser, driverProfile] = await prisma.$transaction([
       prisma.user.update({
@@ -62,6 +68,7 @@ export async function updateOnboarding(req: Request, res: Response) {
           phone: input.phone,
           onboardedAt: now,
           role: "DRIVER",
+          ...(shouldUpdateEmail ? { email: validEmail } : {}),
         },
       }),
       prisma.driverProfile.upsert({
@@ -113,6 +120,9 @@ export async function updateOnboarding(req: Request, res: Response) {
     const now = new Date();
     const stationStatus = process.env.AUTO_APPROVE_DEMO === "true" ? "APPROVED" : "PENDING";
 
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    const shouldUpdateEmail = validEmail && currentUser && currentUser.email.endsWith("@evspark.local");
+
     const [updatedUser, operatorProfile, station] = await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },
@@ -121,6 +131,7 @@ export async function updateOnboarding(req: Request, res: Response) {
           phone: input.phone,
           onboardedAt: now,
           role: "OPERATOR",
+          ...(shouldUpdateEmail ? { email: validEmail } : {}),
         },
       }),
       prisma.operatorProfile.upsert({

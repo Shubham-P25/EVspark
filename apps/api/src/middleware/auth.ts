@@ -39,7 +39,7 @@ function getAdminEmails(): string[] {
     .filter(Boolean);
 }
 
-export async function verifyAndAttachUser(token: string): Promise<AuthUser> {
+export async function verifyAndAttachUser(token: string, clientEmail?: string): Promise<AuthUser> {
   const jwks = getJWKS();
   const baseIssuer = process.env.AUTH_ISSUER?.replace(/\/$/, "");
   const issuer = testKeyResolver
@@ -67,8 +67,12 @@ export async function verifyAndAttachUser(token: string): Promise<AuthUser> {
     throw new AppError(401, "UNAUTHORIZED", "Missing subject claim in token");
   }
 
-  const email = (payload.email as string) || `${authId}@evspark.local`;
-  const normalizedEmail = email.toLowerCase();
+  const rawTokenEmail = (payload.email as string)?.trim()?.toLowerCase();
+  const normalizedClientEmail = clientEmail?.trim()?.toLowerCase();
+  const realEmail = (rawTokenEmail && rawTokenEmail.includes("@") ? rawTokenEmail : undefined) ||
+                    (normalizedClientEmail && normalizedClientEmail.includes("@") ? normalizedClientEmail : undefined);
+  const normalizedEmail = realEmail || `${authId.toLowerCase()}@evspark.local`;
+
   const name = (payload.name as string) || undefined;
   const username =
     (payload.username as string) ||
@@ -88,14 +92,15 @@ export async function verifyAndAttachUser(token: string): Promise<AuthUser> {
     assignedRole = "OPERATOR";
   }
 
-  // Upsert user in database
+  // 1. Try finding by authId
   let user = await prisma.user.findUnique({
     where: { authId },
   });
 
-  if (!user) {
+  // 2. If not found by authId and real email is available, find by email
+  if (!user && realEmail) {
     user = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
+      where: { email: realEmail },
     });
     if (user) {
       user = await prisma.user.update({
@@ -107,27 +112,41 @@ export async function verifyAndAttachUser(token: string): Promise<AuthUser> {
           ...(username && !user.username ? { username } : {}),
         },
       });
-    } else {
-      user = await prisma.user.create({
-        data: {
-          authId,
-          email: normalizedEmail,
-          name: name || null,
-          username: username || null,
-          role: assignedRole,
-        },
+    }
+  }
+
+  // 3. If still not found, create new user
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        authId,
+        email: normalizedEmail,
+        name: name || null,
+        username: username || null,
+        role: assignedRole,
+      },
+    });
+  } else {
+    // If existing user has placeholder email and real email is now known, upgrade email
+    const dataToUpdate: Record<string, any> = {};
+    if (realEmail && user.email !== realEmail && user.email.endsWith("@evspark.local")) {
+      dataToUpdate.email = realEmail;
+    }
+    if (isConfiguredAdmin && user.role !== "ADMIN") {
+      dataToUpdate.role = "ADMIN";
+    }
+    if (username && !user.username) {
+      dataToUpdate.username = username;
+    }
+    if (name && !user.name) {
+      dataToUpdate.name = name;
+    }
+    if (Object.keys(dataToUpdate).length > 0) {
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: dataToUpdate,
       });
     }
-  } else if (isConfiguredAdmin && user.role !== "ADMIN") {
-    user = await prisma.user.update({
-      where: { id: user.id },
-      data: { role: "ADMIN" },
-    });
-  } else if (username && !user.username) {
-    user = await prisma.user.update({
-      where: { id: user.id },
-      data: { username },
-    });
   }
 
   return {
@@ -151,7 +170,8 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     throw new AppError(401, "UNAUTHORIZED", "Empty token provided");
   }
 
-  const user = await verifyAndAttachUser(token);
+  const clientEmail = (req.headers["x-user-email"] as string) || undefined;
+  const user = await verifyAndAttachUser(token, clientEmail);
   req.user = user;
   next();
 }
@@ -168,7 +188,8 @@ export async function optionalAuth(req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const user = await verifyAndAttachUser(token);
+    const clientEmail = (req.headers["x-user-email"] as string) || undefined;
+    const user = await verifyAndAttachUser(token, clientEmail);
     req.user = user;
   } catch (err) {
     logger.warn({ err }, "Optional auth token rejected");

@@ -3,6 +3,12 @@ import prisma from "../lib/prisma";
 import { emitChargerUpdate, emitStationUpdate, emitSessionUpdate } from "../lib/socket";
 import { getRedis } from "../lib/redis";
 import { AppError } from "../middleware/errorHandler";
+import {
+  getScopedStationIds,
+  computeRevenueAnalytics,
+  computeHeatmap,
+  computeBreakdown,
+} from "../services/analytics.service";
 
 export async function getOperatorStations(req: Request, res: Response) {
   const user = req.user;
@@ -109,53 +115,26 @@ export async function getRevenueAnalytics(req: Request, res: Response) {
   if (!user) {
     throw new AppError(401, "UNAUTHORIZED", "Authentication required");
   }
-
-  const stationFilter = user.role === "OPERATOR" ? { operatorUserId: user.id } : {};
-  const stations = await prisma.station.findMany({
-    where: stationFilter,
-    select: { id: true },
-  });
-  const stationIds = stations.map((s) => s.id);
-
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const revenueByDay = days.map((day, idx) => ({
-    day,
-    sessions: 32 + (idx * 5) % 18,
-    revenue: Math.round((32 + (idx * 5) % 18) * 145),
-    kwh: Math.round((32 + (idx * 5) % 18) * 28),
-  }));
-
-  const totalRevenue = revenueByDay.reduce((acc, cur) => acc + cur.revenue, 0);
-  const totalSessions = revenueByDay.reduce((acc, cur) => acc + cur.sessions, 0);
-
-  res.json({
-    summary: {
-      totalRevenue,
-      totalSessions,
-      avgSessionRevenue: totalSessions ? Math.round(totalRevenue / totalSessions) : 0,
-      monthlyRevenue: totalRevenue * 4,
-      monthlySessions: totalSessions * 4,
-      avgUptime: 98.4,
-      stationCount: stationIds.length,
-    },
-    revenueByDay,
-  });
+  const stationIds = await getScopedStationIds(user);
+  res.json(await computeRevenueAnalytics(stationIds, 7));
 }
 
 export async function getHeatmapAnalytics(req: Request, res: Response) {
-  const hourlyHeatmap = Array.from({ length: 24 }, (_, hour) => {
-    let occupancy = 15;
-    if (hour >= 8 && hour <= 11) occupancy = 75 + Math.floor(Math.random() * 20);
-    else if (hour >= 17 && hour <= 21) occupancy = 85 + Math.floor(Math.random() * 15);
-    else if (hour >= 12 && hour <= 16) occupancy = 50 + Math.floor(Math.random() * 15);
-    return {
-      hour: `${hour.toString().padStart(2, "0")}:00`,
-      occupancyPct: occupancy,
-      avgWaitMin: occupancy > 70 ? Math.round((occupancy - 60) * 0.4) : 0,
-    };
-  });
+  const user = req.user;
+  if (!user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+  const stationIds = await getScopedStationIds(user);
+  res.json(await computeHeatmap(stationIds, 28));
+}
 
-  res.json(hourlyHeatmap);
+export async function getBreakdownAnalytics(req: Request, res: Response) {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+  const stationIds = await getScopedStationIds(user);
+  res.json(await computeBreakdown(stationIds, 30));
 }
 
 export async function getLiveSessions(req: Request, res: Response) {
