@@ -1,9 +1,20 @@
 import { io, type Socket } from "socket.io-client";
 import { queryClient } from "./query-client";
+import type { PinTuple } from "@evspark/shared";
 
 let socket: Socket | null = null;
 let currentSubscribedTiles: string[] = [];
 let currentToken: string | null = null;
+
+export type DeltaCallback = (data: { stations?: any[]; pins?: PinTuple[] }) => void;
+const deltaListeners = new Set<DeltaCallback>();
+
+export function onStationsDelta(cb: DeltaCallback): () => void {
+  deltaListeners.add(cb);
+  return () => {
+    deltaListeners.delete(cb);
+  };
+}
 
 export function setSocketToken(token: string | null) {
   currentToken = token;
@@ -17,7 +28,7 @@ export function setSocketToken(token: string | null) {
 
 export function getSocket(): Socket {
   if (!socket) {
-    const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+    const url = process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
     socket = io(url, {
       transports: ["websocket", "polling"],
@@ -33,28 +44,35 @@ export function getSocket(): Socket {
       }
     });
 
-    socket.on("stations:delta", (data: { stations?: any[] }) => {
-      const updatedStations = data?.stations;
-      if (!Array.isArray(updatedStations) || updatedStations.length === 0) return;
-
-      const updateMap = new Map(updatedStations.map((s) => [s.id, s]));
-
-      queryClient.setQueriesData({ queryKey: ["stations"] }, (oldData: any) => {
-        if (!oldData) return oldData;
-        if (Array.isArray(oldData)) {
-          return oldData.map((station: any) => {
-            const updated = updateMap.get(station.id);
-            return updated ? { ...station, ...updated } : station;
-          });
+    socket.on("stations:delta", (data: { stations?: any[]; pins?: PinTuple[] }) => {
+      // 1. Notify registered listeners (e.g. useLiveDeltas -> pin-store)
+      deltaListeners.forEach((listener) => {
+        try {
+          listener(data);
+        } catch {
+          // ignore
         }
-        return oldData;
       });
 
-      for (const st of updatedStations) {
-        queryClient.setQueryData(["station", st.id], (prev: any) => {
-          return prev ? { ...prev, ...st } : prev;
-        });
+      // 2. Keep individual station query fresh when station card is open
+      const updatedStations = data?.stations;
+      if (Array.isArray(updatedStations)) {
+        for (const st of updatedStations) {
+          if (st?.id) {
+            queryClient.setQueryData(["station", st.id], (prev: any) => {
+              return prev ? { ...prev, ...st } : prev;
+            });
+          }
+        }
       }
+    });
+
+    socket.on("live:delta", (delta: Record<string, string>) => {
+      liveDeltaListeners.forEach((listener) => {
+        try {
+          listener(delta);
+        } catch {}
+      });
     });
   }
 
@@ -90,3 +108,24 @@ export function unsubscribeStation(stationId: string) {
   const s = getSocket();
   s.emit("unsubscribe:station", stationId);
 }
+
+export type LiveDeltaCallback = (delta: Record<string, string>) => void;
+const liveDeltaListeners = new Set<LiveDeltaCallback>();
+
+export function onLiveDelta(cb: LiveDeltaCallback): () => void {
+  liveDeltaListeners.add(cb);
+  return () => {
+    liveDeltaListeners.delete(cb);
+  };
+}
+
+export function mapJoin(rooms: string[]) {
+  const s = getSocket();
+  s.emit("map:join", rooms);
+}
+
+export function mapLeave(rooms: string[]) {
+  const s = getSocket();
+  s.emit("map:leave", rooms);
+}
+
