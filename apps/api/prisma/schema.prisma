@@ -114,6 +114,7 @@ model Station {
   lat            Float
   lng            Float
   location       Unsupported("geography(Point,4326)")?
+  geom           Unsupported("geography(Point,4326)")?
   pricePerKwh    Float
   hours          String?               @default("24/7")
   amenities      String?               @default("WiFi,Cafe,Restroom,Parking")
@@ -150,6 +151,8 @@ model Charger {
   sessions      Session[]
   bookings      Booking[]
   updatedAt     DateTime       @updatedAt
+
+  @@index([stationId, status])
 }
 
 model ChargerEvent {
