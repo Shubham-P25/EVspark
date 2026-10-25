@@ -86,3 +86,102 @@ export async function checkRedisHealth(): Promise<{ status: "ok" | "down"; laten
     return { status: "down", error: message };
   }
 }
+
+// In-memory fallback cache when Redis server is offline
+const memoryStore = new Map<string, { val: string; exp?: number }>();
+const memoryHash = new Map<string, Map<string, string>>();
+
+export const redis = {
+  async get(key: string): Promise<string | null> {
+    try {
+      const client = getRedis();
+      if (client.status === "ready") {
+        return await client.get(key);
+      }
+    } catch {
+      // fallback below
+    }
+    const item = memoryStore.get(key);
+    if (!item) return null;
+    if (item.exp && Date.now() > item.exp) {
+      memoryStore.delete(key);
+      return null;
+    }
+    return item.val;
+  },
+
+  async set(key: string, value: string, opts?: { ex?: number } | "EX"): Promise<void> {
+    const exSec = typeof opts === "object" && opts?.ex ? opts.ex : undefined;
+    try {
+      const client = getRedis();
+      if (client.status === "ready") {
+        if (exSec) {
+          await client.set(key, value, "EX", exSec);
+        } else {
+          await client.set(key, value);
+        }
+        return;
+      }
+    } catch {
+      // fallback below
+    }
+    memoryStore.set(key, { val: value, exp: exSec ? Date.now() + exSec * 1000 : undefined });
+  },
+
+  async incr(key: string): Promise<number> {
+    try {
+      const client = getRedis();
+      if (client.status === "ready") {
+        return await client.incr(key);
+      }
+    } catch {
+      // fallback below
+    }
+    const cur = Number(memoryStore.get(key)?.val ?? "0") + 1;
+    memoryStore.set(key, { val: String(cur) });
+    return cur;
+  },
+
+  async hset(key: string, data: Record<string, string>): Promise<number> {
+    try {
+      const client = getRedis();
+      if (client.status === "ready") {
+        return await client.hset(key, data);
+      }
+    } catch {
+      // fallback below
+    }
+    let h = memoryHash.get(key);
+    if (!h) {
+      h = new Map();
+      memoryHash.set(key, h);
+    }
+    for (const [k, v] of Object.entries(data)) {
+      h.set(k, v);
+    }
+    return Object.keys(data).length;
+  },
+
+  async hmget(key: string, ...fields: string[]): Promise<Record<string, unknown>> {
+    try {
+      const client = getRedis();
+      if (client.status === "ready") {
+        const arr = await client.hmget(key, ...fields);
+        const res: Record<string, unknown> = {};
+        fields.forEach((f, idx) => {
+          res[f] = arr[idx];
+        });
+        return res;
+      }
+    } catch {
+      // fallback below
+    }
+    const h = memoryHash.get(key);
+    const res: Record<string, unknown> = {};
+    for (const f of fields) {
+      res[f] = h?.get(f) ?? null;
+    }
+    return res;
+  },
+};
+

@@ -24,10 +24,12 @@ import {
 } from "@evspark/shared";
 
 import queueRouter from "./queue.routes";
+import { mapRouter } from "../modules/map/tiles.routes";
 
 const router = Router();
 
 // Public / Service endpoints
+router.use(mapRouter);
 router.use("/stations", stationsRouter);
 router.use("/chargers", chargersRouter);
 router.use("/telemetry", telemetryRouter);
