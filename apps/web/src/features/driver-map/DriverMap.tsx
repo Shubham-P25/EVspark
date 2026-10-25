@@ -19,12 +19,14 @@ import { StationCard } from "./ui/StationCard";
 import { DemoButton } from "./ui/DemoButton";
 import { ProfileButton } from "./ui/ProfileButton";
 import { PerfOverlay } from "./ui/PerfOverlay";
+import { DemoPanel } from "../map-demo/ui/DemoPanel";
 
 export function DriverMap() {
   const [bounds, setBounds] = useState<ViewportBounds | null>(null);
   const [zoom, setZoom] = useState<number | null>(13);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const filter = useMapUiStore((s) => s.filter);
+  const demoOpen = useMapUiStore((s) => s.demoOpen);
 
   const { path: routePath, calculateRoute } = useRoute();
 
@@ -75,6 +77,16 @@ export function DriverMap() {
           <FilterChips />
         </div>
 
+        {/* Top Center: Simulated demo banner during simulation */}
+        {demoOpen && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-white/95 backdrop-blur-sm border border-[#DADCE0] shadow-md rounded-full text-xs font-bold text-[#1A73E8]">
+              <span className="size-2 rounded-full bg-[#1A73E8] animate-pulse" />
+              Simulated demo
+            </div>
+          </div>
+        )}
+
         {/* Top Right: Demo & Profile Actions (safe-area insets respected) */}
         <div className="absolute top-[max(1rem,env(safe-area-inset-top))] right-[max(1rem,env(safe-area-inset-right))] z-20 flex items-center gap-2 pointer-events-auto">
           <DemoButton />
@@ -92,6 +104,9 @@ export function DriverMap() {
 
         {/* Station Detail Card (Slide panel desktop, bottom sheet mobile) */}
         <StationCard onDirections={handleDirections} />
+
+        {/* Simulated Demo Control & Diagnostics Panel */}
+        <DemoPanel />
 
         {/* Dev-only Perf Metrics Overlay (Shift+P) */}
         <PerfOverlay />
