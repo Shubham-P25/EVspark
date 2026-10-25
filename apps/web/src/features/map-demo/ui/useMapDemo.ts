@@ -6,29 +6,7 @@ import type { EngineEvent, StationInput } from '../engine/types';
 
 export type DemoState = 'idle' | 'loading' | 'running' | 'error';
 
-interface BootstrapStation {
-  station: {
-    id: string;
-    name: string;
-    lat: number;
-    lng: number;
-    chargers: number;
-    clearanceM: number;
-  };
-  geofence: {
-    center: [number, number]; // [lng, lat]
-    radiusM: number;
-    gate: [number, number]; // [lng, lat]
-    gateBearingDeg: number;
-    clearanceM: number;
-    centerShifted: boolean;
-  };
-  routes: Array<{
-    id: string;
-    name: string;
-    coordinates: Array<[number, number]>; // [lng, lat]
-  }>;
-}
+type BootstrapStation = StationInput;
 
 export interface MapDemoStore {
   state: DemoState;
@@ -99,24 +77,7 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
         throw new Error('No stations available for demo in this viewport');
       }
 
-      // Convert bootstrap GeoJSON data to engine StationInput
-      const stationInputs: StationInput[] = data.stations.map((item) => ({
-        id: item.station.id,
-        name: item.station.name,
-        lat: item.station.lat,
-        lng: item.station.lng,
-        chargers: item.station.chargers || 3,
-        fence: {
-          center: { lat: item.geofence.center[1], lng: item.geofence.center[0] },
-          radiusM: item.geofence.radiusM,
-          gate: { lat: item.geofence.gate[1], lng: item.geofence.gate[0] },
-          clearanceM: item.geofence.clearanceM,
-          centerShifted: !!item.geofence.centerShifted,
-        },
-        routes: item.routes.map((r) =>
-          r.coordinates.map(([lon, la]) => [la, lon] as [number, number])
-        ),
-      }));
+      const stationInputs: StationInput[] = data.stations;
 
       const adapter = googleAdapter(map);
       const engine = new DemoEngine(stationInputs, {
