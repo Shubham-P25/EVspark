@@ -1,1 +1,0 @@
-export function AuthField({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) { return <label className="auth-field"><span>{label}</span><input {...props} /></label> }

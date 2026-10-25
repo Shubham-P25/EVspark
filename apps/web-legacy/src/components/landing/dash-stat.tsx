@@ -1,1 +1,0 @@
-export function DashStat({ label, value }: { label:string; value:string }) { return <div><small>{label}</small><b>{value}</b></div> }
