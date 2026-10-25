@@ -25,12 +25,16 @@ export async function createCharger(req: Request, res: Response) {
   res.status(201).json(charger);
 }
 
+import { emitChargerUpdate } from "../lib/socket";
+import { updateStationLive } from "../modules/map/live-batch";
+
 export async function updateCharger(req: Request, res: Response) {
   const charger = await prisma.charger.update({
     where: { id: String(req.params.id) },
     data: req.body,
   });
-  getIO().emit("charger:update", charger);
+  emitChargerUpdate(charger);
+  void updateStationLive(charger.stationId);
   res.json(charger);
 }
 

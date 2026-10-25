@@ -5,8 +5,9 @@ import logger from "./logger.js";
 import { getRedis } from "./redis.js";
 import { verifyAndAttachUser } from "../middleware/auth.js";
 import prisma from "./prisma.js";
-import { computeWaitTime, latLngToTile } from "@evspark/shared";
+import { computeWaitTime, latLngToTile, pinState, type PinTuple } from "@evspark/shared";
 import { getGeofenceCounts } from "./geofence.js";
+import { startLiveBatcher, updateStationLive } from "../modules/map/live-batch";
 
 let io: SocketIOServer | undefined;
 const pendingDeltas = new Map<string, any>();
@@ -117,6 +118,7 @@ export function initSocket(httpServer: HttpServer) {
 
   initRedisPubSub();
   startFlushTimer();
+  startLiveBatcher(io);
 
   return io;
 }
@@ -196,8 +198,30 @@ export async function flushDeltas() {
 
     const geoCounts = await getGeofenceCounts(stationIds);
     const changedSummaries: any[] = [];
+    const changedPinTuples: PinTuple[] = [];
+    const nowSec = Math.floor(Date.now() / 1000);
 
     for (const st of stations) {
+      const free = st.chargers.filter((c) => c.status === "FREE").length;
+      const usable = st.chargers.filter((c) => c.status === "FREE" || c.status === "BUSY").length;
+      const total = st.chargers.length;
+      const maxKw = st.chargers.reduce((max, c) => Math.max(max, c.powerKw || 0), 0);
+      const hasOcpp = st.chargers.some((c) => (c as any).ocppId !== null && (c as any).ocppId !== undefined);
+      const sourceNum: 0 | 1 | 2 = hasOcpp ? 1 : 2;
+
+      const tuple: PinTuple = [
+        st.id,
+        st.lat,
+        st.lng,
+        free,
+        usable,
+        total,
+        maxKw,
+        sourceNum,
+        nowSec,
+      ];
+      changedPinTuples.push(tuple);
+
       const waitInfo = computeWaitTime({
         chargers: st.chargers as any,
         queueLength: st.queueEntries.length,
@@ -217,23 +241,23 @@ export async function flushDeltas() {
       changedSummaries.push(summary);
 
       // 1. Emit to station detail room
-      io.to(`station:${st.id}`).emit("stations:delta", { stations: [summary] });
+      io.to(`station:${st.id}`).emit("stations:delta", { stations: [summary], pins: [tuple] });
 
       // 2. Emit to operator room if operator assigned
       if (st.operatorUserId) {
-        io.to(`operator:${st.operatorUserId}`).emit("stations:delta", { stations: [summary] });
+        io.to(`operator:${st.operatorUserId}`).emit("stations:delta", { stations: [summary], pins: [tuple] });
       }
 
       // 3. Emit to tile rooms covering this station (zooms 10 through 14)
       for (let z = 10; z <= 14; z++) {
         const tile = latLngToTile(st.lat, st.lng, z);
         const tileRoom = `tile:${z}:${tile.x}:${tile.y}`;
-        io.to(tileRoom).emit("stations:delta", { stations: [summary] });
+        io.to(tileRoom).emit("stations:delta", { stations: [summary], pins: [tuple] });
       }
     }
 
     // 4. Emit batch to admin room
-    io.to("admin").emit("stations:delta", { stations: changedSummaries });
+    io.to("admin").emit("stations:delta", { stations: changedSummaries, pins: changedPinTuples });
   } catch (err) {
     logger.warn({ err }, "Error flushing stations deltas");
   }
@@ -254,6 +278,9 @@ export function publishChargerUpdate(update: any) {
 
 export function emitChargerUpdate(charger: any) {
   publishChargerUpdate(charger);
+  if (charger?.stationId) {
+    void updateStationLive(charger.stationId);
+  }
   if (!io) return;
   const payload = {
     chargerId: charger.id,
