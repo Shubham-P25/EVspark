@@ -22,6 +22,7 @@ import {
 } from "@phosphor-icons/react";
 import { useGhostSimulationStore } from "@/stores/ghost-simulation-store";
 import { CURATED_EV_PHOTOS } from "@/lib/station-photos";
+import { DEMO_CASES, type DemoCase, type CaseResult } from "@evspark/shared";
 
 interface PresentationSuiteProps {
   stations: any[];
@@ -65,6 +66,49 @@ export function PresentationSuite({ stations, onSelectStation }: PresentationSui
   const occupiedStationsCount = Object.values(stationOverrides).filter(
     (s) => s.occupiedChargers > 0
   ).length;
+
+  const [suiteResults, setSuiteResults] = useState<Record<string, CaseResult>>(() => {
+    const init: Record<string, CaseResult> = {};
+    for (const c of DEMO_CASES) {
+      try {
+        init[c.id] = c.run();
+      } catch (e) {
+        init[c.id] = { pass: false, detail: e instanceof Error ? e.message : "Error" };
+      }
+    }
+    return init;
+  });
+  const [isRunningFullSuite, setIsRunningFullSuite] = useState(false);
+  const [suiteGroup, setSuiteGroup] = useState("All");
+  const [suiteSearch, setSuiteSearch] = useState("");
+
+  const handleRunFullSuite = async () => {
+    if (isRunningFullSuite) return;
+    setIsRunningFullSuite(true);
+    for (const c of DEMO_CASES) {
+      await new Promise((r) => setTimeout(r, 15));
+      try {
+        const res = c.run();
+        setSuiteResults((prev) => ({ ...prev, [c.id]: res }));
+      } catch (err) {
+        setSuiteResults((prev) => ({
+          ...prev,
+          [c.id]: { pass: false, detail: err instanceof Error ? err.message : "Failed" },
+        }));
+      }
+    }
+    setIsRunningFullSuite(false);
+  };
+
+  const suitePassCount = Object.values(suiteResults).filter((r) => r.pass).length;
+  const filteredSuiteCases = DEMO_CASES.filter((c) => {
+    const matchesGroup = suiteGroup === "All" || c.group === suiteGroup;
+    const matchesSearch =
+      !suiteSearch ||
+      c.id.toLowerCase().includes(suiteSearch.toLowerCase()) ||
+      c.title.toLowerCase().includes(suiteSearch.toLowerCase());
+    return matchesGroup && matchesSearch;
+  });
 
   return (
     <>
@@ -329,105 +373,127 @@ export function PresentationSuite({ stations, onSelectStation }: PresentationSui
                 </div>
               )}
 
-              {/* TAB 2: IN-BROWSER AUTOMATED TESTS */}
+              {/* TAB 2: IN-BROWSER AUTOMATED TESTS (66 TEST CASES) */}
               {activeTab === "tests" && (
-                <div className="space-y-5">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
                     <div>
-                      <h3 className="text-sm font-bold text-white">Automated Integration Verification Suite</h3>
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>Automated Integration Verification Suite</span>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-[10px] border border-emerald-500/30">
+                          {suitePassCount} / {DEMO_CASES.length} PASSING
+                        </span>
+                      </h3>
                       <p className="text-xs text-slate-400">
-                        Target Station: <span className="text-blue-400 font-semibold">{sampleStation.name}</span>
+                        Rigorous mathematical, geometric, and queue invariants from killets specification
                       </p>
                     </div>
 
                     <button
                       type="button"
-                      disabled={isRunningTests}
-                      onClick={() =>
-                        runAutomatedTests({
-                          id: sampleStation.id,
-                          name: sampleStation.name,
-                          lat: sampleStation.lat,
-                          lng: sampleStation.lng,
-                          totalChargers: 4,
-                        })
-                      }
+                      disabled={isRunningFullSuite}
+                      onClick={handleRunFullSuite}
                       className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs shadow-lg transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
                     >
-                      {isRunningTests ? (
+                      {isRunningFullSuite ? (
                         <>
                           <div className="size-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                          <span>Running Assertions…</span>
+                          <span>Testing Suite…</span>
                         </>
                       ) : (
                         <>
                           <Play size={16} weight="fill" />
-                          <span>Run All 7 Automated Tests</span>
+                          <span>Run All 66 Test Cases</span>
                         </>
                       )}
                     </button>
                   </div>
 
-                  {/* Test Cases List */}
-                  <div className="space-y-2">
-                    {testResults.map((t) => (
-                      <div
-                        key={t.id}
-                        className="p-3.5 rounded-xl bg-slate-950/80 border border-white/10 flex items-center justify-between gap-3"
-                      >
-                        <div className="flex items-center gap-3">
-                          {t.status === "passed" && (
-                            <CheckCircle size={22} weight="fill" className="text-emerald-400 shrink-0" />
-                          )}
-                          {t.status === "failed" && (
-                            <XCircle size={22} weight="fill" className="text-rose-400 shrink-0" />
-                          )}
-                          {t.status === "running" && (
-                            <div className="size-5 rounded-full border-2 border-blue-400 border-t-transparent animate-spin shrink-0" />
-                          )}
-                          {t.status === "pending" && (
-                            <div className="size-5 rounded-full border-2 border-slate-600 shrink-0" />
-                          )}
-
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs font-bold text-slate-400">{t.id}</span>
-                              <h4 className="text-xs font-bold text-white">{t.name}</h4>
-                            </div>
-                            <p className="text-[11px] text-slate-400">{t.description}</p>
-                            {t.details && (
-                              <p className="text-[11px] font-mono text-emerald-300 mt-0.5">
-                                Assertion: {t.details}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        {t.durationMs !== undefined && (
-                          <span className="text-[10px] font-mono font-semibold text-slate-400">
-                            {t.durationMs}ms
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Test Log Output Console */}
-                  {testLog.length > 0 && (
-                    <div className="rounded-2xl bg-black border border-white/15 p-4 font-mono text-[11px] text-emerald-400 max-h-48 overflow-y-auto space-y-1">
-                      <div className="text-[10px] uppercase font-bold text-slate-500 pb-1 border-b border-white/10">
-                        Execution Console Log
-                      </div>
-                      {testLog.map((line, idx) => (
-                        <div key={idx} className={line.includes("FAIL") ? "text-rose-400" : ""}>
-                          {line}
-                        </div>
+                  {/* Filter Chips & Search Bar */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+                      {[
+                        "All",
+                        "Geometry",
+                        "Movement",
+                        "Queue",
+                        "Wait time",
+                        "Faults",
+                        "Clock",
+                        "Sanity",
+                        "Checked in CI / E2E",
+                      ].map((grp) => (
+                        <button
+                          key={grp}
+                          type="button"
+                          onClick={() => setSuiteGroup(grp)}
+                          className={`px-2.5 py-1 rounded-xl text-[11px] font-bold shrink-0 transition ${
+                            suiteGroup === grp
+                              ? "bg-blue-600 text-white shadow-md shadow-blue-500/30"
+                              : "bg-white/5 hover:bg-white/10 text-slate-300"
+                          }`}
+                        >
+                          {grp === "Checked in CI / E2E" ? "CI/E2E" : grp}
+                        </button>
                       ))}
                     </div>
-                  )}
+
+                    <input
+                      type="text"
+                      placeholder="Search ID (e.g. G1, Q5)..."
+                      value={suiteSearch}
+                      onChange={(e) => setSuiteSearch(e.target.value)}
+                      className="text-xs px-3 py-1.5 rounded-xl bg-slate-950 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  {/* Test Cases List */}
+                  <div className="space-y-2 max-h-[48vh] overflow-y-auto pr-1">
+                    {filteredSuiteCases.map((c) => {
+                      const res = suiteResults[c.id];
+                      const isPassed = res?.pass ?? false;
+
+                      return (
+                        <div
+                          key={c.id}
+                          className="p-3 rounded-xl bg-slate-950/80 border border-white/10 flex items-center justify-between gap-3 hover:border-white/20 transition"
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            {isPassed ? (
+                              <CheckCircle size={20} weight="fill" className="text-emerald-400 shrink-0" />
+                            ) : (
+                              <XCircle size={20} weight="fill" className="text-rose-400 shrink-0" />
+                            )}
+
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono text-xs font-bold text-blue-400 bg-blue-500/10 px-1.5 py-0.2 rounded border border-blue-500/20">
+                                  {c.id}
+                                </span>
+                                <span className="text-[10px] uppercase font-bold text-slate-500">
+                                  {c.group}
+                                </span>
+                                <h4 className="text-xs font-bold text-white truncate">{c.title}</h4>
+                              </div>
+                              {res?.detail && (
+                                <p className="text-[11px] font-mono text-emerald-300/90 mt-1 truncate">
+                                  Assertion: {res.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                            isPassed ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                          }`}>
+                            {isPassed ? "PASS" : "FAIL"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
-
               {/* TAB 3: LIVE GHOST FLEET */}
               {activeTab === "fleet" && (
                 <div className="space-y-4">

@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "echo \"shared lint ok\"",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

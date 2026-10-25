@@ -20,11 +20,22 @@ export function useLiveDeltas(_tiles: TileCoord[], bounds?: ViewportBounds | nul
     const unsubscribe = onLiveDelta((delta) => {
       const deltaPins = Object.entries(delta).map(([stationId, packed]) => {
         const [s, f, tot, w] = packed.split("|").map(Number);
-        const color: PinColor = s === 0 ? "green" : s === 1 ? "orange" : s === 2 ? "red" : "grey";
+        const free = f ?? 0;
+        const total = tot ?? 0;
+        let color: PinColor;
+        if (total <= 0 || s === 2) {
+          color = "grey";
+        } else if (free >= total) {
+          color = "green";
+        } else if (free > 0) {
+          color = "orange";
+        } else {
+          color = "red";
+        }
         return {
           id: stationId,
-          free: f ?? 0,
-          total: tot ?? 0,
+          free,
+          total,
           color,
           waitMinutes: w ?? 0,
         } as unknown as import("@evspark/shared").Pin;

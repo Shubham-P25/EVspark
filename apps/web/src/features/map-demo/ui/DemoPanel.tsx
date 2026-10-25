@@ -13,9 +13,15 @@ import {
   WarningCircle,
   Clock,
   Sparkle,
+  CheckCircle,
+  XCircle,
+  Flask,
+  MagnifyingGlass,
+  ArrowClockwise,
 } from "@phosphor-icons/react";
 import { useMapDemo } from "./useMapDemo";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { DEMO_CASES, type DemoCase, type CaseResult } from "@evspark/shared";
 
 const PRESETS = [
   { key: "empty", label: "1. Empty → first car (default)" },
@@ -55,8 +61,70 @@ export function DemoPanel() {
     stop,
   } = useMapDemo();
 
-  const [activeTab, setActiveTab] = useState<"controls" | "stations" | "log">("controls");
+  const [activeTab, setActiveTab] = useState<"controls" | "stations" | "log" | "tests">("controls");
   const [minimized, setMinimized] = useState(false);
+  const [testFilter, setTestFilter] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [testResults, setTestResults] = useState<Record<string, CaseResult>>(() => {
+    const initial: Record<string, CaseResult> = {};
+    for (const c of DEMO_CASES) {
+      try {
+        initial[c.id] = c.run();
+      } catch (err) {
+        initial[c.id] = { pass: false, detail: err instanceof Error ? err.message : "Error" };
+      }
+    }
+    return initial;
+  });
+  const [runningTestId, setRunningTestId] = useState<string | null>(null);
+  const [isRunningAllTests, setIsRunningAllTests] = useState<boolean>(false);
+
+  const handleRunAllTests = async () => {
+    if (isRunningAllTests) return;
+    setIsRunningAllTests(true);
+    for (const c of DEMO_CASES) {
+      setRunningTestId(c.id);
+      await new Promise((r) => setTimeout(r, 20));
+      try {
+        const res = c.run();
+        setTestResults((prev) => ({ ...prev, [c.id]: res }));
+      } catch (err) {
+        setTestResults((prev) => ({
+          ...prev,
+          [c.id]: { pass: false, detail: err instanceof Error ? err.message : "Case failed" },
+        }));
+      }
+    }
+    setRunningTestId(null);
+    setIsRunningAllTests(false);
+  };
+
+  const handleRunSingleTest = (c: DemoCase) => {
+    setRunningTestId(c.id);
+    setTimeout(() => {
+      try {
+        const res = c.run();
+        setTestResults((prev) => ({ ...prev, [c.id]: res }));
+      } catch (err) {
+        setTestResults((prev) => ({
+          ...prev,
+          [c.id]: { pass: false, detail: err instanceof Error ? err.message : "Case failed" },
+        }));
+      } finally {
+        setRunningTestId(null);
+      }
+    }, 40);
+  };
+
+  const passCount = Object.values(testResults).filter((r) => r.pass).length;
+  const filteredCases = DEMO_CASES.filter((c) => {
+    const matchesGroup = testFilter === "All" || c.group === testFilter;
+    const matchesSearch =
+      !searchQuery ||
+      c.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesGroup && matchesSearch;
+  });
 
   if (state !== "running" && state !== "loading") return null;
 
@@ -64,7 +132,7 @@ export function DemoPanel() {
     <div
       role="region"
       aria-label="Simulation Demo Panel"
-      className="absolute bottom-4 left-4 z-30 w-full max-w-[360px] max-h-[85vh] flex flex-col bg-white border border-[#DADCE0] rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] text-[#202124] overflow-hidden select-none transition-all"
+      className="absolute bottom-4 left-4 z-30 w-full max-w-[420px] max-h-[85vh] flex flex-col bg-white border border-[#DADCE0] rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] text-[#202124] overflow-hidden select-none transition-all"
     >
       {/* Top Header */}
       <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#F8F9FA] border-b border-[#DADCE0]">
@@ -165,6 +233,18 @@ export function DemoPanel() {
               }`}
             >
               Events ({log.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("tests")}
+              className={`flex-1 py-2 text-center border-b-2 transition-colors flex items-center justify-center gap-1 ${
+                activeTab === "tests"
+                  ? "border-[#1A73E8] text-[#1A73E8] bg-[#F8F9FA]"
+                  : "border-transparent hover:text-[#202124]"
+              }`}
+            >
+              <Flask size={13} weight={activeTab === "tests" ? "fill" : "regular"} />
+              Tests ({passCount}/{DEMO_CASES.length})
             </button>
           </div>
 
@@ -486,6 +566,152 @@ export function DemoPanel() {
                   );
                 })
               )}
+            </div>
+          )}
+
+          {/* Tab 4: 66 Automated Tests Suite */}
+          {activeTab === "tests" && (
+            <div className="p-3 space-y-2.5 overflow-y-auto max-h-[52vh] text-xs">
+              {/* Header Status & Run All Button */}
+              <div className="flex items-center justify-between p-2.5 bg-[#F8F9FA] rounded-xl border border-[#DADCE0]">
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 rounded-lg bg-[#E6F4EA] text-[#137333]">
+                    <CheckCircle size={18} weight="fill" />
+                  </span>
+                  <div>
+                    <div className="font-bold text-[12px] text-[#202124]">
+                      {passCount} of {DEMO_CASES.length} Passing
+                    </div>
+                    <div className="text-[10px] text-[#5F6368]">
+                      Engine invariants & CI assertions
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isRunningAllTests}
+                  onClick={handleRunAllTests}
+                  className="px-2.5 py-1.5 rounded-lg bg-[#1A73E8] hover:bg-[#1557B0] text-white font-bold text-[11px] shadow-sm transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                >
+                  {isRunningAllTests ? (
+                    <>
+                      <div className="size-3.5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                      <span>Testing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play size={13} weight="fill" />
+                      <span>Run All</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Filter Chips */}
+              <div className="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar text-[11px]">
+                {[
+                  "All",
+                  "Geometry",
+                  "Movement",
+                  "Queue",
+                  "Wait time",
+                  "Faults",
+                  "Clock",
+                  "Sanity",
+                  "Checked in CI / E2E",
+                ].map((grp) => (
+                  <button
+                    key={grp}
+                    type="button"
+                    onClick={() => setTestFilter(grp)}
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-semibold shrink-0 transition-colors ${
+                      testFilter === grp
+                        ? "bg-[#1A73E8] text-white"
+                        : "bg-[#F1F3F4] text-[#5F6368] hover:text-[#202124]"
+                    }`}
+                  >
+                    {grp === "Checked in CI / E2E" ? "CI/E2E" : grp}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative">
+                <MagnifyingGlass
+                  size={14}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#5F6368]"
+                />
+                <input
+                  type="text"
+                  placeholder="Filter by ID (e.g. G1, Q5) or keyword..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full text-[11px] pl-7 pr-3 py-1 bg-[#F8F9FA] border border-[#DADCE0] rounded-lg text-[#202124] focus:outline-none focus:ring-1 focus:ring-[#1A73E8]"
+                />
+              </div>
+
+              {/* Test List */}
+              <div className="space-y-1.5 pt-1">
+                {filteredCases.map((c) => {
+                  const res = testResults[c.id];
+                  const isRunning = runningTestId === c.id;
+                  const isPassed = res?.pass ?? false;
+
+                  return (
+                    <div
+                      key={c.id}
+                      className="p-2 rounded-lg bg-[#FAFAFA] border border-[#E8EAED] hover:border-[#DADCE0] transition-colors space-y-1"
+                    >
+                      <div className="flex items-start justify-between gap-1.5">
+                        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                          <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded bg-[#E8F0FE] text-[#1A73E8] shrink-0">
+                            {c.id}
+                          </span>
+                          <span className="font-semibold text-[11px] text-[#202124] truncate" title={c.title}>
+                            {c.title}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          {isRunning ? (
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#E8F0FE] text-[#1A73E8]">
+                              <div className="size-2 rounded-full border border-[#1A73E8] border-t-transparent animate-spin" />
+                              Running
+                            </span>
+                          ) : isPassed ? (
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#E6F4EA] text-[#137333]">
+                              <CheckCircle size={11} weight="fill" />
+                              PASS
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#FCE8E6] text-[#C5221F]">
+                              <XCircle size={11} weight="fill" />
+                              FAIL
+                            </span>
+                          )}
+
+                          <button
+                            type="button"
+                            title="Re-run test"
+                            disabled={isRunning || isRunningAllTests}
+                            onClick={() => handleRunSingleTest(c)}
+                            className="p-1 rounded text-[#5F6368] hover:text-[#1A73E8] hover:bg-[#E8EAED] transition cursor-pointer"
+                          >
+                            <ArrowClockwise size={12} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {res?.detail && (
+                        <div className="text-[10px] font-mono text-[#5F6368] bg-[#F1F3F4] px-2 py-1 rounded break-words">
+                          {res.detail}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </>

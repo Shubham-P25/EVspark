@@ -47,6 +47,14 @@ export function makeProjector(origin: { lat: number; lng: number }) {
   const R = 6378137, k = Math.cos((origin.lat * Math.PI) / 180);
   return {
     toWorld: (lat: number, lng: number): Vec => ({ x: ((lng - origin.lng) * Math.PI / 180) * R * k, y: ((lat - origin.lat) * Math.PI / 180) * R }),
-    toLatLng: (v: Vec) => ({ lat: origin.lat + (v.y / R) * 180 / Math.PI, lng: origin.lng + (v.x / (R * k)) * 180 / Math.PI }),
+    toLatLng: (v: Vec | undefined | null) => {
+      if (!v || typeof v.x !== 'number' || typeof v.y !== 'number') {
+        return { lat: origin.lat, lng: origin.lng };
+      }
+      return {
+        lat: origin.lat + (v.y / R) * 180 / Math.PI,
+        lng: origin.lng + (v.x / (R * k)) * 180 / Math.PI,
+      };
+    },
   };
 }

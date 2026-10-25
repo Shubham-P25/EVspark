@@ -5,7 +5,17 @@ import type { TileCoord, ViewportBounds } from "./useViewportTiles";
 import { loadViewport, type StationPoint } from "../../map/stations/tile-store";
 
 function stationPointToPin(p: StationPoint): Pin {
-  const color: PinColor = p.status === 0 ? "green" : p.status === 1 ? "orange" : p.status === 2 ? "red" : "grey";
+  let color: PinColor;
+  if (p.total <= 0 || p.status === 2) {
+    color = "grey";
+  } else if (p.free >= p.total) {
+    color = "green"; // all chargers free
+  } else if (p.free > 0) {
+    color = "orange"; // at least 1 charger available
+  } else {
+    color = "red"; // all chargers busy
+  }
+
   return {
     id: p.id,
     lat: p.lat,

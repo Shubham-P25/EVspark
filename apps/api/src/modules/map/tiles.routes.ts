@@ -98,11 +98,45 @@ mapRouter.get('/stations/tiles/:z/:x/:y/live', async (req: Request, res: Respons
     const { json } = await getStaticTileJson(z, x, y);
     const ids = (JSON.parse(json) as StaticTile).ids;
     const raw = ids.length ? ((await redis.hmget('live:stations', ...ids)) as Record<string, unknown> | null) : null;
+    const missingIds = ids.filter((id) => !raw || raw[id] == null);
+    const dbCounts = new Map<string, { total: number; free: number }>();
+    if (missingIds.length > 0) {
+      const chargerRows = await prisma.charger.findMany({
+        where: { stationId: { in: missingIds } },
+        select: { stationId: true, status: true },
+      });
+      for (const c of chargerRows) {
+        const cur = dbCounts.get(c.stationId) ?? { total: 0, free: 0 };
+        cur.total++;
+        if (c.status === 'FREE') cur.free++;
+        dbCounts.set(c.stationId, cur);
+      }
+    }
     const st: number[] = [], free: number[] = [], wait: number[] = [];
     for (const id of ids) {
-      const packed = raw && raw[id] != null ? String(raw[id]) : '3|0|0|0'; // 3 = unknown
-      const [s, f, , w] = packed.split('|').map(Number);
-      st.push(s ?? 3); free.push(f ?? 0); wait.push(w ?? 0);
+      let s: number, f: number, w: number;
+      if (raw && raw[id] != null) {
+        const parts = String(raw[id]).split('|').map(Number);
+        s = parts[0] ?? 3;
+        f = parts[1] ?? 0;
+        w = parts[3] ?? 0;
+      } else {
+        const c = dbCounts.get(id) ?? { total: 0, free: 0 };
+        f = c.free;
+        w = 0;
+        if (c.total <= 0) {
+          s = 2; // offline / no chargers
+        } else if (f >= c.total) {
+          s = 0; // all free
+        } else if (f > 0) {
+          s = 1; // at least 1 free
+        } else {
+          s = 1; // busy
+        }
+      }
+      st.push(s);
+      free.push(f);
+      wait.push(w);
     }
     body = JSON.stringify({ v: 1, t: now, st, free, wait });
     micro.set(mk, { at: now, body });

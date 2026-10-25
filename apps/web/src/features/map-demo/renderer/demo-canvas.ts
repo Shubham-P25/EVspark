@@ -59,7 +59,8 @@ export class DemoCanvas {
     const c0 = this.a.center();
     const z = this.a.zoom();
     const ppm = 1 / mPerPx(c0.lat, z); // pixels per metre
-    const P = (v: { x: number; y: number }) => {
+    const P = (v: { x: number; y: number } | undefined | null) => {
+      if (!v || typeof v.x !== 'number' || typeof v.y !== 'number') return null;
       const ll = this.eng.proj.toLatLng(v);
       return this.a.toPx(ll.lat, ll.lng);
     };
@@ -68,6 +69,7 @@ export class DemoCanvas {
     // 1. Draw station fences, bays, and parking
     for (const sv of snap.stations) {
       const L = this.eng.layoutFor(sv.id);
+      if (!L || !L.center) continue;
       const c = P(L.center);
       if (!c) continue;
 
@@ -101,6 +103,7 @@ export class DemoCanvas {
       // Parking slots
       const sq = Math.max(4, 3.4 * ppm);
       for (const p of L.park) {
+        if (!p) continue;
         const q = P(p);
         if (q) {
           g.strokeStyle = '#cbd5e1';
@@ -111,7 +114,9 @@ export class DemoCanvas {
 
       // Charger bays
       sv.chargers.forEach((ch, i) => {
-        const q = P(L.bays[i]);
+        const bay = L.bays ? L.bays[i] : undefined;
+        if (!bay) return;
+        const q = P(bay);
         if (!q) return;
         g.fillStyle =
           ch.state === 'FREE'
