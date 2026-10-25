@@ -7,8 +7,11 @@ import { findStationsAlongRoute } from "../repositories/along-route.repo";
 import { cacheGet, cacheSet, getRedis } from "../lib/redis";
 import logger from "../lib/logger";
 import { getGeofenceCounts } from "../lib/geofence";
+import { getOptimizedImageUrl } from "../lib/cloudinary";
 
 export type StationStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+import { bumpStationVersion } from "../modules/map/tiles.routes";
 
 export async function invalidateStationCache(stationId: string): Promise<void> {
   try {
@@ -16,6 +19,7 @@ export async function invalidateStationCache(stationId: string): Promise<void> {
     if (client.status === "ready") {
       await client.del(`station:${stationId}`, `waittime:${stationId}`);
     }
+    await bumpStationVersion();
   } catch (err) {
     logger.warn({ err, stationId }, "Failed to invalidate station cache");
   }
@@ -356,7 +360,7 @@ export async function getStationPhotos(req: Request, res: Response) {
   const attributions: string[] = [];
 
   if (station.photoUrl) {
-    photos.push(station.photoUrl);
+    photos.push(getOptimizedImageUrl(station.photoUrl, 800));
   }
 
   // Supply additional high quality photos for gallery
@@ -364,7 +368,8 @@ export async function getStationPhotos(req: Request, res: Response) {
   for (let i = 0; i < id.length; i++) hash = (hash << 5) - hash + id.charCodeAt(i);
   const startIdx = Math.abs(hash) % DEFAULT_PHOTOS.length;
   for (let i = 0; i < 3; i++) {
-    const p = DEFAULT_PHOTOS[(startIdx + i) % DEFAULT_PHOTOS.length];
+    const rawPhoto = DEFAULT_PHOTOS[(startIdx + i) % DEFAULT_PHOTOS.length];
+    const p = getOptimizedImageUrl(rawPhoto, 800);
     if (!photos.includes(p)) photos.push(p);
   }
   attributions.push("EVspark Verified Infrastructure Network");
@@ -505,6 +510,7 @@ export async function createStation(req: Request, res: Response) {
     include: { chargers: true },
   });
 
+  await bumpStationVersion();
   res.status(201).json(station);
 }
 

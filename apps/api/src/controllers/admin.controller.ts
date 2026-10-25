@@ -12,6 +12,8 @@ export async function getPendingStations(req: Request, res: Response) {
   res.json(pending);
 }
 
+import { bumpStationVersion } from "../modules/map/tiles.routes";
+
 export async function approveStation(req: Request, res: Response) {
   const { status } = req.body; // "APPROVED" | "REJECTED"
   if (!["APPROVED", "REJECTED"].includes(status)) {
@@ -24,6 +26,7 @@ export async function approveStation(req: Request, res: Response) {
     include: { chargers: true },
   });
 
+  await bumpStationVersion();
   res.json(updated);
 }
 
