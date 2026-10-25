@@ -48,6 +48,18 @@ export async function getRoutePool(stationId: string, fence: Geofence, count = 1
     if (pts && out.length < count) out.push([...pts.slice(0, -1), [fence.gate.lat, fence.gate.lng]]); // end exactly at gate
   }));
   await Promise.all(tasks);
+  if (out.length < 3) {
+    // Generate smooth approach paths ending exactly at the gate
+    for (let i = 0; i < 4; i++) {
+      const b = (i * 90) + 15;
+      const pts: LatLng[] = [];
+      for (let d = 300; d >= 0; d -= 30) {
+        const p = turf.destination(turf.point([fence.gate.lng, fence.gate.lat]), d, b, { units: 'meters' }).geometry.coordinates;
+        pts.push([p[1], p[0]]);
+      }
+      out.push(pts);
+    }
+  }
   if (out.length >= 3) await redis.set(key, JSON.stringify(out));
   return out;
 }

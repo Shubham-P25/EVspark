@@ -106,3 +106,10 @@ export const expensiveLimiter = createAdaptiveLimiter({
   limit: 30,
   message: "Too many recommendation/journey calculations (30 requests/minute).",
 });
+
+export const demoLimiter = createAdaptiveLimiter({
+  windowMs: 60 * 1000,
+  limit: 10,
+  message: "Demo bootstrap rate limit exceeded (10 requests/minute).",
+});
+

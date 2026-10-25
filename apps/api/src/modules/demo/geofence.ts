@@ -19,16 +19,51 @@ export type Geofence = {
 type Road = ReturnType<typeof turf.lineString>;
 
 async function fetchRoads(lat: number, lng: number, around = 300): Promise<Road[]> {
-  const overpassUrl = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
-  const q = `[out:json][timeout:15];way(around:${around},${lat},${lng})["highway"]
-    ["highway"!~"footway|path|steps|cycleway|pedestrian|track|corridor|construction|proposed"]
-    ["service"!~"parking_aisle|driveway|drive-through"];out geom;`;
-  const res = await fetch(overpassUrl, { method: 'POST', body: `data=${encodeURIComponent(q)}` });
-  if (!res.ok) throw new Error(`overpass_${res.status}`);
-  const j = (await res.json()) as { elements: { geometry?: { lat: number; lon: number }[] }[] };
-  return j.elements
-    .filter((w) => (w.geometry?.length ?? 0) >= 2)
-    .map((w) => turf.lineString(w.geometry!.map((g) => [g.lon, g.lat] as LngLat)));
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
+    const overpassUrl = process.env.OVERPASS_URL || 'https://overpass-api.de/api/interpreter';
+    const q = `[out:json][timeout:5];way(around:${around},${lat},${lng})["highway"]
+      ["highway"!~"footway|path|steps|cycleway|pedestrian|track|corridor|construction|proposed"]
+      ["service"!~"parking_aisle|driveway|drive-through"];out geom;`;
+    const res = await fetch(overpassUrl, {
+      method: 'POST',
+      body: `data=${encodeURIComponent(q)}`,
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timer));
+    if (res.ok) {
+      const j = (await res.json()) as { elements: { geometry?: { lat: number; lon: number }[] }[] };
+      const roads = j.elements
+        .filter((w) => (w.geometry?.length ?? 0) >= 2)
+        .map((w) => turf.lineString(w.geometry!.map((g) => [g.lon, g.lat] as LngLat)));
+      if (roads.length > 0) return roads;
+    }
+  } catch {
+    // Overpass offline or timed out; fall back to OSRM road snapping below
+  }
+
+  // Fallback: Query OSRM nearest to locate real road point and synthesize road line through gate
+  try {
+    const osrmUrl = process.env.OSRM_BASE_URL || 'https://router.project-osrm.org';
+    const r = await fetch(`${osrmUrl}/nearest/v1/driving/${lng},${lat}?number=1`);
+    if (r.ok) {
+      const j = (await r.json()) as { waypoints?: { location: [number, number]; distance: number }[] };
+      const wp = j.waypoints?.[0];
+      if (wp?.location) {
+        const snapLng = wp.location[0];
+        const snapLat = wp.location[1];
+        const bearingToSnap = turf.bearing(turf.point([lng, lat]), turf.point([snapLng, snapLat]));
+        const roadBearing1 = (bearingToSnap + 90) % 360;
+        const roadBearing2 = (bearingToSnap - 90 + 360) % 360;
+        const pt1 = turf.destination(turf.point([snapLng, snapLat]), 200, roadBearing1, { units: 'meters' });
+        const pt2 = turf.destination(turf.point([snapLng, snapLat]), 200, roadBearing2, { units: 'meters' });
+        return [turf.lineString([pt1.geometry.coordinates as LngLat, [snapLng, snapLat], pt2.geometry.coordinates as LngLat])];
+      }
+    }
+  } catch {
+    // Both failed
+  }
+  return [];
 }
 
 function nearest(roads: Road[], lat: number, lng: number) {

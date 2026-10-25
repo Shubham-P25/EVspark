@@ -25,11 +25,14 @@ import {
 
 import queueRouter from "./queue.routes";
 import { mapRouter } from "../modules/map/tiles.routes";
+import { demoRouter } from "../modules/demo/demo.routes";
+import { demoLimiter } from "../middleware/rateLimiter";
 
 const router = Router();
 
 // Public / Service endpoints
 router.use(mapRouter);
+router.use("/demo", demoLimiter, demoRouter);
 router.use("/stations", stationsRouter);
 router.use("/chargers", chargersRouter);
 router.use("/telemetry", telemetryRouter);
