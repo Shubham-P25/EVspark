@@ -50,7 +50,7 @@ export class DemoEngine {
         id: inp.id, name: inp.name, center, R: inp.fence.radiusM, gate, input: inp, w: L.w,
         chargers: Array.from({ length: L.fit }, (_, idx) => ({ idx, online: true, pendingOffline: false, holder: null, chargingSince: null })),
         bays: L.bays, park: L.park, chargingQ: [], waitingQ: [], routes,
-        nextArrivalAt: 2 + this.rng() * this.cfg.arrivalMeanS, // stations start EMPTY; first car arrives later
+        nextArrivalAt: Math.max(2, this.cfg.arrivalMeanS * 0.25) + this.rng() * this.cfg.arrivalMeanS, // stations start EMPTY; first car arrives later
         stats: zeroStats(), avgChargeS: (this.cfg.chargeS[0] + this.cfg.chargeS[1]) / 2,
       });
     }
@@ -72,7 +72,8 @@ export class DemoEngine {
   reset() {
     this.t = 0; this.cars.clear(); this.log.length = 0; this.nextId = 1; this.seed = this.cfg.seed;
     for (const s of this.stations) {
-      s.chargingQ.length = 0; s.waitingQ.length = 0; s.stats = zeroStats(); s.nextArrivalAt = 2 + this.rng() * this.cfg.arrivalMeanS;
+      s.chargingQ.length = 0; s.waitingQ.length = 0; s.stats = zeroStats();
+      s.nextArrivalAt = Math.max(2, this.cfg.arrivalMeanS * 0.25) + this.rng() * this.cfg.arrivalMeanS;
       s.chargers.forEach((c) => Object.assign(c, { online: true, pendingOffline: false, holder: null, chargingSince: null }));
       [...s.bays, ...s.park].forEach((x) => (x.occupant = null));
     }
@@ -83,7 +84,7 @@ export class DemoEngine {
     while (left > 1e-9) { const h = Math.min(0.1, left); this.tick(h); left -= h; }
   }
 
-  forceSpawn(stationId: string, kind: CarKind) { return this.spawn(this.st(stationId), kind); }
+  forceSpawn(stationId: string, kind: CarKind) { return this.spawn(this.st(stationId), kind, 85); }
 
   toggleFault(stationId: string, idx: number) {
     const st = this.st(stationId); const ch = st.chargers[idx]; if (!ch) return;
@@ -114,17 +115,19 @@ export class DemoEngine {
   }
 
   // ---------- spawn ----------
-  private spawn(st: StationSim, kind: CarKind): Car | null {
+  private spawn(st: StationSim, kind: CarKind, startDistFromGate?: number): Car | null {
     let n = 0; for (const c of this.cars.values()) if (c.stationId === st.id) n++;
     if (n >= this.cfg.maxCarsPerStation) return null;
     const route = st.routes[Math.floor(this.rng() * st.routes.length)];
     const entryIn = st.w(-st.R + 2, +LANE);
     const path = makePath([...offsetLeft(route, this.cfg.laneOffsetRoad), entryIn]);
-    const start = path.pts[0];
+    const startS = startDistFromGate !== undefined ? Math.max(0, path.len - startDistFromGate) : 0;
+    const samplePt = sample(path, startS);
+    const start = samplePt.pos;
     for (const o of this.cars.values()) if (dist(o.pos, start) < this.cfg.safeGap * 1.5) return null;
     const car: Car = {
       id: this.nextId++, kind, stationId: st.id, phase: 'APPROACH', q: 'NONE', tag: 'NONE', inside: false,
-      path, s: 0, speed: this.cfg.roadV * 0.6, pos: start, heading: sample(path, 0).heading, next: null, nextPhase: null,
+      path, s: startS, speed: this.cfg.roadV * 0.6, pos: start, heading: samplePt.heading, next: null, nextPhase: null,
       slot: null, route,
       chargeS: this.between(this.cfg.chargeS), patienceS: kind === 'CHARGER' ? this.between(this.cfg.patienceS) : Infinity,
       stayS: this.between(this.cfg.stayS), graceS: 0,
@@ -260,7 +263,7 @@ export class DemoEngine {
         if (c.q === 'WAITING' && c.kind === 'CHARGER' && c.tWaitStart !== null && this.t - c.tWaitStart > c.patienceS) {
           st.stats.reneged++; this.emit('RENEGED', st, `Car #${c.id} got tired of waiting and left`, c.id);
           this.beginLeave(c, st, 'RENEGED');
-        } else if (c.kind === 'STAYER' && c.phase === 'PARKED' && c.tParked !== null && this.t - c.tParked >= c.stayS) {
+        } else if (c.kind === 'STAYER' && c.q === 'NONE' && c.phase === 'PARKED' && c.tParked !== null && this.t - c.tParked >= c.stayS) {
           st.stats.leftAfterStay++; this.emit('LEFT_AFTER_STAY', st, `Car #${c.id} (visitor) left`, c.id);
           this.beginLeave(c, st, 'LEFT_AFTER_STAY');
         }
