@@ -105,7 +105,44 @@ export const OPERATOR_PHOTO_MAP: Record<string, StationPhoto[]> = {
 };
 
 /**
- * Returns a guaranteed rich photo list (3-4 photos) for any station
+ * Applies Cloudinary automatic compression (f_auto, q_auto) and responsive sizing
+ */
+export function getOptimizedPhotoUrl(url?: string | null, width = 800): string {
+  if (!url) return "";
+
+  // 1. If it's a Cloudinary URL, inject optimal transformation flags
+  if (url.includes("res.cloudinary.com") && url.includes("/image/upload/")) {
+    if (!url.includes("f_auto") && !url.includes("q_auto")) {
+      return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${width},c_limit/`);
+    }
+    return url;
+  }
+
+  // 2. If client has NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, use Cloudinary Fetch delivery
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  if (cloudName && url.startsWith("http") && !url.includes("res.cloudinary.com")) {
+    return `https://res.cloudinary.com/${cloudName}/image/fetch/f_auto,q_auto,w_${width},c_limit/${encodeURIComponent(url)}`;
+  }
+
+  // 3. If Unsplash image, use native fast WebP/format params
+  if (url.includes("images.unsplash.com")) {
+    try {
+      const u = new URL(url);
+      u.searchParams.set("auto", "format");
+      u.searchParams.set("fit", "crop");
+      u.searchParams.set("w", String(width));
+      u.searchParams.set("q", "75");
+      return u.toString();
+    } catch {
+      return url;
+    }
+  }
+
+  return url;
+}
+
+/**
+ * Returns a guaranteed rich photo list (3-4 photos) for any station with Cloudinary/compression applied
  */
 export function getStationPhotoList(station: {
   id?: string;
@@ -118,7 +155,7 @@ export function getStationPhotoList(station: {
   // If station has explicit photoUrl, put it first
   if (station.photoUrl && station.photoUrl.trim().length > 0) {
     list.push({
-      url: station.photoUrl,
+      url: getOptimizedPhotoUrl(station.photoUrl, 800),
       caption: `${station.name || "Station"} Charging Terminal`,
       tag: "DC Fast Bay",
     });
@@ -151,8 +188,12 @@ export function getStationPhotoList(station: {
   ];
 
   for (const p of pool) {
-    if (!list.some((existing) => existing.url === p.url)) {
-      list.push(p);
+    const optimizedUrl = getOptimizedPhotoUrl(p.url, 800);
+    if (!list.some((existing) => existing.url === optimizedUrl || existing.url === p.url)) {
+      list.push({
+        ...p,
+        url: optimizedUrl,
+      });
     }
     if (list.length >= 4) break;
   }
@@ -170,5 +211,5 @@ export function getPrimaryStationPhoto(station: {
   photoUrl?: string | null;
 }): string {
   const photos = getStationPhotoList(station);
-  return photos[0]?.url || CURATED_EV_PHOTOS[0].url;
+  return photos[0]?.url || getOptimizedPhotoUrl(CURATED_EV_PHOTOS[0].url, 800);
 }

@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import type { Me } from "@/components/map/user-location";
+
+export interface Me {
+  lat: number;
+  lng: number;
+  accuracy?: number;
+  heading?: number | null;
+}
 
 export type GeoStatus = "idle" | "ok" | "denied" | "unavailable";
 

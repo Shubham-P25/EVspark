@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { OverlayViewF, OverlayView } from "@react-google-maps/api";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useGhostSimulationStore, type GhostCar } from "@/stores/ghost-simulation-store";
 import { Lightning, Clock, ArrowRight } from "@phosphor-icons/react";
 
@@ -88,11 +88,9 @@ export function GhostLayer({ stations = [] }: GhostLayerProps) {
         const isWaiting = g.status === "waiting_in_stack";
 
         return (
-          <OverlayViewF
+          <AdvancedMarker
             key={g.id}
             position={g.currentPos}
-            mapPaneName={OverlayView.OVERLAY_LAYER}
-            getPixelPositionOffset={(w, h) => ({ x: -w / 2, y: -h / 2 })}
           >
             <div
               className="relative flex items-center justify-center cursor-pointer select-none transition-all duration-150"
@@ -202,7 +200,7 @@ export function GhostLayer({ stations = [] }: GhostLayerProps) {
                 </div>
               )}
             </div>
-          </OverlayViewF>
+          </AdvancedMarker>
         );
       })}
     </>

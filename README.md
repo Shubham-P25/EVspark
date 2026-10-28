@@ -27,51 +27,46 @@
 
 ## 🏛️ System Architecture
 
-```mermaid
-flowchart TB
-    subgraph Clients["Frontend Clients (Next.js 15)"]
-        Driver["Driver Map View<br/>(/page.tsx)"]
-        Planner["Route Journey Planner<br/>(/journey)"]
-        Operator["Operator Dashboard<br/>(/operator)"]
-        Admin["Twin Control Room<br/>(/admin)"]
-    end
+> [!IMPORTANT]
+> **Core Architecture Note:**
+> **Station data = own DB; Google = live layer only; OCM = import script.**
+> - **Your Postgres (PostGIS)**: Ministry of Power import + OCM enrichment is the single source of truth for stations, chargers, connectors, price, and locations. Fast, single-query PostGIS bbox retrieval.
+> - **Google Places API (New)** `evChargeOptions`: Server-side live availability layer only (`availableCount`, `count`, `outOfServiceCount`), cached in Redis for 90s with a strict daily cap (300 req/day).
+> - **Open Charge Map**: Offline enrichment tool, not a runtime API.
+> - **Twin Engine (OCPP)**: Real-time simulation layer for stations without Google live status.
 
-    subgraph Gateway["Edge & API Gateway"]
-        CORS["Helmet / CORS Allowlist / Rate Limiter"]
-        Auth["JWT Auth Guard (Neon Auth / Jose)"]
-        API["Express API Server (Port 4000)"]
-    end
-
-    subgraph Realtime["Realtime Engine & Message Bus"]
-        SocketServer["Socket.io Server<br/>(Tile & Station Rooms)"]
-        Batcher["1-Second Delta Buffer<br/>(stations:delta)"]
-        Redis["Redis Pub/Sub & Cache<br/>(Upstash / In-Memory Fallback)"]
-    end
-
-    subgraph Data["Persistence & Spatial Compute"]
-        Postgres[("Neon PostgreSQL 16")]
-        PostGIS["PostGIS Geography Engine<br/>(ST_DWithin / ST_Distance / GIST Index)"]
-        Prisma["Prisma ORM Client"]
-    end
-
-    subgraph ML["Intelligence & Prediction"]
-        MLService["FastAPI ML Service (Port 8000)"]
-        Model["HistGradientBoosting / Fallback Curve"]
-    end
-
-    subgraph Simulation["Digital Twin Engine"]
-        Twin["Autonomous Twin Simulator<br/>(OCPP 1.6J WebSocket Client)"]
-    end
-
-    Clients <-->|REST & WebSocket| API
-    Gateway --> Auth --> API
-    API <--> SocketServer
-    SocketServer <--> Batcher <--> Redis
-    API <--> Prisma <--> Postgres
-    Postgres --- PostGIS
-    API <-->|HTTP /predict/wait| MLService
-    MLService --> Model
-    Twin -->|OCPP 1.6J WS| API
+```text
+                        ┌────────────────────────── Browser (Next.js, apps/web) ───────────────────────────┐
+                        │                                                                                  │
+ Google Maps JS ◄───────┤  <APIProvider> (loaded once, async, preconnect)                                  │
+ (vector map, Map ID)   │      └─ <Map>                                                                    │
+                        │          ├─ <PinLayer>   Supercluster + AdvancedMarker (≤150 DOM markers)        │
+                        │          ├─ <UserDot>                                                            │
+                        │          ├─ <RouteLine>  (polyline only when a route exists)                     │
+                        │          └─ <DemoSlot>   (empty in Step 1; Step 2 mounts simulated cars here)    │
+                        │                                                                                  │
+                        │  useTilePins(viewport) ──► React Query (key: pins:z:x:y:filter)                  │
+                        │        │ on success                       ▲ socket "stations:delta"              │
+                        │        ▼                                  │                                      │
+                        │  usePinStore (Map<id,Pin>)  ◄─────────────┘                                      │
+                        │        │ selector by id                                                          │
+                        │        ▼                                                                         │
+                        │  <PinMarker id/> (memo)         <StationCard id/> opens instantly from the pin   │
+                        └───────────────┬───────────────────────────────────────────────▲──────────────────┘
+                                        │ HTTPS GET /api/stations/pins?z&x&y            │ Socket.io
+                                        ▼                                               │ rooms tile:12:x:y
+          ┌───────────────────────── API (Express, apps/api) ────────────────────────────┴───────────────┐
+          │  pins.controller   one SQL (PostGIS bbox + FILTER aggregates), ETag, Cache-Control 10s       │
+          │  stations/:id      full detail (chargers, wait, photos) only when a card opens                │
+          │  googleLive.service  Nearby Search (New) per tile → Redis TTL 90s → merge, daily cap          │
+          │  socket.ts         emits compact deltas to tile rooms                                        │
+          │  packages/shared   pinState(), tile math, zod schemas (used by API and web)                  │
+          └───────┬─────────────────────────────┬─────────────────────────────┬──────────────────────────┘
+                  ▼                             ▼                             ▼
+         Postgres + PostGIS (Neon)          Redis (optional)           Google Places API (New)
+         stations, chargers                 tile cache, daily cap      server key, field mask = evChargeOptions
+                  ▲
+                  └── Twin engine (OCPP) updates charger.status → API emits deltas
 ```
 
 ---
@@ -155,24 +150,46 @@ python main.py
 
 ## ⚙️ Environment Variables
 
-Copy `.env.example` to `.env` in the root and in `apps/api/`:
+Copy `.env.example` to `.env` in `apps/web/` and `apps/api/`:
 
 ```bash
-cp .env.example .env
+cp apps/web/.env.example apps/web/.env
+cp apps/api/.env.example apps/api/.env
 ```
 
-| Variable | Default Value | Description |
+| Variable | Scope | Description |
 |---|---|---|
-| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/evspark` | PostgreSQL PostGIS connection string |
-| `DIRECT_URL` | Same as `DATABASE_URL` | Direct connection string for Prisma migrations |
-| `PORT` | `4000` | Express API port |
-| `NODE_ENV` | `development` | Runtime environment (`development`, `production`, `test`) |
-| `JWT_SECRET` | *(generate a secure random 256-bit string)* | Secret for verifying auth tokens |
-| `UPSTASH_REDIS_REST_URL` | *(optional)* | Upstash Redis REST URL (falls back to local/in-memory) |
-| `UPSTASH_REDIS_REST_TOKEN` | *(optional)* | Upstash Redis REST token |
-| `ML_SERVICE_URL` | `http://localhost:8000` | FastAPI ML service URL |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | Backend API URL used by the web client |
-| `NEXT_PUBLIC_GOOGLE_MAPS_KEY`| *(optional)* | Google Maps JavaScript API key (fallback vector grid included) |
+| `DATABASE_URL` | API | Neon PostgreSQL PostGIS connection string |
+| `DIRECT_URL` | API | Direct connection string for Prisma migrations |
+| `PORT` | API | Express API port (`4000`) |
+| `NODE_ENV` | Global | Runtime environment (`development`, `production`, `test`) |
+| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Web | Referrer-restricted browser key for Google Maps JS API |
+| `NEXT_PUBLIC_GOOGLE_MAP_ID` | Web | Vector Map ID (required for Advanced Markers) |
+| `GOOGLE_PLACES_SERVER_KEY` | API | Server-side key restricted to Places API (New) |
+| `GOOGLE_LIVE_DAILY_CAP` | API | Max Google Places live availability queries per day (default `300`) |
+| `UPSTASH_REDIS_REST_URL` | API | Redis REST URL for live overlays and tile caching (optional) |
+| `UPSTASH_REDIS_REST_TOKEN` | API | Redis REST token |
+| `NEXT_PUBLIC_API_URL` | Web | Backend API URL (`http://localhost:4000`) |
+
+---
+
+## 🗺️ Google Cloud Key Setup Guide
+
+To protect your quota and enable vector maps with Advanced Markers:
+
+1. **Two Separate Keys**:
+   - **Browser Key (`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`)**:
+     - Restrictions: *HTTP referrers* (`http://localhost:3000/*`, `https://<your-domain>/*`).
+     - APIs: *Maps JavaScript API* (+ *Routes API* if directions run client-side).
+   - **Server Key (`GOOGLE_PLACES_SERVER_KEY`)**:
+     - Restrictions: *IP addresses* (or API restriction to Places API (New) only).
+     - APIs: *Places API (New)* only.
+2. **Vector Map ID**:
+   - Google Cloud Console → Google Maps Platform → **Map Management** → Create Map ID.
+   - Choose **JavaScript**, select **Vector**, and copy the Map ID to `NEXT_PUBLIC_GOOGLE_MAP_ID`.
+3. **Budget & Quotas**:
+   - In Google Cloud Console, set a billing budget alert and request cap on Places API (New) to prevent unintended spend.
+   - The EVspark backend enforces an automatic Redis daily cap (`GOOGLE_LIVE_DAILY_CAP=300`) and a 5-failure circuit breaker to safeguard your quota.
 
 ---
 

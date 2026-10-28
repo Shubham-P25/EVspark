@@ -7,6 +7,7 @@ import {
   nearbyStationsQuerySchema,
   stationIdParamSchema,
   alongRouteSchema,
+  pinsQuerySchema,
 } from "@evspark/shared";
 import {
   listStations,
@@ -19,15 +20,21 @@ import {
   updateStation,
   deleteStation,
 } from "../controllers/stations.controller";
+import { getPins, getStationLive, getLiveStats } from "../controllers/pins.controller";
 import { requireAuth, requireRole } from "../middleware/auth";
 
 const router = Router();
+
+// Fast vector map pins endpoint (must precede /:id)
+router.get("/pins", validate({ query: pinsQuerySchema }), getPins);
+router.get("/live-stats", getLiveStats);
 
 // 1. Nearby & Along-route endpoints (must precede /:id)
 router.get("/nearby", validate({ query: nearbyStationsQuerySchema }), getNearbyStations);
 router.post("/along-route", validate({ body: alongRouteSchema }), getStationsAlongRoute);
 
-// 2. Photos & Reviews by ID (before general /:id)
+// 2. Photos, Reviews & Live availability by ID (before general /:id)
+router.get("/:id/live", validate({ params: stationIdParamSchema }), getStationLive);
 router.get("/:id/photos", validate({ params: stationIdParamSchema }), getStationPhotos);
 router.get("/:id/reviews", validate({ params: stationIdParamSchema }), getStationReviews);
 

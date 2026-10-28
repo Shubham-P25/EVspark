@@ -50,11 +50,6 @@ export function LandingFooter() {
                   Admin Control Room
                 </Link>
               </li>
-              <li>
-                <Link href="/classic" className="hover:text-[#1D6BFF] transition-colors">
-                  Classic Landing
-                </Link>
-              </li>
             </ul>
           </div>
 

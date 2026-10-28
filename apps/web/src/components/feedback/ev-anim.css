@@ -1,0 +1,100 @@
+/* EVspark custom SVG EV animations (pure SVG + CSS keyframes) */
+
+@keyframes ev-road-scroll {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -32px;
+  }
+}
+
+@keyframes ev-car-bob {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ev-wheel-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ev-battery-fill {
+  0% {
+    width: 0%;
+  }
+  75% {
+    width: 100%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes ev-bolt-pulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes ev-red-blink {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-road {
+  animation: ev-road-scroll 1.2s linear infinite;
+}
+
+.animate-car {
+  animation: ev-car-bob 0.8s ease-in-out infinite;
+}
+
+.animate-wheel {
+  transform-origin: center;
+  animation: ev-wheel-spin 0.6s linear infinite;
+}
+
+.animate-battery {
+  animation: ev-battery-fill 2.4s ease-in-out infinite;
+}
+
+.animate-bolt {
+  transform-origin: center;
+  animation: ev-bolt-pulse 1s ease-in-out infinite;
+}
+
+.animate-error-blink {
+  animation: ev-red-blink 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-road,
+  .animate-car,
+  .animate-wheel,
+  .animate-battery,
+  .animate-bolt,
+  .animate-error-blink {
+    animation: none !important;
+  }
+}
