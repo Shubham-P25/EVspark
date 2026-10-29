@@ -121,7 +121,7 @@ export async function getPins(req: Request, res: Response, next: NextFunction): 
     const jsonStr = JSON.stringify(tuples);
     const etag = `"${crypto.createHash("md5").update(jsonStr).digest("hex")}"`;
 
-    res.setHeader("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
+    res.setHeader("Cache-Control", "public, max-age=10, stale-while-revalidate=60");
     res.setHeader("ETag", etag);
 
     const ifNoneMatch = req.headers["if-none-match"];

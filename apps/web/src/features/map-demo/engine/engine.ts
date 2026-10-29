@@ -84,7 +84,7 @@ export class DemoEngine {
     while (left > 1e-9) { const h = Math.min(0.1, left); this.tick(h); left -= h; }
   }
 
-  forceSpawn(stationId: string, kind: CarKind) { return this.spawn(this.st(stationId), kind, 85); }
+  forceSpawn(stationId: string, kind: CarKind, startDistFromGate = 85) { return this.spawn(this.st(stationId), kind, startDistFromGate); }
 
   toggleFault(stationId: string, idx: number) {
     const st = this.st(stationId); const ch = st.chargers[idx]; if (!ch) return;
@@ -340,7 +340,9 @@ export class DemoEngine {
         progress: ch.chargingSince !== null && ch.holder !== null ? clamp((this.t - ch.chargingSince) / this.cars.get(ch.holder)!.chargeS, 0, 1) : 0 })),
       chargingQ: st.chargingQ.length, chargingCap: st.chargers.filter((c) => c.online).length,
       waiting: st.waitingQ.length, waitingIds: [...st.waitingQ],
-      nextWaitMin: toMin(est.nextCarWaitS), perPositionMin: est.perPositionS.map(toMin),
+      insideFenceCount: st.chargingQ.length + st.waitingQ.length + st.park.filter((p) => p.occupant !== null).length,
+      standbyRoadCount: [...this.cars.values()].filter((c) => c.stationId === st.id && c.phase === 'APPROACH' && dist(c.pos, st.gate) < 60).length,
+      nextWaitMin: toMin(est.nextCarWaitS) ?? 0, perPositionMin: est.perPositionS.map(toMin),
       avgWaitedMin: st.stats.waitN ? toMin(st.stats.waitSum / st.stats.waitN) : null,
       intentRatio: Math.round(p * 100), stats: { ...st.stats },
     };
