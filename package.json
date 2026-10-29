@@ -6,7 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=web --filter=api",
     "dev:web": "turbo run dev --filter=web",
     "dev:api": "turbo run dev --filter=api",
     "build": "turbo run build",
@@ -16,11 +16,7 @@
     "test:e2e": "vitest run tests/e2e/smoke.test.ts",
     "test:load": "tsx tests/load/run-load.ts",
     "db:migrate": "pnpm --filter api db:migrate",
-    "db:seed": "pnpm --filter api db:seed",
-    "sim": "pnpm --filter twin-engine dev",
-    "twin": "pnpm --filter twin-engine dev",
-    "feed": "pnpm --filter station-feed dev",
-    "ghosts": "pnpm --filter ghost-drivers dev"
+    "db:seed": "pnpm --filter api db:seed"
   },
   "devDependencies": {
     "@types/supertest": "^7.2.1",

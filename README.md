@@ -118,22 +118,14 @@ pnpm db:migrate
 pnpm db:seed
 ```
 
-### 4. Start Development Servers
+### 4. Start Development Server
 ```bash
 # Starts Next.js Web (port 3000) and Express API (port 4000)
 pnpm dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser. The digital twin simulation runs directly in the browser via the interactive Demo Panel on the `/driver` map.
 
-### 5. Launch Digital Twin Simulator
-```bash
-# In a separate terminal, launch the real-time OCPP vehicle simulation loop
-pnpm sim
-
-# To simulate high-frequency arrivals (1–5 min) at specific stations:
-FOCUS_STATION_IDS="station-id-1,station-id-2" pnpm sim
-```
-
-### 6. (Optional) Run ML Service
+### 5. (Optional) Run ML Service
 ```bash
 cd apps/ml-service
 python -m venv venv
