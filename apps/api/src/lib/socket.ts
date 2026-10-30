@@ -343,3 +343,27 @@ export function emitSessionUpdate(payload: { stationId: string; operatorUserId?:
   }
   io.to("admin").emit("session:update", payload);
 }
+export function broadcastSessionUpsert(stationId: string, session: any) {
+  if (!io) return;
+  io.of("/operator").to(`station:${stationId}`).to("operator:all").emit("session:upsert", session);
+}
+
+export function broadcastChargerUpsert(stationId: string, charger: any) {
+  if (!io) return;
+  io.of("/operator").to(`station:${stationId}`).to("operator:all").emit("charger:upsert", charger);
+}
+
+export function broadcastStatsUpdate(stationId: string, stats: any) {
+  if (!io) return;
+  io.of("/operator").to(`station:${stationId}`).to("operator:all").emit("stats:update", stats);
+}
+
+export function broadcastActivityNew(stationId: string, activity: any) {
+  if (!io) return;
+  io.of("/operator").to(`station:${stationId}`).to("operator:all").emit("activity:new", activity);
+}
+
+export function broadcastSnapshotInvalidate(stationId: string) {
+  if (!io) return;
+  io.of("/operator").to(`station:${stationId}`).to("operator:all").emit("snapshot:invalidate");
+}

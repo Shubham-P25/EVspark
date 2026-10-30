@@ -95,6 +95,7 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   role: 'role',
   onboardedAt: 'onboardedAt',
+  onboardingDraft: 'onboardingDraft',
   createdAt: 'createdAt'
 } as const
 
@@ -131,7 +132,17 @@ export const DriverProfileScalarFieldEnum = {
   workLng: 'workLng',
   workLabel: 'workLabel',
   maxWaitMin: 'maxWaitMin',
-  minKw: 'minKw'
+  minKw: 'minKw',
+  language: 'language',
+  chargingPref: 'chargingPref',
+  vehicleOwnership: 'vehicleOwnership',
+  hasHomeCharger: 'hasHomeCharger',
+  dailyKm: 'dailyKm',
+  maxPriceKwh: 'maxPriceKwh',
+  preferredTimes: 'preferredTimes',
+  amenityPrefs: 'amenityPrefs',
+  notifyChannels: 'notifyChannels',
+  notifications: 'notifications'
 } as const
 
 export type DriverProfileScalarFieldEnum = (typeof DriverProfileScalarFieldEnum)[keyof typeof DriverProfileScalarFieldEnum]
@@ -143,7 +154,10 @@ export const OperatorProfileScalarFieldEnum = {
   businessName: 'businessName',
   contactName: 'contactName',
   phone: 'phone',
-  gstin: 'gstin'
+  gstin: 'gstin',
+  businessType: 'businessType',
+  supportEmail: 'supportEmail',
+  integration: 'integration'
 } as const
 
 export type OperatorProfileScalarFieldEnum = (typeof OperatorProfileScalarFieldEnum)[keyof typeof OperatorProfileScalarFieldEnum]
@@ -171,6 +185,13 @@ export const StationScalarFieldEnum = {
   googlePlaceId: 'googlePlaceId',
   photoUrl: 'photoUrl',
   phone: 'phone',
+  pincode: 'pincode',
+  landmark: 'landmark',
+  parkingSlots: 'parkingSlots',
+  paymentMethods: 'paymentMethods',
+  idleFeePerMin: 'idleFeePerMin',
+  description: 'description',
+  accessType: 'accessType',
   createdAt: 'createdAt'
 } as const
 
@@ -183,6 +204,7 @@ export const ChargerScalarFieldEnum = {
   label: 'label',
   connectorType: 'connectorType',
   powerKw: 'powerKw',
+  pricePerKwh: 'pricePerKwh',
   status: 'status',
   ocppId: 'ocppId',
   updatedAt: 'updatedAt'
@@ -232,7 +254,9 @@ export const QueueEntryScalarFieldEnum = {
   connector: 'connector',
   joinedTs: 'joinedTs',
   etaTs: 'etaTs',
-  status: 'status'
+  status: 'status',
+  calledAt: 'calledAt',
+  calledChargerId: 'calledChargerId'
 } as const
 
 export type QueueEntryScalarFieldEnum = (typeof QueueEntryScalarFieldEnum)[keyof typeof QueueEntryScalarFieldEnum]
@@ -351,12 +375,29 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {

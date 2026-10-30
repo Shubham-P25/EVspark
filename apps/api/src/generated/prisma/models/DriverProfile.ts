@@ -35,6 +35,8 @@ export type DriverProfileAvgAggregateOutputType = {
   workLng: number | null
   maxWaitMin: number | null
   minKw: number | null
+  dailyKm: number | null
+  maxPriceKwh: number | null
 }
 
 export type DriverProfileSumAggregateOutputType = {
@@ -46,6 +48,8 @@ export type DriverProfileSumAggregateOutputType = {
   workLng: number | null
   maxWaitMin: number | null
   minKw: number | null
+  dailyKm: number | null
+  maxPriceKwh: number | null
 }
 
 export type DriverProfileMinAggregateOutputType = {
@@ -65,6 +69,16 @@ export type DriverProfileMinAggregateOutputType = {
   workLabel: string | null
   maxWaitMin: number | null
   minKw: number | null
+  language: string | null
+  chargingPref: string | null
+  vehicleOwnership: string | null
+  hasHomeCharger: boolean | null
+  dailyKm: number | null
+  maxPriceKwh: number | null
+  preferredTimes: string | null
+  amenityPrefs: string | null
+  notifyChannels: string | null
+  notifications: boolean | null
 }
 
 export type DriverProfileMaxAggregateOutputType = {
@@ -84,6 +98,16 @@ export type DriverProfileMaxAggregateOutputType = {
   workLabel: string | null
   maxWaitMin: number | null
   minKw: number | null
+  language: string | null
+  chargingPref: string | null
+  vehicleOwnership: string | null
+  hasHomeCharger: boolean | null
+  dailyKm: number | null
+  maxPriceKwh: number | null
+  preferredTimes: string | null
+  amenityPrefs: string | null
+  notifyChannels: string | null
+  notifications: boolean | null
 }
 
 export type DriverProfileCountAggregateOutputType = {
@@ -103,6 +127,16 @@ export type DriverProfileCountAggregateOutputType = {
   workLabel: number
   maxWaitMin: number
   minKw: number
+  language: number
+  chargingPref: number
+  vehicleOwnership: number
+  hasHomeCharger: number
+  dailyKm: number
+  maxPriceKwh: number
+  preferredTimes: number
+  amenityPrefs: number
+  notifyChannels: number
+  notifications: number
   _all: number
 }
 
@@ -116,6 +150,8 @@ export type DriverProfileAvgAggregateInputType = {
   workLng?: true
   maxWaitMin?: true
   minKw?: true
+  dailyKm?: true
+  maxPriceKwh?: true
 }
 
 export type DriverProfileSumAggregateInputType = {
@@ -127,6 +163,8 @@ export type DriverProfileSumAggregateInputType = {
   workLng?: true
   maxWaitMin?: true
   minKw?: true
+  dailyKm?: true
+  maxPriceKwh?: true
 }
 
 export type DriverProfileMinAggregateInputType = {
@@ -146,6 +184,16 @@ export type DriverProfileMinAggregateInputType = {
   workLabel?: true
   maxWaitMin?: true
   minKw?: true
+  language?: true
+  chargingPref?: true
+  vehicleOwnership?: true
+  hasHomeCharger?: true
+  dailyKm?: true
+  maxPriceKwh?: true
+  preferredTimes?: true
+  amenityPrefs?: true
+  notifyChannels?: true
+  notifications?: true
 }
 
 export type DriverProfileMaxAggregateInputType = {
@@ -165,6 +213,16 @@ export type DriverProfileMaxAggregateInputType = {
   workLabel?: true
   maxWaitMin?: true
   minKw?: true
+  language?: true
+  chargingPref?: true
+  vehicleOwnership?: true
+  hasHomeCharger?: true
+  dailyKm?: true
+  maxPriceKwh?: true
+  preferredTimes?: true
+  amenityPrefs?: true
+  notifyChannels?: true
+  notifications?: true
 }
 
 export type DriverProfileCountAggregateInputType = {
@@ -184,6 +242,16 @@ export type DriverProfileCountAggregateInputType = {
   workLabel?: true
   maxWaitMin?: true
   minKw?: true
+  language?: true
+  chargingPref?: true
+  vehicleOwnership?: true
+  hasHomeCharger?: true
+  dailyKm?: true
+  maxPriceKwh?: true
+  preferredTimes?: true
+  amenityPrefs?: true
+  notifyChannels?: true
+  notifications?: true
   _all?: true
 }
 
@@ -290,6 +358,16 @@ export type DriverProfileGroupByOutputType = {
   workLabel: string | null
   maxWaitMin: number | null
   minKw: number | null
+  language: string | null
+  chargingPref: string | null
+  vehicleOwnership: string | null
+  hasHomeCharger: boolean | null
+  dailyKm: number | null
+  maxPriceKwh: number | null
+  preferredTimes: string | null
+  amenityPrefs: string | null
+  notifyChannels: string | null
+  notifications: boolean
   _count: DriverProfileCountAggregateOutputType | null
   _avg: DriverProfileAvgAggregateOutputType | null
   _sum: DriverProfileSumAggregateOutputType | null
@@ -332,6 +410,16 @@ export type DriverProfileWhereInput = {
   workLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   maxWaitMin?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
   minKw?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  language?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  chargingPref?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  vehicleOwnership?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  hasHomeCharger?: Prisma.BoolNullableFilter<"DriverProfile"> | boolean | null
+  dailyKm?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
+  maxPriceKwh?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  preferredTimes?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  amenityPrefs?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  notifyChannels?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  notifications?: Prisma.BoolFilter<"DriverProfile"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -352,6 +440,16 @@ export type DriverProfileOrderByWithRelationInput = {
   workLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   minKw?: Prisma.SortOrderInput | Prisma.SortOrder
+  language?: Prisma.SortOrderInput | Prisma.SortOrder
+  chargingPref?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleOwnership?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasHomeCharger?: Prisma.SortOrderInput | Prisma.SortOrder
+  dailyKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredTimes?: Prisma.SortOrderInput | Prisma.SortOrder
+  amenityPrefs?: Prisma.SortOrderInput | Prisma.SortOrder
+  notifyChannels?: Prisma.SortOrderInput | Prisma.SortOrder
+  notifications?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -375,6 +473,16 @@ export type DriverProfileWhereUniqueInput = Prisma.AtLeast<{
   workLabel?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
   maxWaitMin?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
   minKw?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  language?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  chargingPref?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  vehicleOwnership?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  hasHomeCharger?: Prisma.BoolNullableFilter<"DriverProfile"> | boolean | null
+  dailyKm?: Prisma.IntNullableFilter<"DriverProfile"> | number | null
+  maxPriceKwh?: Prisma.FloatNullableFilter<"DriverProfile"> | number | null
+  preferredTimes?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  amenityPrefs?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  notifyChannels?: Prisma.StringNullableFilter<"DriverProfile"> | string | null
+  notifications?: Prisma.BoolFilter<"DriverProfile"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -395,6 +503,16 @@ export type DriverProfileOrderByWithAggregationInput = {
   workLabel?: Prisma.SortOrderInput | Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   minKw?: Prisma.SortOrderInput | Prisma.SortOrder
+  language?: Prisma.SortOrderInput | Prisma.SortOrder
+  chargingPref?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleOwnership?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasHomeCharger?: Prisma.SortOrderInput | Prisma.SortOrder
+  dailyKm?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredTimes?: Prisma.SortOrderInput | Prisma.SortOrder
+  amenityPrefs?: Prisma.SortOrderInput | Prisma.SortOrder
+  notifyChannels?: Prisma.SortOrderInput | Prisma.SortOrder
+  notifications?: Prisma.SortOrder
   _count?: Prisma.DriverProfileCountOrderByAggregateInput
   _avg?: Prisma.DriverProfileAvgOrderByAggregateInput
   _max?: Prisma.DriverProfileMaxOrderByAggregateInput
@@ -422,6 +540,16 @@ export type DriverProfileScalarWhereWithAggregatesInput = {
   workLabel?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
   maxWaitMin?: Prisma.IntNullableWithAggregatesFilter<"DriverProfile"> | number | null
   minKw?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  language?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  chargingPref?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  vehicleOwnership?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  hasHomeCharger?: Prisma.BoolNullableWithAggregatesFilter<"DriverProfile"> | boolean | null
+  dailyKm?: Prisma.IntNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  maxPriceKwh?: Prisma.FloatNullableWithAggregatesFilter<"DriverProfile"> | number | null
+  preferredTimes?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  amenityPrefs?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  notifyChannels?: Prisma.StringNullableWithAggregatesFilter<"DriverProfile"> | string | null
+  notifications?: Prisma.BoolWithAggregatesFilter<"DriverProfile"> | boolean
 }
 
 export type DriverProfileCreateInput = {
@@ -440,6 +568,16 @@ export type DriverProfileCreateInput = {
   workLabel?: string | null
   maxWaitMin?: number | null
   minKw?: number | null
+  language?: string | null
+  chargingPref?: string | null
+  vehicleOwnership?: string | null
+  hasHomeCharger?: boolean | null
+  dailyKm?: number | null
+  maxPriceKwh?: number | null
+  preferredTimes?: string | null
+  amenityPrefs?: string | null
+  notifyChannels?: string | null
+  notifications?: boolean
   user: Prisma.UserCreateNestedOneWithoutDriverProfileInput
 }
 
@@ -460,6 +598,16 @@ export type DriverProfileUncheckedCreateInput = {
   workLabel?: string | null
   maxWaitMin?: number | null
   minKw?: number | null
+  language?: string | null
+  chargingPref?: string | null
+  vehicleOwnership?: string | null
+  hasHomeCharger?: boolean | null
+  dailyKm?: number | null
+  maxPriceKwh?: number | null
+  preferredTimes?: string | null
+  amenityPrefs?: string | null
+  notifyChannels?: string | null
+  notifications?: boolean
 }
 
 export type DriverProfileUpdateInput = {
@@ -478,6 +626,16 @@ export type DriverProfileUpdateInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutDriverProfileNestedInput
 }
 
@@ -498,6 +656,16 @@ export type DriverProfileUncheckedUpdateInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DriverProfileCreateManyInput = {
@@ -517,6 +685,16 @@ export type DriverProfileCreateManyInput = {
   workLabel?: string | null
   maxWaitMin?: number | null
   minKw?: number | null
+  language?: string | null
+  chargingPref?: string | null
+  vehicleOwnership?: string | null
+  hasHomeCharger?: boolean | null
+  dailyKm?: number | null
+  maxPriceKwh?: number | null
+  preferredTimes?: string | null
+  amenityPrefs?: string | null
+  notifyChannels?: string | null
+  notifications?: boolean
 }
 
 export type DriverProfileUpdateManyMutationInput = {
@@ -535,6 +713,16 @@ export type DriverProfileUpdateManyMutationInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DriverProfileUncheckedUpdateManyInput = {
@@ -554,6 +742,16 @@ export type DriverProfileUncheckedUpdateManyInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DriverProfileNullableScalarRelationFilter = {
@@ -578,6 +776,16 @@ export type DriverProfileCountOrderByAggregateInput = {
   workLabel?: Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrder
   minKw?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  chargingPref?: Prisma.SortOrder
+  vehicleOwnership?: Prisma.SortOrder
+  hasHomeCharger?: Prisma.SortOrder
+  dailyKm?: Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrder
+  preferredTimes?: Prisma.SortOrder
+  amenityPrefs?: Prisma.SortOrder
+  notifyChannels?: Prisma.SortOrder
+  notifications?: Prisma.SortOrder
 }
 
 export type DriverProfileAvgOrderByAggregateInput = {
@@ -589,6 +797,8 @@ export type DriverProfileAvgOrderByAggregateInput = {
   workLng?: Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrder
   minKw?: Prisma.SortOrder
+  dailyKm?: Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrder
 }
 
 export type DriverProfileMaxOrderByAggregateInput = {
@@ -608,6 +818,16 @@ export type DriverProfileMaxOrderByAggregateInput = {
   workLabel?: Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrder
   minKw?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  chargingPref?: Prisma.SortOrder
+  vehicleOwnership?: Prisma.SortOrder
+  hasHomeCharger?: Prisma.SortOrder
+  dailyKm?: Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrder
+  preferredTimes?: Prisma.SortOrder
+  amenityPrefs?: Prisma.SortOrder
+  notifyChannels?: Prisma.SortOrder
+  notifications?: Prisma.SortOrder
 }
 
 export type DriverProfileMinOrderByAggregateInput = {
@@ -627,6 +847,16 @@ export type DriverProfileMinOrderByAggregateInput = {
   workLabel?: Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrder
   minKw?: Prisma.SortOrder
+  language?: Prisma.SortOrder
+  chargingPref?: Prisma.SortOrder
+  vehicleOwnership?: Prisma.SortOrder
+  hasHomeCharger?: Prisma.SortOrder
+  dailyKm?: Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrder
+  preferredTimes?: Prisma.SortOrder
+  amenityPrefs?: Prisma.SortOrder
+  notifyChannels?: Prisma.SortOrder
+  notifications?: Prisma.SortOrder
 }
 
 export type DriverProfileSumOrderByAggregateInput = {
@@ -638,6 +868,8 @@ export type DriverProfileSumOrderByAggregateInput = {
   workLng?: Prisma.SortOrder
   maxWaitMin?: Prisma.SortOrder
   minKw?: Prisma.SortOrder
+  dailyKm?: Prisma.SortOrder
+  maxPriceKwh?: Prisma.SortOrder
 }
 
 export type DriverProfileCreateNestedOneWithoutUserInput = {
@@ -688,6 +920,14 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type DriverProfileCreateWithoutUserInput = {
   id?: string
   vehicleModelId?: string | null
@@ -704,6 +944,16 @@ export type DriverProfileCreateWithoutUserInput = {
   workLabel?: string | null
   maxWaitMin?: number | null
   minKw?: number | null
+  language?: string | null
+  chargingPref?: string | null
+  vehicleOwnership?: string | null
+  hasHomeCharger?: boolean | null
+  dailyKm?: number | null
+  maxPriceKwh?: number | null
+  preferredTimes?: string | null
+  amenityPrefs?: string | null
+  notifyChannels?: string | null
+  notifications?: boolean
 }
 
 export type DriverProfileUncheckedCreateWithoutUserInput = {
@@ -722,6 +972,16 @@ export type DriverProfileUncheckedCreateWithoutUserInput = {
   workLabel?: string | null
   maxWaitMin?: number | null
   minKw?: number | null
+  language?: string | null
+  chargingPref?: string | null
+  vehicleOwnership?: string | null
+  hasHomeCharger?: boolean | null
+  dailyKm?: number | null
+  maxPriceKwh?: number | null
+  preferredTimes?: string | null
+  amenityPrefs?: string | null
+  notifyChannels?: string | null
+  notifications?: boolean
 }
 
 export type DriverProfileCreateOrConnectWithoutUserInput = {
@@ -756,6 +1016,16 @@ export type DriverProfileUpdateWithoutUserInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type DriverProfileUncheckedUpdateWithoutUserInput = {
@@ -774,6 +1044,16 @@ export type DriverProfileUncheckedUpdateWithoutUserInput = {
   workLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxWaitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   minKw?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  language?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  chargingPref?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleOwnership?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hasHomeCharger?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  dailyKm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxPriceKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preferredTimes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  amenityPrefs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifyChannels?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notifications?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -795,6 +1075,16 @@ export type DriverProfileSelect<ExtArgs extends runtime.Types.Extensions.Interna
   workLabel?: boolean
   maxWaitMin?: boolean
   minKw?: boolean
+  language?: boolean
+  chargingPref?: boolean
+  vehicleOwnership?: boolean
+  hasHomeCharger?: boolean
+  dailyKm?: boolean
+  maxPriceKwh?: boolean
+  preferredTimes?: boolean
+  amenityPrefs?: boolean
+  notifyChannels?: boolean
+  notifications?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -815,6 +1105,16 @@ export type DriverProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   workLabel?: boolean
   maxWaitMin?: boolean
   minKw?: boolean
+  language?: boolean
+  chargingPref?: boolean
+  vehicleOwnership?: boolean
+  hasHomeCharger?: boolean
+  dailyKm?: boolean
+  maxPriceKwh?: boolean
+  preferredTimes?: boolean
+  amenityPrefs?: boolean
+  notifyChannels?: boolean
+  notifications?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -835,6 +1135,16 @@ export type DriverProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   workLabel?: boolean
   maxWaitMin?: boolean
   minKw?: boolean
+  language?: boolean
+  chargingPref?: boolean
+  vehicleOwnership?: boolean
+  hasHomeCharger?: boolean
+  dailyKm?: boolean
+  maxPriceKwh?: boolean
+  preferredTimes?: boolean
+  amenityPrefs?: boolean
+  notifyChannels?: boolean
+  notifications?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driverProfile"]>
 
@@ -855,9 +1165,19 @@ export type DriverProfileSelectScalar = {
   workLabel?: boolean
   maxWaitMin?: boolean
   minKw?: boolean
+  language?: boolean
+  chargingPref?: boolean
+  vehicleOwnership?: boolean
+  hasHomeCharger?: boolean
+  dailyKm?: boolean
+  maxPriceKwh?: boolean
+  preferredTimes?: boolean
+  amenityPrefs?: boolean
+  notifyChannels?: boolean
+  notifications?: boolean
 }
 
-export type DriverProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleModelId" | "vehicleRegNo" | "batteryPct" | "city" | "connectorPref" | "rangeKm" | "homeLat" | "homeLng" | "homeLabel" | "workLat" | "workLng" | "workLabel" | "maxWaitMin" | "minKw", ExtArgs["result"]["driverProfile"]>
+export type DriverProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "vehicleModelId" | "vehicleRegNo" | "batteryPct" | "city" | "connectorPref" | "rangeKm" | "homeLat" | "homeLng" | "homeLabel" | "workLat" | "workLng" | "workLabel" | "maxWaitMin" | "minKw" | "language" | "chargingPref" | "vehicleOwnership" | "hasHomeCharger" | "dailyKm" | "maxPriceKwh" | "preferredTimes" | "amenityPrefs" | "notifyChannels" | "notifications", ExtArgs["result"]["driverProfile"]>
 export type DriverProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -890,6 +1210,16 @@ export type $DriverProfilePayload<ExtArgs extends runtime.Types.Extensions.Inter
     workLabel: string | null
     maxWaitMin: number | null
     minKw: number | null
+    language: string | null
+    chargingPref: string | null
+    vehicleOwnership: string | null
+    hasHomeCharger: boolean | null
+    dailyKm: number | null
+    maxPriceKwh: number | null
+    preferredTimes: string | null
+    amenityPrefs: string | null
+    notifyChannels: string | null
+    notifications: boolean
   }, ExtArgs["result"]["driverProfile"]>
   composites: {}
 }
@@ -1330,6 +1660,16 @@ export interface DriverProfileFieldRefs {
   readonly workLabel: Prisma.FieldRef<"DriverProfile", 'String'>
   readonly maxWaitMin: Prisma.FieldRef<"DriverProfile", 'Int'>
   readonly minKw: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly language: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly chargingPref: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly vehicleOwnership: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly hasHomeCharger: Prisma.FieldRef<"DriverProfile", 'Boolean'>
+  readonly dailyKm: Prisma.FieldRef<"DriverProfile", 'Int'>
+  readonly maxPriceKwh: Prisma.FieldRef<"DriverProfile", 'Float'>
+  readonly preferredTimes: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly amenityPrefs: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly notifyChannels: Prisma.FieldRef<"DriverProfile", 'String'>
+  readonly notifications: Prisma.FieldRef<"DriverProfile", 'Boolean'>
 }
     
 

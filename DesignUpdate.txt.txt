@@ -1,0 +1,1883 @@
+cd /home/claude && rm -rf work && cp -r ev/EVspark-feature-complete-project work && cd work && cat package.json && cat pnpm-workspace.yaml 2>/dev/null; ls; node -v; (npm view next version; npm view react version; npm view framer-motion version; npm view @clerk/nextjs version; npm view prisma version; npm view vaul version) 2>&1 | head -20
+Output
+
+{
+  "name": "evspark",
+  "private": true,
+  "packageManager": "pnpm@11.2.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "vitest run tests/e2e/smoke.test.ts",
+    "test:load": "tsx tests/load/run-load.ts",
+    "db:migrate": "pnpm --filter api db:migrate",
+    "db:seed": "pnpm --filter api db:seed",
+    "sim": "pnpm --filter twin-engine dev",
+    "twin": "pnpm --filter twin-engine dev",
+    "feed": "pnpm --filter station-feed dev",
+    "ghosts": "pnpm --filter ghost-drivers dev"
+  },
+  "devDependencies": {
+    "@types/supertest": "^7.2.1",
+    "cross-env": "^7.0.3",
+    "rimraf": "^6.0.1",
+    "supertest": "^7.3.1",
+    "turbo": "^2.4.4",
+    "vitest": "^5.0.3"
+  },
+  "dependencies": {
+    "framer-motion": "^14.1.0"
+  }
+}
+packages:
+  - 'apps/api'
+  - 'apps/ml'
+  - 'apps/ml-service'
+  - 'apps/web'
+  - 'packages/*'
+  - 'scripts/*'
+
+allowBuilds:
+  '@prisma/engines': true
+  core-js: true
+  esbuild: true
+  prisma: true
+  unrs-resolver: true
+
+minimumReleaseAgeExclude:
+  - lucide-react@1.55.0
+README.md
+apps
+codedesign.md
+codemap.md
+commands.md
+data
+docker-compose.yml
+docs
+frontend.md
+infra
+killets.md
+package.json
+packages
+pnpm-lock.yaml
+pnpm-workspace.yaml
+prompt.md
+script.md
+scripts
+starting (1).md
+tests
+tools.md
+turbo.json
+v22.22.2
+16.4.3
+npm notice
+npm notice New major version of npm available! 10.9.7 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+19.3.1
+14.8.0
+7.9.22
+8.0.0-rc.28
+1.1.2
+Checking which pnpm versions the registry offers.
+cd /home/claude/work && (npm i -g pnpm@11.2.2 >/tmp/pnpm-install.log 2>&1; tail -3 /tmp/pnpm-install.log; pnpm -v)
+Output
+
+
+1 package is looking for funding
+  run `npm fund` for details
+11.2.2
+cd /home/claude/work && nohup sh -c 'pnpm install --frozen-lockfile --ignore-scripts > /tmp/pnpm-full.log 2>&1; echo DONE >> /tmp/pnpm-full.log' >/dev/null 2>&1 &
+sleep 45; tail -5 /tmp/pnpm-full.log
+Output
+
++ turbo 2.11.7
++ vitest 5.0.3
+
+Done in 36.8s using pnpm v11.2.2
+DONE
+cd /home/claude/work && (cd apps/web && timeout 280 npx tsc --noEmit 2>&1 | tail -15; echo "WEB EXIT done"); (cd apps/api && cat package.json | grep -n "typecheck\|\"build\"\|db:\|prisma" ; timeout 200 npx tsc --noEmit 2>&1 | tail -10; echo "API done")
+Output
+
+WEB EXIT done
+9:    "build": "tsc",
+12:    "typecheck": "tsc --noEmit",
+14:    "prisma:generate": "prisma generate",
+15:    "db:migrate": "prisma migrate deploy",
+16:    "db:migrate:dev": "prisma migrate dev",
+17:    "db:seed": "tsx src/seed.ts",
+22:    "postinstall": "prisma generate"
+30:    "@prisma/adapter-pg": "^7.9.1",
+31:    "@prisma/client": "^7.9.1",
+71:    "prisma": "^7.9.1",
+API done
+d /home/claude/work/apps/api && ls; cat prisma.config.ts 2>/dev/null; timeout 120 npx prisma generate 2>&1 | tail -8; ls src/generated/prisma | head -3; git -C /home/claude/work status 2>&1 | head -2
+Output
+
+Dockerfile
+node_modules
+package.json
+prisma
+prisma.config.ts
+src
+tests
+tsconfig.json
+vitest.config.ts
+require("dotenv/config");
+
+const { defineConfig, env } = require("prisma/config");
+
+module.exports = defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DIRECT_URL") || env("DATABASE_URL"),
+  },
+});
+Failed to load config file "/home/claude/work/apps/api" as a TypeScript/JavaScript module. Error: PrismaConfigEnvError: Cannot resolve environment variable: DIRECT_URL.
+browser.ts
+client.ts
+commonInputTypes.ts
+fatal: not a git repository (or any of the parent directories): .git
+cd /home/claude/work/apps/api && DIRECT_URL=postgresql://u:p@localhost:5432/x DATABASE_URL=postgresql://u:p@localhost:5432/x timeout 150 npx prisma generate 2>&1 | tail -8; ls -la src/generated/prisma | head -5
+Output
+
+Loaded Prisma config from prisma.config.ts.
+
+Error: request to https://binaries.prisma.sh/all_commits/0edf323efd1d98336f3f0a68684b56f689b900d3/debian-openssl-3.0.x/schema-engine.gz.sha256 failed, reason: getaddrinfo ENOTFOUND binaries.prisma.sh
+total 68
+drwxr-xr-x 4 root root  4096 Oct 30 05:12 .
+drwxr-xr-x 3 root root  4096 Oct 30 05:12 ..
+-rw-r--r-- 1 root root  2011 Oct 30 05:12 browser.ts
+-rw-r--r-- 1 root root  2959 Oct 30 05:12 client.ts
+Prisma wants to download an engine binary that this sandbox can’t reach, so I’m trying a workaround to regenerate the client locally; if it fails, I’ll hand-write the types and flag it in the file.
+cd /home/claude/work/apps/api && cp -r src/generated /tmp/generated-backup && PRISMA_SCHEMA_ENGINE_BINARY=/bin/true PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 DIRECT_URL=postgresql://u:p@localhost:5432/x DATABASE_URL=postgresql://u:p@localhost:5432/x timeout 150 npx prisma generate 2>&1 | tail -8; diff -rq /tmp/generated-backup src/generated | head
+Output
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 564ms
+
+Only in src/generated/prisma/models: VehiclePing.ts
+
+Regenerating the stale generated client now.
+
+Writing the schema additions for the driver profile.
+
+Drafting the onboarding field changes for drivers and operators.
+
+Rewriting the onboarding endpoints and checking station creation.
+
+Tightening the sign-in redirect and token checks.
+
+Adding a sign-in redirect route and shared sync helper.
+
+Adding queue call, remove and restore endpoints.
+
+Reworking the operator live view and charger status updates.
+
+Planning the signed photo upload endpoint and the web styling files.
+cd /home/claude/work/apps && sed -n 20,60p web/src/app/onboarding/page.tsx; sed -n 100,214p web/src/app/onboarding/page.tsx; echo ---SSO; sed -n 60,120p web/src/app/sso-callback/page.tsx; echo ---MIG; grep -n "CREATE TABLE" api/prisma/migrations/20260330000000_init/migration.sql | head -5; cat api/prisma/migrations/20261025000006_station_geom/migration.sql | head -30; ls api/prisma/migrations; echo ---vehicles; cat api/src/controllers/vehicles.controller.ts | head -30
+Output
+
+  Sliders,
+} from "@phosphor-icons/react";
+
+const INDIAN_CITIES = [
+  "Mumbai",
+  "Pune",
+  "Nagpur",
+  "Nashik",
+  "Thane",
+  "Navi Mumbai",
+  "Chhatrapati Sambhajinagar (Aurangabad)",
+  "Solapur",
+  "Kolhapur",
+  "Amravati",
+  "Bengaluru",
+  "Delhi NCR",
+  "Hyderabad",
+  "Ahmedabad",
+];
+
+const POPULAR_VEHICLES = [
+  { id: "cmv0tatanexon001", make: "Tata", model: "Nexon EV Max", batteryKwh: 40.5, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0tatapunch001", make: "Tata", model: "Punch.ev", batteryKwh: 35.0, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0mgzsev001", make: "MG", model: "ZS EV", batteryKwh: 50.3, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0mahindraxuv400", make: "Mahindra", model: "XUV400 EV", batteryKwh: 39.4, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0hyundaiioniq5", make: "Hyundai", model: "Ioniq 5", batteryKwh: 72.6, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0bydatto3", make: "BYD", model: "Atto 3", batteryKwh: 60.48, connectors: ["CCS2", "Type2"] },
+  { id: "cmv0kiaev6", make: "Kia", model: "EV6", batteryKwh: 77.4, connectors: ["CCS2", "Type2"] },
+];
+
+const CONNECTOR_OPTIONS = ["CCS2", "Type2", "CHAdeMO", "Ather Grid", "Ola Hypercharger", "Bharat AC001"];
+
+const DRAFT_STORAGE_KEY = "evspark_onboarding_draft";
+
+export default function OnboardingPage() {
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+
+  const [role, setRole] = useState<"DRIVER" | "OPERATOR">("DRIVER");
+  const [stepIndex, setStepIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // Check if user is already onboarded
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+
+    if (typeof document !== "undefined" && document.cookie.includes("evspark_onboarded=true")) {
+      const isOp = document.cookie.includes("evspark_role=OPERATOR");
+      window.location.href = isOp ? "/station" : "/driver";
+      return;
+    }
+
+    // Check DB profile status
+    apiFetch<any>("/api/me/profile")
+      .then((res) => {
+        if (res?.onboarded) {
+          const roleToUse = res.user?.role === "OPERATOR" ? "OPERATOR" : "DRIVER";
+          document.cookie = `evspark_onboarded=true; path=/; max-age=31536000; SameSite=Lax`;
+          document.cookie = `evspark_role=${roleToUse}; path=/; max-age=31536000; SameSite=Lax`;
+          window.location.href = roleToUse === "OPERATOR" ? "/station" : "/driver";
+        }
+      })
+      .catch(() => {
+        // Not onboarded yet
+      });
+
+    // Prefill from user
+    if (user.fullName && !fullName) setFullName(user.fullName);
+    if (user.fullName && !contactName) setContactName(user.fullName);
+
+    // Initial role from Clerk metadata or pre-oauth cookie
+    const cookieRole = typeof document !== "undefined" && document.cookie.includes("evspark_role=OPERATOR") ? "OPERATOR" : null;
+    const userRole = (user.unsafeMetadata?.role as string) || (user.publicMetadata?.role as string) || cookieRole;
+    if (userRole === "OPERATOR") setRole("OPERATOR");
+  }, [isLoaded, user, router]);
+
+  // Restore draft from sessionStorage
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.role) setRole(parsed.role);
+        if (parsed.stepIndex != null) setStepIndex(parsed.stepIndex);
+        if (parsed.fullName) setFullName(parsed.fullName);
+        if (parsed.phone) setPhone(parsed.phone);
+        if (parsed.city) setCity(parsed.city);
+        if (parsed.selectedVehicleId) setSelectedVehicleId(parsed.selectedVehicleId);
+        if (parsed.regNo) setRegNo(parsed.regNo);
+        if (parsed.batteryPct != null) setBatteryPct(parsed.batteryPct);
+        if (parsed.selectedConnectors) setSelectedConnectors(parsed.selectedConnectors);
+        if (parsed.homeLabel) setHomeLabel(parsed.homeLabel);
+        if (parsed.businessName) setBusinessName(parsed.businessName);
+        if (parsed.stationName) setStationName(parsed.stationName);
+        if (parsed.address) setAddress(parsed.address);
+        if (parsed.chargers) setChargers(parsed.chargers);
+      }
+    } catch {}
+  }, []);
+
+  // Save draft to sessionStorage on state changes
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        DRAFT_STORAGE_KEY,
+        JSON.stringify({
+          role,
+          stepIndex,
+          fullName,
+          phone,
+          city,
+          selectedVehicleId,
+          regNo,
+          batteryPct,
+          selectedConnectors,
+          homeLabel,
+          businessName,
+          stationName,
+          address,
+          chargers,
+        })
+      );
+    } catch {}
+  }, [
+    role,
+    stepIndex,
+    fullName,
+    phone,
+    city,
+    selectedVehicleId,
+    regNo,
+    batteryPct,
+    selectedConnectors,
+    homeLabel,
+    businessName,
+    stationName,
+    address,
+    chargers,
+  ]);
+
+  // Fetch real vehicles list
+  useEffect(() => {
+    apiFetch<any[]>("/api/vehicles")
+      .then((res) => {
+        if (Array.isArray(res) && res.length > 0) {
+          setVehicles(res);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeVehicle = useMemo(() => {
+    return vehicles.find((v) => v.id === selectedVehicleId) || vehicles[0];
+  }, [vehicles, selectedVehicleId]);
+
+  const driverSteps = useMemo(
+    () => [
+---SSO
+            Completing sign-in with your provider. You will be redirected momentarily.
+          </p>
+        </div>
+
+        <HandleSSOCallback
+          navigateToApp={handleNavigate}
+          navigateToSignIn={() => {
+            window.location.href = "/login";
+          }}
+          navigateToSignUp={handleNavigate}
+        />
+
+        {timedOut && (
+          <div className="mt-2 pt-3 border-t border-[#DADCE0] w-full">
+            <p className="text-xs text-[#5F6368] mb-2">Taking longer than expected?</p>
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = session ? "/driver" : "/login";
+              }}
+              className="text-xs font-semibold text-[#1A73E8] hover:underline cursor-pointer"
+            >
+              Continue to {session ? "Dashboard" : "Login"} &rarr;
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+---MIG
+20:CREATE TABLE "User" (
+31:CREATE TABLE "VehicleModel" (
+45:CREATE TABLE "DriverProfile" (
+58:CREATE TABLE "OperatorProfile" (
+68:CREATE TABLE "Station" (
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- AlterTable
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS geom geography(Point, 4326);
+
+-- Backfill
+UPDATE "Station"
+SET geom = ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography
+WHERE geom IS NULL;
+
+-- CreateIndex
+CREATE INDEX IF NOT EXISTS station_geom_gix ON "Station" USING GIST (geom);
+
+-- Trigger Function
+CREATE OR REPLACE FUNCTION station_set_geom() RETURNS trigger AS $$
+BEGIN
+  NEW.geom := ST_SetSRID(ST_MakePoint(NEW.lng, NEW.lat), 4326)::geography;
+  RETURN NEW;
+END $$ LANGUAGE plpgsql;
+
+-- Trigger
+DROP TRIGGER IF EXISTS station_geom_trg ON "Station";
+CREATE TRIGGER station_geom_trg BEFORE INSERT OR UPDATE OF lat, lng ON "Station"
+FOR EACH ROW EXECUTE FUNCTION station_set_geom();
+20260330000000_init
+20260330000001_postgis_station_location
+20260330000002_user_auth_id
+20260330000003_twin_engine_schema
+20260330000004_add_profile_fields
+20261011000005_session_external_id
+20261025000006_station_geom
+---vehicles
+import type { Request, Response } from "express";
+import prisma from "../lib/prisma";
+
+export async function listVehicleModels(req: Request, res: Response) {
+  const vehicles = await prisma.vehicleModel.findMany({
+    orderBy: { make: "asc" },
+  });
+  res.json(vehicles);
+}
+
+Flagging a fallback that would submit invalid vehicle IDs.
+
+Noting that the connectors field arrives as a comma-separated string.
+
+Adding a parser for comma-separated connector strings.
+
+Writing the theme provider and toast layer for the dashboard.
+
+Writing the sound helper so toast pops can play.
+
+Writing the reusable button and UI components.
+
+Writing the form controls and motion helpers.
+
+Wiring the place search to Google Maps with a fallback.
+
+Building a drawer, modal and command palette.
+
+Building the ring meter and operator shell layout.
+
+Planning the station floor page layout.
+
+Planning the auth pages and onboarding flow.
+
+Designing the multi-step onboarding flow and its validation.
+
+cd /home/claude/work/packages/shared && cat package.json; cat src/index.ts | head -30; cat src/schemas/index.ts; cd ../../apps/api && sed -n 1,25p src/types/express.d.ts; grep -n "writeLimiter" src/middleware/rateLimiter.ts | head -3; cat src/lib/redis.ts | head -30
+Output
+
+{
+  "name": "@evspark/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "lint": "echo \"shared lint ok\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.11",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  }
+}
+export * from './types';
+export * from './geo';
+export * from './wait-time';
+export * from './scoring';
+export * from './schemas';
+export * from './pins';
+export * from './demo';
+export * from "./stations.schema";
+export * from "./chargers.schema";
+export * from "./bookings.schema";
+export * from "./reviews.schema";
+export * from "./issues.schema";
+export * from "./operator.schema";
+export * from "./admin.schema";
+export * from "./recommend.schema";
+export * from "./journey.schema";
+export * from "./users.schema";
+export * from "./favorites.schema";
+export * from "./telemetry.schema";
+export * from "./onboarding.schema";
+export * from "./along-route.schema";
+import { Role } from '../generated/prisma/enums.js';
+
+export interface AuthUser {
+  id: string;
+  authId: string;
+  email: string;
+  role: Role;
+  name?: string;
+  username?: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: AuthUser;
+    }
+  }
+}
+97:export const writeLimiter = createAdaptiveLimiter({
+import { Redis, RedisOptions } from "ioredis";
+
+let redisClient: Redis | null = null;
+
+export function getRedis(): Redis {
+  if (!redisClient) {
+    const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+    const options: RedisOptions = {
+      maxRetriesPerRequest: null,
+      lazyConnect: true,
+      enableOfflineQueue: false,
+      retryStrategy(times) {
+        return Math.min(times * 100, 2000);
+      },
+    };
+
+    if (redisUrl.startsWith("rediss://")) {
+      options.tls = {
+        rejectUnauthorized: false,
+      };
+    }
+
+    redisClient = new Redis(redisUrl, options);
+
+    redisClient.on("error", () => {
+      // Redis errors caught to prevent unhandled rejections
+    });
+  }
+
+  return redisClient;
+
+cd /home/claude/work/apps/api && python3 - <<'EOF'
+import re
+p='prisma/schema.prisma'
+s=open(p).read()
+
+# DriverProfile
+s=s.replace("""  maxWaitMin     Int?
+  minKw          Float?
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OperatorProfile {""","""  maxWaitMin     Int?
+  minKw          Float?
+  language          String?
+  chargingPref      String?
+  vehicleOwnership  String?
+  hasHomeCharger    Boolean?
+  dailyKm           Int?
+  maxPriceKwh       Float?
+  preferredTimes    String?
+  amenityPrefs      String?
+  notifyChannels    String?
+  notifications     Boolean @default(true)
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model OperatorProfile {""")
+
+# OperatorProfile
+s=s.replace("""  phone        String?
+  gstin        String?
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}""","""  phone        String?
+  gstin        String?
+  businessType String?
+  supportEmail String?
+  integration  String?
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}""")
+
+# Station
+s=s.replace("""  photoUrl       String?
+  phone          String?
+  chargers       Charger[]""","""  photoUrl       String?
+  phone          String?
+  pincode        String?
+  landmark       String?
+  parkingSlots   Int?
+  paymentMethods String?
+  idleFeePerMin  Float?
+  description    String?
+  accessType     String?               @default("PUBLIC")
+  chargers       Charger[]""")
+
+# QueueEntry
+s=s.replace("""  status         String    @default("waiting") // "waiting" | "charging" | "abandoned"
+  station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)""","""  status         String    @default("waiting") // "waiting" | "called" | "charging" | "abandoned" | "removed"
+  calledAt        DateTime?
+  calledChargerId String?
+  station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)""")
+open(p,'w').write(s)
+EOF
+grep -n "language\|businessType\|pincode\|calledAt" prisma/schema.prisma
+mkdir -p prisma/migrations/20261030000007_onboarding_station_fields
+cat > prisma/migrations/20261030000007_onboarding_station_fields/migration.sql <<'EOF'
+-- DriverProfile: richer onboarding fields (chargingPref was collected before but never stored)
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "language" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "chargingPref" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "vehicleOwnership" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "hasHomeCharger" BOOLEAN;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "dailyKm" INTEGER;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "maxPriceKwh" DOUBLE PRECISION;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "preferredTimes" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "amenityPrefs" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "notifyChannels" TEXT;
+ALTER TABLE "DriverProfile" ADD COLUMN IF NOT EXISTS "notifications" BOOLEAN NOT NULL DEFAULT true;
+
+-- OperatorProfile
+ALTER TABLE "OperatorProfile" ADD COLUMN IF NOT EXISTS "businessType" TEXT;
+ALTER TABLE "OperatorProfile" ADD COLUMN IF NOT EXISTS "supportEmail" TEXT;
+ALTER TABLE "OperatorProfile" ADD COLUMN IF NOT EXISTS "integration" TEXT;
+
+-- Station
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "pincode" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "landmark" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "parkingSlots" INTEGER;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "paymentMethods" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "idleFeePerMin" DOUBLE PRECISION;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "description" TEXT;
+ALTER TABLE "Station" ADD COLUMN IF NOT EXISTS "accessType" TEXT DEFAULT 'PUBLIC';
+
+-- QueueEntry: operator "call" action
+ALTER TABLE "QueueEntry" ADD COLUMN IF NOT EXISTS "calledAt" TIMESTAMP(3);
+ALTER TABLE "QueueEntry" ADD COLUMN IF NOT EXISTS "calledChargerId" TEXT;
+EOF
+PRISMA_SCHEMA_ENGINE_BINARY=/bin/true PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 DIRECT_URL=postgresql://u:p@localhost:5432/x DATABASE_URL=postgresql://u:p@localhost:5432/x npx prisma generate 2>&1 | tail -3
+Output
+
+91:  language          String?
+111:  businessType String?
+141:  pincode        String?
+222:  calledAt        DateTime?
+
+✔ Generated Prisma Client (7.10.0) to ./src/generated/prisma in 697ms
+
+cd /home/claude/work/packages/shared/src/schemas && cat > onboarding.schema.ts <<'EOF'
+import { z } from "zod";
+
+export const phoneRegex = /^[6-9]\d{9}$/;
+export const vehicleRegNoRegex = /^[A-Z]{2}[0-9]{1,2}[A-Z]{1,3}[0-9]{4}$/;
+export const gstinRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+export const pincodeRegex = /^[1-9][0-9]{5}$/;
+
+export const LANGUAGES = ["en", "hi", "mr"] as const;
+export const VEHICLE_OWNERSHIP = ["OWNED", "FLEET", "RENTAL"] as const;
+export const CHARGE_TIMES = ["MORNING", "AFTERNOON", "EVENING", "NIGHT"] as const;
+export const NOTIFY_CHANNELS = ["PUSH", "EMAIL", "SMS"] as const;
+export const DRIVER_AMENITIES = ["WiFi", "Cafe", "Restroom", "Parking", "Food Court", "Mall", "Lounge", "24x7 Staff"] as const;
+export const BUSINESS_TYPES = ["INDIVIDUAL", "COMPANY", "MALL_OR_HOTEL", "FUEL_STATION", "FLEET_OPERATOR"] as const;
+export const PAYMENT_METHODS = ["UPI", "CARD", "APP_WALLET", "CASH"] as const;
+export const INTEGRATIONS = ["OCPP", "MANUAL", "PLANNING"] as const;
+export const ACCESS_TYPES = ["PUBLIC", "CUSTOMERS_ONLY", "RESTRICTED"] as const;
+
+export const driverOnboardingSchema = z.object({
+  role: z.literal("DRIVER"),
+  // About
+  fullName: z.string().trim().min(2, "Full name must be at least 2 characters").max(60),
+  phone: z.string().regex(phoneRegex, "Please enter a valid 10-digit Indian phone number"),
+  city: z.string().min(1, "City is required"),
+  language: z.enum(LANGUAGES).default("en"),
+  // Vehicle
+  vehicleModelId: z.string().min(1, "Vehicle selection is required"),
+  vehicleRegNo: z
+    .string()
+    .transform((val) => val.toUpperCase().replace(/\s+/g, ""))
+    .pipe(z.string().regex(vehicleRegNoRegex, "Invalid vehicle registration number format (e.g. MH12AB1234)")),
+  vehicleOwnership: z.enum(VEHICLE_OWNERSHIP).default("OWNED"),
+  batteryPct: z.number().min(0).max(100).default(50),
+  connectors: z.array(z.string()).min(1, "At least one connector type is required"),
+  // Habits
+  preferredCharging: z.enum(["AC", "DC", "EITHER"]).default("EITHER"),
+  hasHomeCharger: z.boolean().default(false),
+  dailyKm: z.number().int().min(0).max(1000).optional().nullable(),
+  maxWaitMin: z.number().int().min(0).max(360).optional().nullable(),
+  minKw: z.number().min(0).optional().nullable(),
+  maxPriceKwh: z.number().min(0).max(1000).optional().nullable(),
+  preferredTimes: z.array(z.enum(CHARGE_TIMES)).default([]),
+  amenityPrefs: z.array(z.string()).default([]),
+  // Places
+  homeLat: z.number(),
+  homeLng: z.number(),
+  homeLabel: z.string().min(1, "Home address label is required"),
+  workLat: z.number().optional().nullable(),
+  workLng: z.number().optional().nullable(),
+  workLabel: z.string().optional().nullable(),
+  // Alerts
+  notifications: z.boolean().optional().default(true),
+  notifyChannels: z.array(z.enum(NOTIFY_CHANNELS)).default(["PUSH"]),
+  acceptTerms: z.literal(true, { error: "You must accept the terms to continue" }),
+});
+
+export const operatorChargerInputSchema = z.object({
+  label: z.string().trim().max(50).optional(),
+  connectorType: z.string().min(1, "Connector type required"),
+  powerKw: z.number().positive("Power must be positive").max(500),
+});
+
+export const operatorOnboardingSchema = z.object({
+  role: z.literal("OPERATOR"),
+  // Business
+  businessName: z.string().trim().min(2, "Business name must be at least 2 characters").max(80),
+  businessType: z.enum(BUSINESS_TYPES).default("COMPANY"),
+  contactName: z.string().trim().min(2, "Contact person name must be at least 2 characters").max(60),
+  phone: z.string().regex(phoneRegex, "Please enter a valid 10-digit Indian phone number"),
+  supportEmail: z.string().email("Enter a valid support email").optional().nullable(),
+  gstin: z
+    .string()
+    .optional()
+    .nullable()
+    .refine((val) => !val || gstinRegex.test(val), "Invalid GSTIN format"),
+  // Station
+  stationName: z.string().trim().min(2, "Station name must be at least 2 characters").max(80),
+  description: z.string().trim().max(280).optional().nullable(),
+  address: z.string().trim().min(5, "Full address is required").max(200),
+  landmark: z.string().trim().max(100).optional().nullable(),
+  pincode: z.string().regex(pincodeRegex, "Enter a valid 6-digit PIN code"),
+  lat: z.number(),
+  lng: z.number(),
+  city: z.string().min(1, "City is required"),
+  photoUrl: z.string().url().optional().nullable(),
+  parkingSlots: z.number().int().min(0).max(500).optional().nullable(),
+  accessType: z.enum(ACCESS_TYPES).default("PUBLIC"),
+  // Chargers
+  chargers: z.array(operatorChargerInputSchema).min(1, "At least one charger is required").max(24, "Maximum 24 chargers at onboarding"),
+  // Pricing
+  pricePerKwh: z.number().positive("Tariff must be positive").max(1000),
+  idleFeePerMin: z.number().min(0).max(100).optional().nullable(),
+  hours: z.string().min(3).max(40).default("24/7"),
+  amenities: z.array(z.string()).optional().default([]),
+  paymentMethods: z.array(z.enum(PAYMENT_METHODS)).default(["UPI"]),
+  // Integration
+  integration: z.enum(INTEGRATIONS).default("MANUAL"),
+  acceptTerms: z.literal(true, { error: "You must accept the terms to continue" }),
+});
+
+export const onboardingSchema = z.discriminatedUnion("role", [
+  driverOnboardingSchema,
+  operatorOnboardingSchema,
+]);
+
+export type DriverOnboardingInput = z.infer<typeof driverOnboardingSchema>;
+export type OperatorOnboardingInput = z.infer<typeof operatorOnboardingSchema>;
+export type OnboardingInput = z.infer<typeof onboardingSchema>;
+EOF
+cat >> operator.schema.ts <<'EOF'
+
+/** Operators may only toggle chargers between these states. BUSY/FAULTED come from hardware (OCPP/twin). */
+export const operatorChargerStatusSchema = z.object({
+  status: z.enum(["FREE", "MAINTENANCE", "OFFLINE"]),
+}).strip();
+
+export const callQueueSchema = z.object({
+  chargerId: z.string().min(1).max(100).optional(),
+}).strip();
+EOF
+cd /home/claude/work/packages/shared && npx tsc --noEmit 2>&1 | head
+Output
+
+exit code 0
+
+Reviewing shared passes before the API controllers.
+
+Rewriting the updateOnboarding controller in Python.
+
+Rewriting the onboarding handler with driver and operator branches.
+
+Adding the photo-upload signing endpoint and rewriting the operator live-status code.
+
+Rewriting the live-status handler with queue and alert logic.
+
+cd /home/claude/work/apps/api/src && python3 - <<'PYEOF'
+import re
+# ---------- me.controller.ts ----------
+p='controllers/me.controller.ts'
+s=open(p).read()
+start=s.index('export async function updateOnboarding')
+end=s.index('export async function updatePlaces')
+new_onb = r'''function csv(values?: readonly string[] | null): string | null {
+  return values && values.length > 0 ? values.join(",") : null;
+}
+
+export async function updateOnboarding(req: Request, res: Response) {
+  if (!req.user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+
+  const body = req.body as OnboardingInput;
+  const userId = req.user.id;
+
+  if ((body as { role?: string }).role === "ADMIN") {
+    throw new AppError(403, "FORBIDDEN", "Cannot onboard as admin");
+  }
+
+  const headerEmail = String(req.headers["x-user-email"] || "").trim().toLowerCase();
+  const validEmail = headerEmail.includes("@") ? headerEmail : undefined;
+
+  /** Upgrade the placeholder email once a real one is known, but never collide with another account. */
+  async function resolveEmailUpdate(tx: Prisma.TransactionClient): Promise<{ email?: string }> {
+    if (!validEmail) return {};
+    const current = await tx.user.findUnique({ where: { id: userId }, select: { email: true } });
+    if (!current || !current.email.endsWith("@evspark.local")) return {};
+    const taken = await tx.user.findUnique({ where: { email: validEmail }, select: { id: true } });
+    return taken ? {} : { email: validEmail };
+  }
+
+  if (body.role === "DRIVER") {
+    const input: DriverOnboardingInput = body;
+    const now = new Date();
+
+    const profileData = {
+      vehicleModelId: input.vehicleModelId,
+      vehicleRegNo: input.vehicleRegNo,
+      vehicleOwnership: input.vehicleOwnership,
+      batteryPct: input.batteryPct,
+      city: input.city,
+      language: input.language,
+      connectorPref: input.connectors.join(","),
+      chargingPref: input.preferredCharging,
+      hasHomeCharger: input.hasHomeCharger,
+      dailyKm: input.dailyKm ?? null,
+      homeLat: input.homeLat,
+      homeLng: input.homeLng,
+      homeLabel: input.homeLabel,
+      workLat: input.workLat ?? null,
+      workLng: input.workLng ?? null,
+      workLabel: input.workLabel ?? null,
+      maxWaitMin: input.maxWaitMin ?? null,
+      minKw: input.minKw ?? null,
+      maxPriceKwh: input.maxPriceKwh ?? null,
+      preferredTimes: csv(input.preferredTimes),
+      amenityPrefs: csv(input.amenityPrefs),
+      notifyChannels: csv(input.notifyChannels),
+      notifications: input.notifications,
+    };
+
+    const { user, profile } = await prisma.$transaction(async (tx) => {
+      const emailData = await resolveEmailUpdate(tx);
+      const user = await tx.user.update({
+        where: { id: userId },
+        data: { name: input.fullName, phone: input.phone, onboardedAt: now, role: "DRIVER", ...emailData },
+      });
+      const profile = await tx.driverProfile.upsert({
+        where: { userId },
+        create: { userId, ...profileData },
+        update: profileData,
+      });
+      return { user, profile };
+    });
+
+    return res.json({ success: true, onboarded: true, role: "DRIVER", user, profile });
+  }
+
+  if (body.role === "OPERATOR") {
+    const input: OperatorOnboardingInput = body;
+    const now = new Date();
+
+    const profileData = {
+      businessName: input.businessName,
+      businessType: input.businessType,
+      contactName: input.contactName,
+      phone: input.phone,
+      supportEmail: input.supportEmail ?? null,
+      gstin: input.gstin ?? null,
+      integration: input.integration,
+    };
+
+    const stationData = {
+      name: input.stationName,
+      operatorName: input.businessName,
+      description: input.description ?? null,
+      address: input.address,
+      landmark: input.landmark ?? null,
+      pincode: input.pincode,
+      city: input.city,
+      lat: input.lat,
+      lng: input.lng,
+      pricePerKwh: input.pricePerKwh,
+      idleFeePerMin: input.idleFeePerMin ?? null,
+      hours: input.hours || "24/7",
+      amenities: input.amenities.length > 0 ? input.amenities.join(",") : "Parking",
+      paymentMethods: csv(input.paymentMethods),
+      parkingSlots: input.parkingSlots ?? null,
+      accessType: input.accessType,
+      photoUrl: input.photoUrl ?? null,
+      phone: input.phone,
+    };
+
+    const stationStatus = process.env.AUTO_APPROVE_DEMO === "true" ? "APPROVED" : "PENDING";
+
+    const result = await prisma.$transaction(async (tx) => {
+      const emailData = await resolveEmailUpdate(tx);
+      const user = await tx.user.update({
+        where: { id: userId },
+        data: { name: input.contactName, phone: input.phone, onboardedAt: now, role: "OPERATOR", ...emailData },
+      });
+      const profile = await tx.operatorProfile.upsert({
+        where: { userId },
+        create: { userId, ...profileData },
+        update: profileData,
+      });
+
+      // Idempotent: a retry/double-submit must never create a second station.
+      const existing = await tx.station.findFirst({
+        where: { operatorUserId: userId },
+        orderBy: { createdAt: "asc" },
+        select: { id: true },
+      });
+
+      if (existing) {
+        const station = await tx.station.update({
+          where: { id: existing.id },
+          data: stationData,
+          include: { chargers: true },
+        });
+        return { user, profile, station, resumed: true };
+      }
+
+      const station = await tx.station.create({
+        data: {
+          ...stationData,
+          operatorUserId: userId,
+          status: stationStatus,
+          chargers: {
+            create: input.chargers.map((c, i) => ({
+              label: c.label?.trim() || `Bay ${i + 1} · ${c.connectorType}`,
+              connectorType: c.connectorType,
+              powerKw: Number(c.powerKw),
+              status: "FREE" as const,
+              ocppId: `CP-${randomBytes(4).toString("hex").toUpperCase()}`,
+            })),
+          },
+        },
+        include: { chargers: true },
+      });
+      return { user, profile, station, resumed: false };
+    });
+
+    return res.json({ success: true, onboarded: true, role: "OPERATOR", ...result });
+  }
+
+  throw new AppError(400, "BAD_REQUEST", "Invalid onboarding role");
+}
+
+/** Signed direct-to-Cloudinary upload params so the browser never sees the API secret. */
+export async function signPhotoUpload(req: Request, res: Response) {
+  if (!req.user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+  if (!isCloudinaryConfigured) {
+    throw new AppError(503, "UPLOAD_NOT_CONFIGURED", "Photo upload is not configured. Paste an image URL instead.");
+  }
+  const timestamp = Math.round(Date.now() / 1000);
+  const folder = `evspark/stations/${req.user.id}`;
+  const signature = cloudinary.utils.api_sign_request({ timestamp, folder }, String(process.env.CLOUDINARY_API_SECRET));
+  res.json({
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    timestamp,
+    folder,
+    signature,
+  });
+}
+
+'''
+s=s[:start]+new_onb+s[end:]
+s=s.replace('''import type { DriverOnboardingInput, OperatorOnboardingInput } from "@evspark/shared";''','''import { randomBytes } from "node:crypto";
+import type { Prisma } from "../generated/prisma/client";
+import { cloudinary, isCloudinaryConfigured } from "../lib/cloudinary";
+import type { DriverOnboardingInput, OperatorOnboardingInput, OnboardingInput } from "@evspark/shared";''')
+open(p,'w').write(s)
+
+# ---------- me.routes.ts ----------
+p='routes/me.routes.ts'
+s=open(p).read()
+s=s.replace('''  updateOnboarding,
+''','''  updateOnboarding,
+  signPhotoUpload,
+''')
+s=s.replace('''import { validate } from "../middleware/validate";''','''import { validate } from "../middleware/validate";
+import { writeLimiter } from "../middleware/rateLimiter";''')
+s=s.replace('''router.put("/places", requireAuth, updatePlaces);''','''router.put("/places", requireAuth, updatePlaces);
+router.post("/uploads/sign", requireAuth, writeLimiter, signPhotoUpload);''')
+open(p,'w').write(s)
+PYEOF
+cd .. && npx tsc --noEmit 2>&1 | head -20
+Output
+
+exit code 0
+
+cd /home/claude/work/apps/api/src && python3 - <<'PYEOF'
+p='controllers/operator.controller.ts'
+s=open(p).read()
+
+# 1) updateChargerStatus rewrite
+a=s.index('export async function updateChargerStatus')
+b=s.index('export async function getRevenueAnalytics')
+new_status = r'''export async function updateChargerStatus(req: Request, res: Response) {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+
+  const chargerId = String(req.params.id);
+  const charger = await prisma.charger.findUnique({
+    where: { id: chargerId },
+    include: { station: true },
+  });
+
+  if (!charger) {
+    throw new AppError(404, "NOT_FOUND", "Charger not found");
+  }
+
+  if (user.role !== "ADMIN" && charger.station.operatorUserId !== user.id) {
+    throw new AppError(403, "FORBIDDEN", "You do not own the station for this charger");
+  }
+
+  const target = req.body.status as "FREE" | "MAINTENANCE" | "OFFLINE";
+
+  if (charger.status === target) {
+    return res.json(charger);
+  }
+  if (charger.status === "BUSY") {
+    throw new AppError(409, "CHARGER_IN_USE", "This charger is mid-session. Wait for the vehicle to finish.");
+  }
+  if (charger.status === "FAULTED" && target === "FREE") {
+    throw new AppError(409, "CHARGER_FAULTED", "A faulted charger must clear on the hardware before it can go live.");
+  }
+
+  const updated = await prisma.charger.update({
+    where: { id: chargerId },
+    data: { status: target },
+    include: { station: true },
+  });
+
+  await prisma.chargerEvent.create({
+    data: {
+      chargerId: updated.id,
+      status: updated.status,
+      payload: JSON.stringify({ manual: true, by: user.id, timestamp: new Date().toISOString() }),
+    },
+  });
+
+  await invalidateOperatorLive(updated.stationId);
+  emitChargerUpdate(updated);
+  res.json(updated);
+}
+
+export async function invalidateOperatorLive(stationId: string) {
+  try {
+    await getRedis().del(`cache:operator:live:${stationId}`);
+  } catch {
+    // cache is best-effort
+  }
+}
+
+'''
+s=s[:a]+new_status+s[b:]
+
+# 2) live endpoint rewrite (from maskRegNo to EOF)
+c=s.index('function maskRegNo')
+new_live = r'''function hashStr(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+/** Deterministic fake plate for twin (simulated) sessions that have no real driver. */
+function syntheticReg(seed: string): string {
+  const letters = "ABCDEFGHJKLMNPRSTUVWXYZ";
+  const a = letters[hashStr(`${seed}a`) % letters.length];
+  const b = letters[hashStr(`${seed}b`) % letters.length];
+  return `MH12${a}${b}${1000 + (hashStr(seed) % 9000)}`;
+}
+
+/** Never leak an email or a full plate to the operator UI. */
+function maskRef(ref: string | null | undefined): string {
+  if (!ref) return "EV••••";
+  if (ref.includes("@")) return `Driver ••${1000 + (hashStr(ref) % 9000)}`;
+  if (ref.length < 6) return ref;
+  return `${ref.slice(0, 4)}••${ref.slice(-4)}`;
+}
+
+type LiveAlert = {
+  id: string;
+  severity: "critical" | "warning" | "info";
+  title: string;
+  detail: string;
+  chargerId?: string;
+};
+
+export async function getOperatorStationLive(req: Request, res: Response) {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+
+  const stationId = String(req.params.id);
+
+  // Ownership is checked BEFORE the cache so a cached payload can never leak to another operator.
+  const owner = await prisma.station.findUnique({
+    where: { id: stationId },
+    select: { operatorUserId: true },
+  });
+  if (!owner) {
+    throw new AppError(404, "NOT_FOUND", "Station not found");
+  }
+  if (user.role !== "ADMIN" && owner.operatorUserId !== user.id) {
+    throw new AppError(403, "FORBIDDEN", "You do not own this station");
+  }
+
+  res.setHeader("Cache-Control", "no-store");
+
+  const redis = getRedis();
+  const cacheKey = `cache:operator:live:${stationId}`;
+  try {
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      return res.json(JSON.parse(cached));
+    }
+  } catch {
+    // cache is best-effort
+  }
+
+  const station = await prisma.station.findUnique({
+    where: { id: stationId },
+    include: {
+      chargers: {
+        orderBy: { createdAt: "asc" } as never,
+        include: {
+          sessions: { where: { endTs: null }, orderBy: { startTs: "desc" }, take: 1 },
+        },
+      },
+      queueEntries: {
+        where: { status: { in: ["waiting", "called"] } },
+        orderBy: { joinedTs: "asc" },
+      },
+    },
+  });
+
+  if (!station) {
+    throw new AppError(404, "NOT_FOUND", "Station not found");
+  }
+
+  const nowMs = Date.now();
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const completedToday = await prisma.session.findMany({
+    where: { stationId, endTs: { not: null, gte: startOfDay } },
+    select: { energyKwh: true, amountInr: true, queueWaitMin: true },
+  });
+
+  const completedRevenueToday = completedToday.reduce((sum, s) => sum + (s.amountInr || 0), 0);
+  const completedKwhToday = completedToday.reduce((sum, s) => sum + (s.energyKwh || 0), 0);
+  const waits = completedToday.map((s) => s.queueWaitMin).filter((w): w is number => typeof w === "number");
+  const avgWaitMin = waits.length > 0 ? Math.round(waits.reduce((a, b) => a + b, 0) / waits.length) : 0;
+
+  // Real vehicle info for active sessions (falls back to a clearly simulated plate for twin sessions).
+  const activeSessions = station.chargers.flatMap((c) => c.sessions);
+  const modelIds = [...new Set(activeSessions.map((x) => x.vehicleModelId).filter((x): x is string => !!x))];
+  const driverIds = [...new Set(activeSessions.map((x) => x.driverUserId).filter((x): x is string => !!x))];
+  const [models, driverProfiles] = await Promise.all([
+    modelIds.length > 0 ? prisma.vehicleModel.findMany({ where: { id: { in: modelIds } } }) : Promise.resolve([]),
+    driverIds.length > 0
+      ? prisma.driverProfile.findMany({
+          where: { userId: { in: driverIds } },
+          select: { userId: true, vehicleRegNo: true },
+        })
+      : Promise.resolve([]),
+  ]);
+  const modelById = new Map(models.map((m) => [m.id, m]));
+  const regByDriver = new Map(driverProfiles.map((d) => [d.userId, d.vehicleRegNo]));
+
+  let activeRevenue = 0;
+  let activeKwh = 0;
+  const chargers = station.chargers.map((c) => {
+    const active = c.sessions[0];
+    let activeSession = null;
+    if (active) {
+      const startMs = active.startTs.getTime();
+      const endMs = active.estimatedEndTs ? active.estimatedEndTs.getTime() : null;
+      const socStart = active.socStart ?? 20;
+      const progress = endMs && endMs > startMs ? Math.min(1, Math.max(0, (nowMs - startMs) / (endMs - startMs))) : 0;
+      const socNow = endMs ? socStart + (100 - socStart) * progress : active.socEnd ?? socStart;
+      const elapsedH = Math.max(0, nowMs - startMs) / 3_600_000;
+      const kwh = active.energyKwh && active.energyKwh > 0 ? active.energyKwh : c.powerKw * elapsedH * 0.85;
+      const amount = active.amountInr && active.amountInr > 0 ? active.amountInr : kwh * station.pricePerKwh;
+      activeRevenue += amount;
+      activeKwh += kwh;
+
+      const model = active.vehicleModelId ? modelById.get(active.vehicleModelId) : undefined;
+      const realReg = active.driverUserId ? regByDriver.get(active.driverUserId) : null;
+      const reg = realReg || syntheticReg(active.id);
+
+      activeSession = {
+        vehicleModel: model ? `${model.make} ${model.model}` : "Electric vehicle",
+        regMasked: maskRef(reg),
+        simulated: !realReg,
+        startTs: active.startTs.toISOString(),
+        estimatedEndTs: active.estimatedEndTs ? active.estimatedEndTs.toISOString() : null,
+        socStart,
+        socNow: Math.round(socNow * 10) / 10,
+        kwNow: c.powerKw,
+        energyKwh: Math.round(kwh * 10) / 10,
+        amountInr: Math.round(amount),
+      };
+    }
+
+    return {
+      id: c.id,
+      label: c.label,
+      connectorType: c.connectorType,
+      powerKw: c.powerKw,
+      status: c.status,
+      activeSession,
+    };
+  });
+
+  const sessionsTodayCount = completedToday.length + chargers.filter((c) => c.activeSession).length;
+  const revenueToday = Math.round(completedRevenueToday + activeRevenue);
+  const energyTodayKwh = Math.round((completedKwhToday + activeKwh) * 10) / 10;
+
+  const totalCount = chargers.length || 1;
+  const busyCount = chargers.filter((c) => c.status === "BUSY").length;
+  const freeCount = chargers.filter((c) => c.status === "FREE").length;
+  const downCount = chargers.filter((c) => c.status === "FAULTED" || c.status === "OFFLINE" || c.status === "MAINTENANCE").length;
+  const occupancyPct = Math.round((busyCount / totalCount) * 100);
+  const onlinePct = Math.round(((totalCount - downCount) / totalCount) * 100);
+
+  const waiting = station.queueEntries.filter((q) => q.status === "waiting");
+  const queue = station.queueEntries.map((q) => ({
+    id: q.id,
+    vehicleRef: maskRef(q.vehicleRef),
+    connector: q.connector,
+    status: q.status as "waiting" | "called",
+    etaTs: q.etaTs?.toISOString() || null,
+    joinedTs: q.joinedTs.toISOString(),
+    calledAt: q.calledAt?.toISOString() || null,
+    position: q.status === "waiting" ? waiting.findIndex((w) => w.id === q.id) + 1 : undefined,
+  }));
+
+  // Alerts derived from live state
+  const alerts: LiveAlert[] = [];
+  for (const c of chargers) {
+    if (c.status === "FAULTED") {
+      alerts.push({ id: `f-${c.id}`, severity: "critical", title: `${c.label ?? "Charger"} faulted`, detail: "Hardware reported a fault. Drivers cannot use this bay.", chargerId: c.id });
+    } else if (c.status === "OFFLINE") {
+      alerts.push({ id: `o-${c.id}`, severity: "warning", title: `${c.label ?? "Charger"} offline`, detail: "No heartbeat from the charger.", chargerId: c.id });
+    } else if (c.status === "MAINTENANCE") {
+      alerts.push({ id: `m-${c.id}`, severity: "info", title: `${c.label ?? "Charger"} in maintenance`, detail: "Hidden from drivers until you bring it online.", chargerId: c.id });
+    }
+  }
+  if (waiting.length >= 3 && freeCount === 0) {
+    alerts.push({ id: "overload", severity: "critical", title: "Station overloaded", detail: `${waiting.length} vehicles waiting and every bay is taken. Drivers are being rerouted.` });
+  } else if (waiting.length > 0 && freeCount === 0) {
+    alerts.push({ id: "busy", severity: "warning", title: "All bays busy", detail: `${waiting.length} vehicle${waiting.length > 1 ? "s" : ""} waiting.` });
+  }
+  if (station.status !== "APPROVED") {
+    alerts.push({ id: "approval", severity: "info", title: "Awaiting admin approval", detail: "Your station is hidden from drivers until it is approved." });
+  }
+
+  // Activity feed: sessions + hardware status changes
+  const [recentSessions, recentChargerEvents] = await Promise.all([
+    prisma.session.findMany({
+      where: { stationId },
+      orderBy: { startTs: "desc" },
+      take: 10,
+      select: {
+        id: true,
+        startTs: true,
+        endTs: true,
+        energyKwh: true,
+        amountInr: true,
+        driverUserId: true,
+        charger: { select: { label: true } },
+      },
+    }),
+    prisma.chargerEvent.findMany({
+      where: { charger: { stationId }, status: { in: ["FAULTED", "MAINTENANCE", "OFFLINE"] } },
+      orderBy: { ts: "desc" },
+      take: 6,
+      include: { charger: { select: { label: true } } },
+    }),
+  ]);
+
+  const feed: { id: string; ts: string; type: string; text: string }[] = [];
+  for (const ev of recentSessions) {
+    const bay = ev.charger?.label || "Bay";
+    const who = maskRef(syntheticReg(ev.id));
+    if (ev.endTs) {
+      feed.push({ id: `${ev.id}-end`, ts: ev.endTs.toISOString(), type: "session_completed", text: `${who} finished on ${bay} · ${Math.round(ev.energyKwh || 0)} kWh · ₹${Math.round(ev.amountInr || 0)}` });
+    }
+    feed.push({ id: `${ev.id}-start`, ts: ev.startTs.toISOString(), type: "session_started", text: `${who} plugged into ${bay}` });
+  }
+  for (const ev of recentChargerEvents) {
+    feed.push({
+      id: ev.id,
+      ts: ev.ts.toISOString(),
+      type: ev.status === "FAULTED" ? "charger_fault" : "charger_status",
+      text: `${ev.charger?.label || "Charger"} marked ${ev.status.toLowerCase()}`,
+    });
+  }
+  feed.sort((a, b) => Date.parse(b.ts) - Date.parse(a.ts));
+
+  const payload = {
+    station: {
+      id: station.id,
+      name: station.name,
+      address: station.address,
+      city: station.city,
+      pincode: station.pincode,
+      pricePerKwh: station.pricePerKwh,
+      idleFeePerMin: station.idleFeePerMin,
+      hours: station.hours,
+      ratingAvg: station.ratingAvg,
+      status: station.status,
+      photoUrl: station.photoUrl,
+    },
+    chargers,
+    queue,
+    alerts,
+    kpis: {
+      revenueToday,
+      completedRevenueToday: Math.round(completedRevenueToday),
+      energyTodayKwh,
+      completedKwhToday: Math.round(completedKwhToday * 10) / 10,
+      sessionsToday: sessionsTodayCount,
+      avgWaitMin,
+      occupancyPct,
+      /** Share of chargers currently online (not faulted/offline/maintenance). */
+      uptimePct: onlinePct,
+      queueCount: waiting.length,
+      freeChargers: freeCount,
+      totalChargers: chargers.length,
+      tariff: station.pricePerKwh,
+    },
+    recentEvents: feed.slice(0, 12),
+  };
+
+  try {
+    await redis.set(cacheKey, JSON.stringify(payload), "EX", 2);
+  } catch {
+    // cache is best-effort
+  }
+
+  res.json(payload);
+}
+'''
+s=s[:c]+new_live
+open(p,'w').write(s)
+
+# operator.routes: use operator schema
+p='routes/operator.routes.ts'
+s=open(p).read()
+s=s.replace("  updateChargerStatusSchema,\n","  operatorChargerStatusSchema,\n")
+s=s.replace("validate({ body: updateChargerStatusSchema })","validate({ body: operatorChargerStatusSchema })")
+open(p,'w').write(s)
+PYEOF
+cd .. && npx tsc --noEmit 2>&1 | head -20
+Output
+
+exit code 0
+
+cd /home/claude/work/apps/api/src && python3 - <<'PYEOF'
+p='controllers/operator.controller.ts'
+s=open(p).read()
+s=s.replace('orderBy: { createdAt: "asc" } as never,','orderBy: { label: "asc" },')
+open(p,'w').write(s)
+
+# queue controller
+p='controllers/queue.controller.ts'
+s=open(p).read()
+s=s.replace('''import { AppError } from "../middleware/errorHandler";''','''import { AppError } from "../middleware/errorHandler";
+import { invalidateOperatorLive } from "./operator.controller";''')
+s+='''
+
+async function loadOwnedEntry(req: Request) {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(401, "UNAUTHORIZED", "Authentication required");
+  }
+  const entry = await prisma.queueEntry.findUnique({
+    where: { id: String(req.params.id) },
+    include: { station: { select: { id: true, operatorUserId: true } } },
+  });
+  if (!entry) {
+    throw new AppError(404, "NOT_FOUND", "Queue entry not found");
+  }
+  if (user.role !== "ADMIN" && entry.station.operatorUserId !== user.id) {
+    throw new AppError(403, "FORBIDDEN", "You do not own this station");
+  }
+  return entry;
+}
+
+async function afterQueueChange(stationId: string) {
+  await invalidateOperatorLive(stationId);
+  const queueCount = await prisma.queueEntry.count({ where: { stationId, status: "waiting" } });
+  emitStationUpdate(stationId, { stationId, queueCount });
+}
+
+/** Operator calls the next vehicle to a free, compatible charger. */
+export async function callQueueEntry(req: Request, res: Response) {
+  const entry = await loadOwnedEntry(req);
+  if (entry.status !== "waiting") {
+    throw new AppError(409, "INVALID_STATE", "Only waiting vehicles can be called.");
+  }
+
+  const requestedChargerId = (req.body as { chargerId?: string }).chargerId;
+  const freeChargers = await prisma.charger.findMany({
+    where: { stationId: entry.stationId, status: "FREE" },
+    orderBy: { label: "asc" },
+  });
+  const wanted = entry.connector.toLowerCase();
+  const compatible = freeChargers.filter((c) => c.connectorType.toLowerCase() === wanted);
+  const charger = requestedChargerId
+    ? compatible.find((c) => c.id === requestedChargerId)
+    : compatible[0];
+
+  if (!charger) {
+    throw new AppError(
+      409,
+      "NO_FREE_CHARGER",
+      `No free ${entry.connector} charger right now. Wait for a bay to free up.`
+    );
+  }
+
+  const updated = await prisma.queueEntry.update({
+    where: { id: entry.id },
+    data: { status: "called", calledAt: new Date(), calledChargerId: charger.id },
+  });
+
+  emitQueuePromoted({
+    stationId: entry.stationId,
+    queueEntryId: entry.id,
+    vehicleRef: entry.vehicleRef,
+    chargerId: charger.id,
+  });
+  await afterQueueChange(entry.stationId);
+  res.json({ entry: updated, charger: { id: charger.id, label: charger.label } });
+}
+
+/** Soft-remove (so the UI can offer Undo). */
+export async function removeQueueEntry(req: Request, res: Response) {
+  const entry = await loadOwnedEntry(req);
+  if (entry.status !== "waiting" && entry.status !== "called") {
+    throw new AppError(409, "INVALID_STATE", "This entry is no longer in the queue.");
+  }
+  const updated = await prisma.queueEntry.update({
+    where: { id: entry.id },
+    data: { status: "removed", calledAt: null, calledChargerId: null },
+  });
+  await afterQueueChange(entry.stationId);
+  res.json({ entry: updated });
+}
+
+/** Undo for remove/call: put the vehicle back at its original place in line (joinedTs is unchanged). */
+export async function restoreQueueEntry(req: Request, res: Response) {
+  const entry = await loadOwnedEntry(req);
+  if (entry.status !== "removed" && entry.status !== "called") {
+    throw new AppError(409, "INVALID_STATE", "Nothing to restore for this entry.");
+  }
+  const updated = await prisma.queueEntry.update({
+    where: { id: entry.id },
+    data: { status: "waiting", calledAt: null, calledChargerId: null },
+  });
+  await afterQueueChange(entry.stationId);
+  res.json({ entry: updated });
+}
+'''
+open(p,'w').write(s)
+
+p='routes/queue.routes.ts'
+open(p,'w').write('''import { Router } from "express";
+import { validate } from "../middleware/validate";
+import { requireAuth, requireRole } from "../middleware/auth";
+import { callQueueSchema } from "@evspark/shared";
+import {
+  joinQueue,
+  getStationQueue,
+  callQueueEntry,
+  removeQueueEntry,
+  restoreQueueEntry,
+} from "../controllers/queue.controller";
+
+const router = Router();
+const operatorOnly = [requireAuth, requireRole("OPERATOR", "ADMIN")];
+
+router.post("/join", joinQueue);
+router.get("/station/:stationId", getStationQueue);
+
+// Operator actions (ownership is verified inside each controller)
+router.post("/:id/call", ...operatorOnly, validate({ body: callQueueSchema }), callQueueEntry);
+router.post("/:id/restore", ...operatorOnly, restoreQueueEntry);
+router.delete("/:id", ...operatorOnly, removeQueueEntry);
+
+export default router;
+''')
+PYEOF
+cd .. && npx tsc --noEmit 2>&1 | head -20; echo TSC-DONE
+Output
+
+TSC-DONE
+
+mkdir -p /home/claude/work/apps/web/src/components/tq && cd /home/claude/work/apps/web/src && cat > styles/torque.css <<'EOF'
+/* ============================================================================
+   TORQUE design system for EVspark — scoped under `.tq` so other pages
+   (landing, driver map, admin) are untouched until they are migrated.
+   Light + dark via data-theme on the .tq root. Motion is JS-driven; CSS only
+   holds resting states and keyframes for loaders.
+   ========================================================================== */
+
+.tq {
+  --tq-bg: #ecebe6;
+  --tq-card: #fbfaf7;
+  --tq-card-2: #f4f2ec;
+  --tq-text: #17181b;
+  --tq-muted: #6b6a66;
+  --tq-faint: #a29f97;
+  --tq-hair: rgba(23, 24, 27, 0.09);
+  --tq-hair-strong: rgba(23, 24, 27, 0.16);
+  --tq-primary: #c2410c;
+  --tq-primary-ink: #ffffff;
+  --tq-pill: #ff9a3c;
+  --tq-ink: #17181b;
+  --tq-ink-2: #222327;
+  --tq-ink-text: #f2f1ed;
+  --tq-ink-muted: #9a9890;
+
+  --tq-a-orange: #ea580c;
+  --tq-a-amber: #d97706;
+  --tq-a-sky: #0284c7;
+  --tq-a-teal: #0d9488;
+  --tq-a-violet: #7c3aed;
+  --tq-a-rose: #e11d48;
+  --tq-a-lime: #65a30d;
+  --tq-a-slate: #475569;
+
+  --tq-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 2px rgba(23, 24, 27, 0.05), 0 12px 32px -12px rgba(23, 24, 27, 0.14);
+  --tq-shadow-lg: 0 2px 4px rgba(23, 24, 27, 0.06), 0 30px 60px -20px rgba(23, 24, 27, 0.28);
+  --tq-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --tq-radius: 20px;
+
+  color-scheme: light;
+  min-height: 100dvh;
+  color: var(--tq-text);
+  font-family: var(--font-geist), system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: -0.011em;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(900px 520px at 6% -8%, color-mix(in oklab, var(--tq-pill) 24%, transparent), transparent 62%),
+    radial-gradient(760px 520px at 104% 2%, color-mix(in oklab, var(--tq-a-sky) 15%, transparent), transparent 58%),
+    var(--tq-bg);
+  background-attachment: fixed;
+}
+
+.tq[data-theme="dark"] {
+  --tq-bg: #0e0f11;
+  --tq-card: #17181b;
+  --tq-card-2: #1d1e22;
+  --tq-text: #f2f1ed;
+  --tq-muted: #9a9890;
+  --tq-faint: #66655f;
+  --tq-hair: rgba(255, 255, 255, 0.08);
+  --tq-hair-strong: rgba(255, 255, 255, 0.16);
+  --tq-primary: #ff9a3c;
+  --tq-primary-ink: #1a0f05;
+  --tq-ink: #0a0a0c;
+  --tq-ink-2: #141416;
+  --tq-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+  --tq-shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.75);
+  color-scheme: dark;
+}
+
+.tq *, .tq *::before, .tq *::after { box-sizing: border-box; }
+.tq .tq-mono { font-family: var(--font-geist-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.tq .tq-num { font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+.tq h1, .tq h2, .tq h3 { letter-spacing: -0.035em; line-height: 1.08; margin: 0; }
+.tq p { margin: 0; }
+.tq a { color: inherit; text-decoration: none; }
+.tq button { font: inherit; color: inherit; }
+.tq ::selection { background: color-mix(in oklab, var(--tq-pill) 45%, transparent); }
+.tq :focus-visible { outline: 2px solid var(--tq-pill); outline-offset: 2px; }
+
+/* ---------- Card ---------- */
+.tq .tq-card {
+  background: var(--tq-card);
+  border: 1px solid var(--tq-hair);
+  border-radius: var(--tq-radius);
+  box-shadow: var(--tq-shadow);
+}
+.tq .tq-card-pad { padding: 20px; }
+.tq .tq-card-title { font-size: 13px; font-weight: 600; color: var(--tq-muted); letter-spacing: -0.005em; }
+
+/* ---------- Buttons (44px pills) ---------- */
+.tq .tq-btn {
+  --h: 44px;
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: var(--h); padding: 0 20px; border-radius: 999px; border: 1px solid transparent;
+  font-size: 14px; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap; cursor: pointer;
+  transition: background 0.2s var(--tq-ease), box-shadow 0.2s var(--tq-ease), opacity 0.2s, border-color 0.2s, transform 0.12s var(--tq-ease);
+  user-select: none; will-change: transform;
+}
+.tq .tq-btn:active:not(:disabled) { transform: scale(0.975); }
+.tq .tq-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.tq .tq-btn[data-size="sm"] { --h: 36px; padding: 0 14px; font-size: 13px; }
+.tq .tq-btn[data-size="lg"] { --h: 52px; padding: 0 26px; font-size: 15px; }
+.tq .tq-btn[data-variant="primary"] { background: var(--tq-primary); color: var(--tq-primary-ink); box-shadow: 0 8px 20px -8px color-mix(in oklab, var(--tq-primary) 70%, transparent); }
+.tq .tq-btn[data-variant="primary"]:hover:not(:disabled) { background: color-mix(in oklab, var(--tq-primary) 88%, black); }
+.tq .tq-btn[data-variant="ink"] { background: var(--tq-ink); color: var(--tq-ink-text); }
+.tq .tq-btn[data-variant="ink"]:hover:not(:disabled) { background: var(--tq-ink-2); }
+.tq .tq-btn[data-variant="soft"] { background: var(--tq-card-2); border-color: var(--tq-hair); color: var(--tq-text); }
+.tq .tq-btn[data-variant="soft"]:hover:not(:disabled) { border-color: var(--tq-hair-strong); background: color-mix(in oklab, var(--tq-card-2) 80%, var(--tq-text) 6%); }
+.tq .tq-btn[data-variant="ghost"] { background: transparent; color: var(--tq-muted); }
+.tq .tq-btn[data-variant="ghost"]:hover:not(:disabled) { background: var(--tq-hair); color: var(--tq-text); }
+.tq .tq-btn[data-variant="danger"] { background: color-mix(in oklab, var(--tq-a-rose) 12%, transparent); color: var(--tq-a-rose); border-color: color-mix(in oklab, var(--tq-a-rose) 25%, transparent); }
+.tq .tq-btn[data-variant="danger"]:hover:not(:disabled) { background: color-mix(in oklab, var(--tq-a-rose) 20%, transparent); }
+.tq .tq-btn-icon { width: 44px; padding: 0; }
+.tq .tq-btn-icon[data-size="sm"] { width: 36px; }
+.tq .tq-btn[data-loading="true"] > .tq-btn-label { opacity: 0; }
+.tq .tq-btn > .tq-btn-spin { position: absolute; }
+
+/* ---------- Pills ---------- */
+.tq .tq-pill {
+  --c: var(--tq-a-slate);
+  display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; letter-spacing: -0.005em; white-space: nowrap;
+  background: color-mix(in oklab, var(--c) 13%, transparent); color: var(--c);
+  border: 1px solid color-mix(in oklab, var(--c) 18%, transparent);
+}
+.tq .tq-pill[data-tone="orange"] { --c: var(--tq-a-orange); }
+.tq .tq-pill[data-tone="amber"] { --c: var(--tq-a-amber); }
+.tq .tq-pill[data-tone="sky"] { --c: var(--tq-a-sky); }
+.tq .tq-pill[data-tone="teal"] { --c: var(--tq-a-teal); }
+.tq .tq-pill[data-tone="violet"] { --c: var(--tq-a-violet); }
+.tq .tq-pill[data-tone="rose"] { --c: var(--tq-a-rose); }
+.tq .tq-pill[data-tone="lime"] { --c: var(--tq-a-lime); }
+.tq .tq-pill[data-tone="slate"] { --c: var(--tq-a-slate); }
+.tq[data-theme="dark"] .tq-pill { --c-lift: 1; filter: brightness(1.25); }
+.tq .tq-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.tq .tq-dot[data-pulse="true"] { animation: tq-pulse 1.8s var(--tq-ease) infinite; }
+@keyframes tq-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 55%, transparent); } 100% { box-shadow: 0 0 0 8px transparent; } }
+
+/* ---------- Form controls ---------- */
+.tq .tq-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.tq .tq-label { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.tq .tq-label small { font-weight: 500; color: var(--tq-faint); font-size: 12px; }
+.tq .tq-hint { font-size: 12px; color: var(--tq-muted); }
+.tq .tq-err { font-size: 12px; font-weight: 600; color: var(--tq-a-rose); display: flex; gap: 6px; align-items: center; }
+
+.tq .tq-input-wrap {
+  position: relative; display: flex; align-items: center; height: 46px; border-radius: 999px;
+  background: var(--tq-card); border: 1px solid var(--tq-hair-strong);
+  transition: border-color 0.2s var(--tq-ease), box-shadow 0.2s var(--tq-ease), background 0.2s;
+}
+.tq .tq-input-wrap:hover { border-color: color-mix(in oklab, var(--tq-text) 28%, transparent); }
+.tq .tq-input-wrap:focus-within { border-color: var(--tq-primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--tq-pill) 28%, transparent); }
+.tq .tq-input-wrap[data-invalid="true"] { border-color: var(--tq-a-rose); box-shadow: 0 0 0 4px color-mix(in oklab, var(--tq-a-rose) 14%, transparent); }
+.tq .tq-input-wrap[data-disabled="true"] { opacity: 0.6; }
+.tq .tq-input-wrap[data-area="true"] { height: auto; border-radius: 18px; align-items: stretch; }
+.tq .tq-input {
+  flex: 1; min-width: 0; height: 100%; background: transparent; border: 0; outline: 0; color: var(--tq-text);
+  padding: 0 18px; font: inherit; font-size: 14.5px; letter-spacing: -0.012em;
+}
+.tq .tq-input::placeholder { color: var(--tq-faint); }
+.tq textarea.tq-input { padding: 12px 18px; resize: vertical; min-height: 92px; line-height: 1.5; }
+.tq .tq-input-lead, .tq .tq-input-trail { display: inline-flex; align-items: center; color: var(--tq-muted); font-size: 14px; flex-shrink: 0; }
+.tq .tq-input-lead { padding-left: 16px; gap: 6px; }
+.tq .tq-input-trail { padding-right: 8px; gap: 4px; }
+.tq .tq-input-lead + .tq-input { padding-left: 10px; }
+.tq select.tq-input { appearance: none; padding-right: 40px; cursor: pointer; }
+.tq .tq-select-caret { position: absolute; right: 16px; pointer-events: none; color: var(--tq-muted); }
+.tq .tq-iconbtn { width: 32px; height: 32px; border-radius: 50%; display: inline-grid; place-items: center; border: 0; background: transparent; color: var(--tq-muted); cursor: pointer; transition: background 0.15s, color 0.15s; }
+.tq .tq-iconbtn:hover { background: var(--tq-hair); color: var(--tq-text); }
+
+/* Segmented */
+.tq .tq-seg { position: relative; display: inline-flex; padding: 4px; gap: 2px; border-radius: 999px; background: var(--tq-card-2); border: 1px solid var(--tq-hair); max-width: 100%; }
+.tq .tq-seg[data-full="true"] { display: flex; width: 100%; }
+.tq .tq-seg-item { position: relative; z-index: 1; flex: 1; height: 38px; padding: 0 16px; border: 0; background: transparent; border-radius: 999px; font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--tq-muted); transition: color 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; }
+.tq .tq-seg-item[aria-checked="true"] { color: var(--tq-primary-ink); }
+.tq .tq-seg-thumb { position: absolute; inset: 0; border-radius: 999px; background: var(--tq-primary); box-shadow: 0 6px 14px -6px color-mix(in oklab, var(--tq-primary) 80%, transparent); }
+
+/* Chips */
+.tq .tq-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tq .tq-chip { height: 38px; padding: 0 15px; display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; font-size: 13.5px; font-weight: 600; cursor: pointer; background: var(--tq-card); border: 1px solid var(--tq-hair-strong); color: var(--tq-text); transition: all 0.18s var(--tq-ease); }
+.tq .tq-chip:hover { border-color: var(--tq-text); }
+.tq .tq-chip[aria-pressed="true"] { background: var(--tq-ink); color: var(--tq-ink-text); border-color: var(--tq-ink); }
+.tq .tq-chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Switch */
+.tq .tq-switch-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border-radius: 18px; background: var(--tq-card-2); border: 1px solid var(--tq-hair); }
+.tq .tq-switch { position: relative; width: 48px; height: 28px; border-radius: 999px; border: 0; padding: 0; cursor: pointer; background: var(--tq-hair-strong); transition: background 0.25s var(--tq-ease); flex-shrink: 0; }
+.tq .tq-switch[aria-checked="true"] { background: var(--tq-primary); }
+.tq .tq-switch-knob { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); transition: transform 0.28s var(--tq-ease); }
+.tq .tq-switch[aria-checked="true"] .tq-switch-knob { transform: translateX(20px); }
+
+/* Range */
+.tq .tq-range { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px; outline: none; cursor: pointer; background: linear-gradient(to right, var(--tq-primary) var(--p, 50%), var(--tq-hair-strong) var(--p, 50%)); }
+.tq .tq-range::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 4px solid var(--tq-primary); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); cursor: grab; }
+.tq .tq-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 4px solid var(--tq-primary); cursor: grab; }
+
+/* Choice cards */
+.tq .tq-choice { display: flex; gap: 14px; align-items: flex-start; text-align: left; width: 100%; padding: 16px; border-radius: 18px; cursor: pointer; background: var(--tq-card); border: 1.5px solid var(--tq-hair-strong); transition: all 0.2s var(--tq-ease); }
+.tq .tq-choice:hover { border-color: var(--tq-text); transform: translateY(-1px); }
+.tq .tq-choice[aria-checked="true"] { border-color: var(--tq-primary); background: color-mix(in oklab, var(--tq-pill) 13%, var(--tq-card)); box-shadow: 0 0 0 4px color-mix(in oklab, var(--tq-pill) 20%, transparent); }
+.tq .tq-choice-ico { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: var(--tq-ink); color: var(--tq-ink-text); flex-shrink: 0; }
+.tq .tq-choice[aria-checked="true"] .tq-choice-ico { background: var(--tq-primary); color: var(--tq-primary-ink); }
+
+/* Stepper (number) */
+.tq .tq-numstep { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border-radius: 999px; background: var(--tq-card); border: 1px solid var(--tq-hair-strong); }
+.tq .tq-numstep button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--tq-card-2); cursor: pointer; display: grid; place-items: center; transition: background 0.15s; }
+.tq .tq-numstep button:hover:not(:disabled) { background: var(--tq-hair-strong); }
+.tq .tq-numstep button:disabled { opacity: 0.35; cursor: not-allowed; }
+.tq .tq-numstep output { min-width: 64px; text-align: center; font-weight: 700; font-size: 15px; }
+
+/* OTP */
+.tq .tq-otp { display: flex; gap: 10px; justify-content: center; }
+.tq .tq-otp input { width: 48px; height: 58px; border-radius: 16px; text-align: center; font-size: 22px; font-weight: 700; background: var(--tq-card); border: 1px solid var(--tq-hair-strong); color: var(--tq-text); outline: 0; transition: all 0.18s var(--tq-ease); }
+.tq .tq-otp input:focus { border-color: var(--tq-primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--tq-pill) 28%, transparent); transform: translateY(-2px); }
+
+/* Strength */
+.tq .tq-strength { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.tq .tq-strength i { height: 4px; border-radius: 999px; background: var(--tq-hair-strong); transition: background 0.3s var(--tq-ease); }
+
+/* Dropdown list (place suggestions / palette) */
+.tq .tq-menu { position: absolute; z-index: 40; left: 0; right: 0; top: calc(100% + 8px); background: var(--tq-card); border: 1px solid var(--tq-hair-strong); border-radius: 18px; box-shadow: var(--tq-shadow-lg); padding: 6px; max-height: 280px; overflow: auto; }
+.tq .tq-menu-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: 12px; border: 0; background: transparent; cursor: pointer; text-align: left; }
+.tq .tq-menu-item[data-active="true"], .tq .tq-menu-item:hover { background: var(--tq-card-2); }
+
+/* ---------- Loaders ---------- */
+.tq .tq-spinner { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid color-mix(in oklab, currentColor 25%, transparent); border-top-color: currentColor; animation: tq-spin 0.7s linear infinite; }
+@keyframes tq-spin { to { transform: rotate(360deg); } }
+.tq .tq-skel { position: relative; overflow: hidden; border-radius: 12px; background: var(--tq-hair); }
+.tq .tq-skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--tq-card) 70%, transparent), transparent); animation: tq-shimmer 1.4s infinite; }
+@keyframes tq-shimmer { to { transform: translateX(100%); } }
+.tq .tq-topbar-progress { position: fixed; z-index: 90; top: 0; left: 0; right: 0; height: 3px; overflow: hidden; pointer-events: none; }
+.tq .tq-topbar-progress::before { content: ""; position: absolute; inset: 0; width: 40%; border-radius: 999px; background: linear-gradient(90deg, var(--tq-pill), var(--tq-primary)); animation: tq-indeterminate 1.1s var(--tq-ease) infinite; }
+@keyframes tq-indeterminate { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+.tq .tq-battery-fill { transform-origin: left center; animation: tq-battery 1.8s var(--tq-ease) infinite; }
+@keyframes tq-battery { 0% { transform: scaleX(0.1); } 70% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: 0.25; } }
+.tq .tq-wave { position: absolute; left: 0; right: 0; top: -5px; height: 10px; background: radial-gradient(10px 5px at 50% 100%, rgba(255, 255, 255, 0.55) 98%, transparent) 0 0/20px 10px repeat-x; animation: tq-wave 1.3s linear infinite; }
+@keyframes tq-wave { to { background-position-x: 20px; } }
+.tq .tq-shake { animation: tq-shake 0.42s var(--tq-ease); }
+@keyframes tq-shake { 10%, 90% { transform: translateX(-1px); } 20%, 80% { transform: translateX(3px); } 30%, 50%, 70% { transform: translateX(-5px); } 40%, 60% { transform: translateX(5px); } }
+
+/* ---------- Misc ---------- */
+.tq .tq-kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 7px; font-family: var(--font-geist-mono), monospace; font-size: 11px; font-weight: 600; background: var(--tq-card-2); border: 1px solid var(--tq-hair-strong); color: var(--tq-muted); }
+.tq .tq-divider { display: flex; align-items: center; gap: 12px; color: var(--tq-faint); font-size: 12px; font-weight: 600; }
+.tq .tq-divider::before, .tq .tq-divider::after { content: ""; flex: 1; height: 1px; background: var(--tq-hair-strong); }
+.tq .tq-banner { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-radius: 16px; font-size: 13.5px; font-weight: 500; background: color-mix(in oklab, var(--c, var(--tq-a-sky)) 11%, var(--tq-card)); border: 1px solid color-mix(in oklab, var(--c, var(--tq-a-sky)) 25%, transparent); color: var(--tq-text); }
+.tq .tq-banner[data-tone="rose"] { --c: var(--tq-a-rose); }
+.tq .tq-banner[data-tone="amber"] { --c: var(--tq-a-amber); }
+.tq .tq-banner[data-tone="teal"] { --c: var(--tq-a-teal); }
+.tq .tq-banner svg { flex-shrink: 0; color: var(--c, var(--tq-a-sky)); margin-top: 1px; }
+
+/* ---------- Overlay / Drawer ---------- */
+.tq .tq-overlay { position: fixed; inset: 0; z-index: 70; background: rgba(10, 10, 12, 0.46); }
+.tq .tq-sheet { position: fixed; z-index: 71; display: flex; flex-direction: column; background: var(--tq-card); border: 1px solid var(--tq-hair-strong); box-shadow: var(--tq-shadow-lg); outline: 0; }
+.tq .tq-sheet[data-side="right"] { top: 12px; right: 12px; bottom: 12px; width: min(460px, calc(100vw - 24px)); border-radius: 26px; }
+.tq .tq-sheet[data-side="bottom"] { left: 0; right: 0; bottom: 0; max-height: 88dvh; border-radius: 26px 26px 0 0; padding-bottom: env(safe-area-inset-bottom); }
+.tq .tq-sheet[data-side="center"] { top: 50%; left: 50%; width: min(480px, calc(100vw - 32px)); max-height: 86dvh; border-radius: 26px; transform: translate(-50%, -50%); }
+.tq .tq-grab { width: 44px; height: 5px; border-radius: 999px; background: var(--tq-hair-strong); margin: 10px auto 2px; flex-shrink: 0; }
+
+/* ---------- Toasts ---------- */
+.tq .tq-toasts { position: fixed; z-index: 100; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; align-items: center; width: min(440px, calc(100vw - 24px)); pointer-events: none; }
+.tq .tq-toast { pointer-events: auto; position: relative; overflow: hidden; width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 16px; border-radius: 18px; background: var(--tq-ink); color: var(--tq-ink-text); box-shadow: var(--tq-shadow-lg); border: 1px solid rgba(255, 255, 255, 0.08); }
+.tq .tq-toast-bar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--tq-pill); transform-origin: left; animation: tq-toast-bar linear forwards; }
+@keyframes tq-toast-bar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* ---------- Auth ---------- */
+.tq .tq-auth { display: grid; min-height: 100dvh; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1024px) { .tq .tq-auth { grid-template-columns: minmax(420px, 5fr) 7fr; } }
+.tq .tq-auth-side { display: none; position: relative; overflow: hidden; padding: 44px; color: var(--tq-ink-text); background: radial-gradient(700px 420px at 20% 0%, color-mix(in oklab, var(--tq-pill) 34%, transparent), transparent 60%), var(--tq-ink); }
+@media (min-width: 1024px) { .tq .tq-auth-side { display: flex; flex-direction: column; justify-content: space-between; } }
+.tq .tq-auth-main { display: flex; align-items: center; justify-content: center; padding: 24px 16px 40px; }
+.tq .tq-grid-bg { position: absolute; inset: 0; opacity: 0.18; background-image: linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(circle at 30% 20%, #000, transparent 70%); }
+
+/* ---------- Operator shell ---------- */
+.tq .tq-shell { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 100dvh; }
+@media (min-width: 1024px) { .tq .tq-shell { grid-template-columns: 268px minmax(0, 1fr); } }
+.tq .tq-sidebar { display: none; position: sticky; top: 0; height: 100dvh; flex-direction: column; gap: 18px; padding: 18px 14px; background: var(--tq-ink); color: var(--tq-ink-text); }
+@media (min-width: 1024px) { .tq .tq-sidebar { display: flex; } }
+.tq .tq-nav { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.tq .tq-nav-item { position: relative; display: flex; align-items: center; gap: 12px; height: 44px; padding: 0 14px; border-radius: 999px; font-size: 14px; font-weight: 600; letter-spacing: -0.012em; color: var(--tq-ink-muted); transition: color 0.2s; z-index: 1; }
+.tq .tq-nav-item:hover { color: var(--tq-ink-text); }
+.tq .tq-nav-item[data-active="true"] { color: #1a0f05; }
+.tq .tq-nav-pill { position: absolute; inset: 0; z-index: -1; border-radius: 999px; background: var(--tq-pill); box-shadow: 0 8px 22px -8px color-mix(in oklab, var(--tq-pill) 80%, transparent); }
+.tq .tq-top { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 12px; padding: 14px clamp(16px, 3vw, 32px); backdrop-filter: blur(14px); background: color-mix(in oklab, var(--tq-bg) 78%, transparent); border-bottom: 1px solid var(--tq-hair); }
+.tq .tq-search { display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 8px 0 16px; width: min(380px, 100%); border-radius: 999px; cursor: pointer; background: var(--tq-card); border: 1px solid var(--tq-hair-strong); color: var(--tq-muted); font-size: 14px; transition: border-color 0.2s; }
+.tq .tq-search:hover { border-color: var(--tq-text); }
+.tq .tq-content { padding: clamp(16px, 3vw, 32px); padding-bottom: 120px; max-width: 1480px; margin: 0 auto; width: 100%; }
+@media (min-width: 1024px) { .tq .tq-content { padding-bottom: 48px; } }
+.tq .tq-dock { position: fixed; z-index: 50; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom)); transform: translateX(-50%); display: flex; gap: 2px; padding: 6px; border-radius: 999px; background: var(--tq-ink); box-shadow: var(--tq-shadow-lg); max-width: calc(100vw - 20px); }
+@media (min-width: 1024px) { .tq .tq-dock { display: none; } }
+.tq .tq-dock-item { position: relative; z-index: 1; display: grid; place-items: center; width: 52px; height: 48px; border-radius: 999px; border: 0; background: transparent; color: var(--tq-ink-muted); cursor: pointer; }
+.tq .tq-dock-item[data-active="true"] { color: #1a0f05; }
+
+/* ---------- Floor: bays, lanes ---------- */
+.tq .tq-grid-stats { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1100px) { .tq .tq-grid-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.tq .tq-grid-bays { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.tq .tq-bay { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; padding: 18px; transition: transform 0.3s var(--tq-ease), box-shadow 0.3s var(--tq-ease), border-color 0.3s; }
+.tq .tq-bay:hover { transform: translateY(-3px); box-shadow: var(--tq-shadow-lg); }
+.tq .tq-bay[data-state="down"] { border-color: color-mix(in oklab, var(--tq-a-rose) 35%, transparent); }
+.tq .tq-bay-scene { position: relative; height: 128px; border-radius: 16px; overflow: hidden; background: linear-gradient(180deg, var(--tq-card-2), color-mix(in oklab, var(--tq-card-2) 70%, var(--tq-text) 7%)); border: 1px solid var(--tq-hair); }
+.tq .tq-lanes { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .tq .tq-lanes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.tq .tq-lane { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 22px; background: color-mix(in oklab, var(--tq-card-2) 80%, transparent); border: 1px dashed var(--tq-hair-strong); min-height: 180px; }
+.tq .tq-lane-card { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 16px; background: var(--tq-card); border: 1px solid var(--tq-hair); box-shadow: var(--tq-shadow); }
+.tq .tq-feed-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--tq-hair); }
+.tq .tq-feed-row:last-child { border-bottom: 0; }
+.tq .tq-feed-ico { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; background: color-mix(in oklab, var(--c, var(--tq-a-slate)) 14%, transparent); color: var(--c, var(--tq-a-slate)); }
+
+/* ---------- Onboarding ---------- */
+.tq .tq-ob { display: grid; gap: 20px; max-width: 1120px; margin: 0 auto; padding: 20px 16px 120px; }
+@media (min-width: 1024px) { .tq .tq-ob { grid-template-columns: 300px minmax(0, 1fr); padding-top: 40px; align-items: start; } }
+.tq .tq-ob-rail { display: none; }
+@media (min-width: 1024px) { .tq .tq-ob-rail { display: flex; flex-direction: column; gap: 6px; position: sticky; top: 28px; } }
+.tq .tq-progress { display: grid; gap: 6px; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.tq .tq-progress i { height: 6px; border-radius: 999px; background: var(--tq-hair-strong); position: relative; overflow: hidden; }
+.tq .tq-progress i > b { position: absolute; inset: 0; border-radius: inherit; background: var(--tq-a-teal); transform-origin: left; }
+.tq .tq-progress i[data-state="current"] > b { background: var(--tq-pill); }
+.tq .tq-rail-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 16px; color: var(--tq-muted); font-size: 14px; font-weight: 600; transition: background 0.2s; }
+.tq .tq-rail-item[data-state="current"] { background: var(--tq-card); color: var(--tq-text); box-shadow: var(--tq-shadow); border: 1px solid var(--tq-hair); }
+.tq .tq-rail-dot { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--tq-hair); }
+.tq .tq-rail-item[data-state="done"] .tq-rail-dot { background: var(--tq-a-teal); color: #fff; }
+.tq .tq-rail-item[data-state="current"] .tq-rail-dot { background: var(--tq-primary); color: var(--tq-primary-ink); }
+.tq .tq-form-grid { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .tq .tq-form-grid[data-cols="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tq .tq-form-grid .tq-span-2 { grid-column: 1 / -1; }
+.tq .tq-info { display: flex; gap: 12px; padding: 14px; border-radius: 18px; background: var(--tq-card-2); border: 1px solid var(--tq-hair); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tq *, .tq *::before, .tq *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+EOF
+python3 - <<'EOF'
+p='app/globals.css'
+s=open(p).read()
+if 'torque.css' not in s:
+    s=s.replace('@import "tw-animate-css";','@import "tw-animate-css";\n@import "../styles/torque.css";',1)
+open(p,'w').write(s)
+EOF
+head -8 app/globals.css
+Output
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../styles/torque.css";
+@import "shadcn/tailwind.css";
+
+/* Theme preset styles: these override CSS variables based on the selected data-theme-preset */
+@import "../styles/presets/brutalist.css";
+@import "../styles/presets/soft-pop.css";
+

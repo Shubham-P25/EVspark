@@ -28,10 +28,12 @@ export type AggregateCharger = {
 
 export type ChargerAvgAggregateOutputType = {
   powerKw: number | null
+  pricePerKwh: number | null
 }
 
 export type ChargerSumAggregateOutputType = {
   powerKw: number | null
+  pricePerKwh: number | null
 }
 
 export type ChargerMinAggregateOutputType = {
@@ -40,6 +42,7 @@ export type ChargerMinAggregateOutputType = {
   label: string | null
   connectorType: string | null
   powerKw: number | null
+  pricePerKwh: number | null
   status: $Enums.ChargerStatus | null
   ocppId: string | null
   updatedAt: Date | null
@@ -51,6 +54,7 @@ export type ChargerMaxAggregateOutputType = {
   label: string | null
   connectorType: string | null
   powerKw: number | null
+  pricePerKwh: number | null
   status: $Enums.ChargerStatus | null
   ocppId: string | null
   updatedAt: Date | null
@@ -62,6 +66,7 @@ export type ChargerCountAggregateOutputType = {
   label: number
   connectorType: number
   powerKw: number
+  pricePerKwh: number
   status: number
   ocppId: number
   updatedAt: number
@@ -71,10 +76,12 @@ export type ChargerCountAggregateOutputType = {
 
 export type ChargerAvgAggregateInputType = {
   powerKw?: true
+  pricePerKwh?: true
 }
 
 export type ChargerSumAggregateInputType = {
   powerKw?: true
+  pricePerKwh?: true
 }
 
 export type ChargerMinAggregateInputType = {
@@ -83,6 +90,7 @@ export type ChargerMinAggregateInputType = {
   label?: true
   connectorType?: true
   powerKw?: true
+  pricePerKwh?: true
   status?: true
   ocppId?: true
   updatedAt?: true
@@ -94,6 +102,7 @@ export type ChargerMaxAggregateInputType = {
   label?: true
   connectorType?: true
   powerKw?: true
+  pricePerKwh?: true
   status?: true
   ocppId?: true
   updatedAt?: true
@@ -105,6 +114,7 @@ export type ChargerCountAggregateInputType = {
   label?: true
   connectorType?: true
   powerKw?: true
+  pricePerKwh?: true
   status?: true
   ocppId?: true
   updatedAt?: true
@@ -203,6 +213,7 @@ export type ChargerGroupByOutputType = {
   label: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh: number | null
   status: $Enums.ChargerStatus
   ocppId: string | null
   updatedAt: Date
@@ -237,6 +248,7 @@ export type ChargerWhereInput = {
   label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
+  pricePerKwh?: Prisma.FloatNullableFilter<"Charger"> | number | null
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
   ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
@@ -252,6 +264,7 @@ export type ChargerOrderByWithRelationInput = {
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   ocppId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -270,6 +283,7 @@ export type ChargerWhereUniqueInput = Prisma.AtLeast<{
   label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
+  pricePerKwh?: Prisma.FloatNullableFilter<"Charger"> | number | null
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
   ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
@@ -285,6 +299,7 @@ export type ChargerOrderByWithAggregationInput = {
   label?: Prisma.SortOrderInput | Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   ocppId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -304,6 +319,7 @@ export type ChargerScalarWhereWithAggregatesInput = {
   label?: Prisma.StringNullableWithAggregatesFilter<"Charger"> | string | null
   connectorType?: Prisma.StringWithAggregatesFilter<"Charger"> | string
   powerKw?: Prisma.FloatWithAggregatesFilter<"Charger"> | number
+  pricePerKwh?: Prisma.FloatNullableWithAggregatesFilter<"Charger"> | number | null
   status?: Prisma.EnumChargerStatusWithAggregatesFilter<"Charger"> | $Enums.ChargerStatus
   ocppId?: Prisma.StringNullableWithAggregatesFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Charger"> | Date | string
@@ -314,6 +330,7 @@ export type ChargerCreateInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -329,6 +346,7 @@ export type ChargerUncheckedCreateInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -342,6 +360,7 @@ export type ChargerUpdateInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -357,6 +376,7 @@ export type ChargerUncheckedUpdateInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,6 +391,7 @@ export type ChargerCreateManyInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -381,6 +402,7 @@ export type ChargerUpdateManyMutationInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -392,6 +414,7 @@ export type ChargerUncheckedUpdateManyInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -413,6 +436,7 @@ export type ChargerCountOrderByAggregateInput = {
   label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -420,6 +444,7 @@ export type ChargerCountOrderByAggregateInput = {
 
 export type ChargerAvgOrderByAggregateInput = {
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrder
 }
 
 export type ChargerMaxOrderByAggregateInput = {
@@ -428,6 +453,7 @@ export type ChargerMaxOrderByAggregateInput = {
   label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -439,6 +465,7 @@ export type ChargerMinOrderByAggregateInput = {
   label?: Prisma.SortOrder
   connectorType?: Prisma.SortOrder
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrder
   status?: Prisma.SortOrder
   ocppId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -446,6 +473,7 @@ export type ChargerMinOrderByAggregateInput = {
 
 export type ChargerSumOrderByAggregateInput = {
   powerKw?: Prisma.SortOrder
+  pricePerKwh?: Prisma.SortOrder
 }
 
 export type ChargerScalarRelationFilter = {
@@ -553,6 +581,7 @@ export type ChargerCreateWithoutStationInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -566,6 +595,7 @@ export type ChargerUncheckedCreateWithoutStationInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -609,6 +639,7 @@ export type ChargerScalarWhereInput = {
   label?: Prisma.StringNullableFilter<"Charger"> | string | null
   connectorType?: Prisma.StringFilter<"Charger"> | string
   powerKw?: Prisma.FloatFilter<"Charger"> | number
+  pricePerKwh?: Prisma.FloatNullableFilter<"Charger"> | number | null
   status?: Prisma.EnumChargerStatusFilter<"Charger"> | $Enums.ChargerStatus
   ocppId?: Prisma.StringNullableFilter<"Charger"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Charger"> | Date | string
@@ -619,6 +650,7 @@ export type ChargerCreateWithoutEventsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -633,6 +665,7 @@ export type ChargerUncheckedCreateWithoutEventsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -661,6 +694,7 @@ export type ChargerUpdateWithoutEventsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -675,6 +709,7 @@ export type ChargerUncheckedUpdateWithoutEventsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -687,6 +722,7 @@ export type ChargerCreateWithoutSessionsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -701,6 +737,7 @@ export type ChargerUncheckedCreateWithoutSessionsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -729,6 +766,7 @@ export type ChargerUpdateWithoutSessionsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -743,6 +781,7 @@ export type ChargerUncheckedUpdateWithoutSessionsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -755,6 +794,7 @@ export type ChargerCreateWithoutBookingsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -769,6 +809,7 @@ export type ChargerUncheckedCreateWithoutBookingsInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -797,6 +838,7 @@ export type ChargerUpdateWithoutBookingsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -811,6 +853,7 @@ export type ChargerUncheckedUpdateWithoutBookingsInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -823,6 +866,7 @@ export type ChargerCreateManyStationInput = {
   label?: string | null
   connectorType: string
   powerKw: number
+  pricePerKwh?: number | null
   status?: $Enums.ChargerStatus
   ocppId?: string | null
   updatedAt?: Date | string
@@ -833,6 +877,7 @@ export type ChargerUpdateWithoutStationInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -846,6 +891,7 @@ export type ChargerUncheckedUpdateWithoutStationInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -859,6 +905,7 @@ export type ChargerUncheckedUpdateManyWithoutStationInput = {
   label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   connectorType?: Prisma.StringFieldUpdateOperationsInput | string
   powerKw?: Prisma.FloatFieldUpdateOperationsInput | number
+  pricePerKwh?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumChargerStatusFieldUpdateOperationsInput | $Enums.ChargerStatus
   ocppId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -919,6 +966,7 @@ export type ChargerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   label?: boolean
   connectorType?: boolean
   powerKw?: boolean
+  pricePerKwh?: boolean
   status?: boolean
   ocppId?: boolean
   updatedAt?: boolean
@@ -935,6 +983,7 @@ export type ChargerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   label?: boolean
   connectorType?: boolean
   powerKw?: boolean
+  pricePerKwh?: boolean
   status?: boolean
   ocppId?: boolean
   updatedAt?: boolean
@@ -947,6 +996,7 @@ export type ChargerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   label?: boolean
   connectorType?: boolean
   powerKw?: boolean
+  pricePerKwh?: boolean
   status?: boolean
   ocppId?: boolean
   updatedAt?: boolean
@@ -959,12 +1009,13 @@ export type ChargerSelectScalar = {
   label?: boolean
   connectorType?: boolean
   powerKw?: boolean
+  pricePerKwh?: boolean
   status?: boolean
   ocppId?: boolean
   updatedAt?: boolean
 }
 
-export type ChargerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "label" | "connectorType" | "powerKw" | "status" | "ocppId" | "updatedAt", ExtArgs["result"]["charger"]>
+export type ChargerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "label" | "connectorType" | "powerKw" | "pricePerKwh" | "status" | "ocppId" | "updatedAt", ExtArgs["result"]["charger"]>
 export type ChargerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
   events?: boolean | Prisma.Charger$eventsArgs<ExtArgs>
@@ -993,6 +1044,7 @@ export type $ChargerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     label: string | null
     connectorType: string
     powerKw: number
+    pricePerKwh: number | null
     status: $Enums.ChargerStatus
     ocppId: string | null
     updatedAt: Date
@@ -1428,6 +1480,7 @@ export interface ChargerFieldRefs {
   readonly label: Prisma.FieldRef<"Charger", 'String'>
   readonly connectorType: Prisma.FieldRef<"Charger", 'String'>
   readonly powerKw: Prisma.FieldRef<"Charger", 'Float'>
+  readonly pricePerKwh: Prisma.FieldRef<"Charger", 'Float'>
   readonly status: Prisma.FieldRef<"Charger", 'ChargerStatus'>
   readonly ocppId: Prisma.FieldRef<"Charger", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Charger", 'DateTime'>

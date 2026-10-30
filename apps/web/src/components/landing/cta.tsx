@@ -36,7 +36,7 @@ export function CtaSection() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <Link href="/register">
+          <Link href="/signup">
             <Button className="h-13 rounded-xl bg-gradient-to-r from-[#1D6BFF] to-[#4F8CFF] px-8 text-base font-semibold text-white shadow-lg shadow-[#1D6BFF]/20 hover:shadow-xl hover:shadow-[#1D6BFF]/30 hover:-translate-y-0.5 transition-all duration-200">
               Get Started Free
               <ArrowRight size={18} className="ml-2" />

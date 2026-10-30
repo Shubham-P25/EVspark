@@ -50,6 +50,7 @@ model User {
   phone           String?
   role            Role             @default(DRIVER)
   onboardedAt     DateTime?
+  onboardingDraft Json?
   driverProfile   DriverProfile?
   operatorProfile OperatorProfile?
   favorites       Favorite[]
@@ -88,6 +89,16 @@ model DriverProfile {
   workLabel      String?
   maxWaitMin     Int?
   minKw          Float?
+  language          String?
+  chargingPref      String?
+  vehicleOwnership  String?
+  hasHomeCharger    Boolean?
+  dailyKm           Int?
+  maxPriceKwh       Float?
+  preferredTimes    String?
+  amenityPrefs      String?
+  notifyChannels    String?
+  notifications     Boolean @default(true)
   user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -98,6 +109,9 @@ model OperatorProfile {
   contactName  String?
   phone        String?
   gstin        String?
+  businessType String?
+  supportEmail String?
+  integration  String?
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -125,6 +139,13 @@ model Station {
   googlePlaceId  String?
   photoUrl       String?
   phone          String?
+  pincode        String?
+  landmark       String?
+  parkingSlots   Int?
+  paymentMethods String?
+  idleFeePerMin  Float?
+  description    String?
+  accessType     String?               @default("PUBLIC")
   chargers       Charger[]
   favorites      Favorite[]
   reviews        Review[]
@@ -144,6 +165,7 @@ model Charger {
   label         String?
   connectorType String
   powerKw       Float
+  pricePerKwh   Float?
   status        ChargerStatus  @default(FREE)
   ocppId        String?
   station       Station        @relation(fields: [stationId], references: [id], onDelete: Cascade)
@@ -198,7 +220,9 @@ model QueueEntry {
   connector      String
   joinedTs       DateTime  @default(now())
   etaTs          DateTime?
-  status         String    @default("waiting") // "waiting" | "charging" | "abandoned"
+  status         String    @default("waiting") // "waiting" | "called" | "charging" | "abandoned" | "removed"
+  calledAt        DateTime?
+  calledChargerId String?
   station        Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
 
   @@index([stationId, status])

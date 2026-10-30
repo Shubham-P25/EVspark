@@ -30,6 +30,10 @@ data/raw/*
 
 # ML artifacts
 models/*.joblib
+apps/ml-service/ml/.env
+apps/ml-service/ml/data/
+ml/.env
+ml/data/
 
 # OS & Logs
 .DS_Store

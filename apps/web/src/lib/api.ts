@@ -1,10 +1,14 @@
+"use client";
+import { useAuth } from "@clerk/nextjs";
+import { useCallback, useEffect, useState } from "react";
 export class ApiError extends Error {
   status: number;
   code?: string;
   requestId?: string;
   details?: unknown;
+  fields?: Record<string, string>;
 
-  constructor(message: string, status: number, code?: string, requestId?: string, details?: unknown) {
+  constructor(message: string, status: number, code?: string, requestId?: string, details?: unknown, fields?: Record<string, string>) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -158,3 +162,40 @@ export const api: ApiClient = Object.assign(
     delete: <T>(path: string, options?: ApiOptions) => apiFetch<T>(path, { ...options, method: "DELETE" }),
   }
 );
+
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
+export function useApi() {
+  const { getToken } = useAuth();
+  return useCallback(async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
+    const token = await getToken();
+    const res = await fetch(`${API_URL}${path}`, {
+      ...init,
+      headers: { "Content-Type": "application/json", ...(init.headers ?? {}), Authorization: `Bearer ${token}` },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new ApiError(body?.error?.message ?? res.statusText, res.status, body?.error?.code ?? "ERROR", undefined, body?.error?.fields);
+    return body as T;
+  }, [getToken]);
+}
+
+export type Me = {
+  id: string; role: "DRIVER" | "OPERATOR" | "ADMIN"; name: string | null; username: string | null; email: string | null;
+  onboarded: boolean; onboardingDraft: { step: number; data: Record<string, unknown> } | null;
+};
+
+export function useMe() {
+  const apiCall = useApi();
+  const { isLoaded, isSignedIn } = useAuth();
+  const [me, setMe] = useState<Me | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const refresh = useCallback(async () => {
+    try { const r = await apiCall<{ user: Me }>("/api/me"); setMe(r.user); setError(null); }
+    catch (e) { setError((e as Error).message); }
+    finally { setLoading(false); }
+  }, [apiCall]);
+  useEffect(() => { if (isLoaded && isSignedIn) void refresh(); }, [isLoaded, isSignedIn, refresh]);
+  return { me, loading, error, refresh, setMe };
+}

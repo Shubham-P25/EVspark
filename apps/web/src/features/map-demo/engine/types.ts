@@ -1,6 +1,6 @@
 export type Vec = { x: number; y: number }; // metres; x = east, y = north
 export type CarKind = 'CHARGER' | 'STAYER';
-export type Phase = 'APPROACH' | 'INSIDE_MOVE' | 'PARKED' | 'CHARGING' | 'LEAVING';
+export type Phase = 'APPROACH' | 'INSIDE_MOVE' | 'PARKED' | 'CHARGING' | 'LEAVING' | 'STANDBY_ROAD';
 export type QueueName = 'NONE' | 'CHARGING' | 'WAITING';
 export type Tag = 'NONE' | 'SERVED' | 'OTHER_JOBS' | 'RENEGED' | 'BALKED' | 'LEFT_AFTER_STAY' | 'TIMEOUT';
 
@@ -37,7 +37,8 @@ export interface EngineConfig {
 
 export type EventType =
   | 'SPAWN' | 'FENCE_ENTER' | 'CHARGING_Q_JOIN' | 'WAITING_Q_JOIN' | 'OFFERED' | 'PLUG_IN'
-  | 'OTHER_JOBS' | 'RENEGED' | 'BALKED' | 'CHARGE_DONE' | 'LEFT_AFTER_STAY' | 'FAULT' | 'RESTORED' | 'TIMEOUT';
+  | 'OTHER_JOBS' | 'RENEGED' | 'BALKED' | 'CHARGE_DONE' | 'LEFT_AFTER_STAY' | 'FAULT' | 'RESTORED' | 'TIMEOUT'
+  | 'STANDBY_ROAD' | 'STANDBY_ADVANCE' | 'VISITOR_PARKED';
 export interface EngineEvent { t: number; type: EventType; stationId: string; carId?: number; msg: string }
 
 export interface StationStats {

@@ -1,91 +1,18 @@
 import { create } from 'zustand';
+import { DEMO_CASES, ORIGIN, type DemoCase, type CaseResult } from '@evspark/shared';
 import { DemoEngine } from '../engine/engine';
 import { DemoCanvas, type ColorMode } from '../renderer/demo-canvas';
 import { googleAdapter, type MapAdapter } from '../renderer/map-adapter';
-import type { EngineEvent, StationInput } from '../engine/types';
+import type { EngineEvent } from '../engine/types';
+import { DEMO_STANDALONE_STATION } from '../engine/demo-station';
 
 export type DemoState = 'idle' | 'loading' | 'running' | 'error';
 
-export interface TestCaseDef {
-  id: string;
-  num: number;
-  title: string;
-  desc: string;
-  expected: string;
+export interface CaseStatus {
+  status: 'idle' | 'running' | 'passed' | 'failed';
+  detail: string;
+  durationMs?: number;
 }
-
-export const LIVE_TEST_CASES: TestCaseDef[] = [
-  {
-    id: 'TC1',
-    num: 1,
-    title: 'Direct Bay Allocation (Single EV)',
-    desc: 'Spawns 1 charging car into an empty 3-bay station.',
-    expected: 'Car enters gate, reserves Bay 1, plugs in and turns bright green.',
-  },
-  {
-    id: 'TC2',
-    num: 2,
-    title: '3-Charger Full Saturation',
-    desc: 'Spawns 3 charging cars in rapid succession.',
-    expected: 'All 3 bays (C1, C2, C3) get occupied simultaneously in parallel.',
-  },
-  {
-    id: 'TC3',
-    num: 3,
-    title: 'Waiting Queue & Immediate Promotion',
-    desc: 'Saturates all 3 bays, then spawns 4th car.',
-    expected: 'Car #4 parks in waiting slot (yellow). When Bay 1 finishes, Car #4 promotes to Bay 1 (green).',
-  },
-  {
-    id: 'TC4',
-    num: 4,
-    title: 'Non-Charging Visitor Behavior',
-    desc: 'Spawns 2 visitor cars (non-charging).',
-    expected: 'Visitors park in visitor slots (indigo), leave charger bays free, stay ~25s then depart.',
-  },
-  {
-    id: 'TC5',
-    num: 5,
-    title: 'Approach Road Standby (Zero Balking)',
-    desc: 'Saturates both bays and parking slots, then spawns overflow cars.',
-    expected: 'Overflow cars queue in FIFO standby line on access road instead of bouncing out.',
-  },
-  {
-    id: 'TC6',
-    num: 6,
-    title: 'Fast 15-Second Charge Cycle',
-    desc: 'Executes an accelerated charging session.',
-    expected: 'Car completes full charging cycle in 15 seconds, bay clears, and car departs.',
-  },
-  {
-    id: 'TC7',
-    num: 7,
-    title: 'Charger Fault & Priority Re-queue',
-    desc: 'Takes an active charger offline mid-charge.',
-    expected: 'Interrupted car is placed at index 0 (front) of waiting queue with immediate priority.',
-  },
-  {
-    id: 'TC8',
-    num: 8,
-    title: 'Impatient Driver Reneging',
-    desc: 'Puts car in waiting queue with short patience timer.',
-    expected: 'Car reneges after patience expires and exits safely without creating gridlock.',
-  },
-  {
-    id: 'TC9',
-    num: 9,
-    title: 'Dual-Queue Intent Classification (Other Jobs)',
-    desc: 'Car enters and is offered a charger, but does not plug in.',
-    expected: 'Grace timer expires (10s), system discards from queue as Other Jobs, freeing the charger.',
-  },
-  {
-    id: 'TC10',
-    num: 10,
-    title: 'Rush-Hour Multi-Car Flow & Anti-Collision',
-    desc: 'High-density wave of mixed charging and visitor cars.',
-    expected: 'Two-way lane separation and yield checks ensure 0 collisions and smooth traffic flow.',
-  },
-];
 
 export interface MapDemoStore {
   state: DemoState;
@@ -102,11 +29,15 @@ export interface MapDemoStore {
   adapter: (MapAdapter & { dispose(): void }) | null;
   canvas: DemoCanvas | null;
 
-  // Live Test Suite State
-  testResults: Record<string, { status: 'idle' | 'running' | 'passed' | 'failed'; detail: string }>;
-  runningTestId: string | null;
-  activeTestNarrative: string;
+  // 68 Official Demo Cases Suite
+  allCases: DemoCase[];
+  caseResults: Record<string, CaseStatus>;
+  runningAllCases: boolean;
+  runningCaseId: string | null;
+  activeFilterGroup: string;
+  searchQuery: string;
 
+  // Actions
   start: (map: google.maps.Map) => Promise<void>;
   stop: () => void;
   togglePause: () => void;
@@ -119,47 +50,25 @@ export interface MapDemoStore {
   toggleFault: (stationId: string, idx: number) => void;
   rushHour: () => void;
   runPreset: (presetKey: string) => void;
-  runLiveTestCase: (caseId: string) => Promise<void>;
-  runAllLiveTestCases: () => Promise<void>;
+
+  // Test Runner Actions
+  runDemoCase: (caseId: string) => Promise<void>;
+  runAllDemoCases: () => Promise<void>;
+  setFilterGroup: (group: string) => void;
+  setSearchQuery: (query: string) => void;
+  resetCaseResults: () => void;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 let rafId: number | null = null;
 let lastTime = 0;
 let rushTimer: NodeJS.Timeout | null = null;
 
-// Built-in resilient 3-charger fallback station in case backend API is cold or offline
-const FALLBACK_STATION: StationInput = {
-  id: 'demo-st-prime-3bay',
-  name: 'EVspark Hub Central (3-Bay)',
-  lat: 19.076,
-  lng: 72.8777,
-  chargers: 3,
-  fence: {
-    center: { lat: 19.076, lng: 72.8777 },
-    radiusM: 40,
-    gate: { lat: 19.0757, lng: 72.8775 },
-    clearanceM: 38,
-    centerShifted: false,
-  },
-  routes: [
-    [
-      [19.0748, 72.8770],
-      [19.0754, 72.8773],
-      [19.0757, 72.8775],
-    ],
-    [
-      [19.0768, 72.8785],
-      [19.0761, 72.8780],
-      [19.0757, 72.8775],
-    ],
-    [
-      [19.0750, 72.8788],
-      [19.0755, 72.8780],
-      [19.0757, 72.8775],
-    ],
-  ],
-};
+const initialCaseResults: Record<string, CaseStatus> = Object.fromEntries(
+  DEMO_CASES.map((c) => [
+    c.id,
+    { status: 'idle', detail: 'Ready to run verification' },
+  ])
+);
 
 export const useMapDemo = create<MapDemoStore>((set, get) => ({
   state: 'idle',
@@ -176,9 +85,12 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
   adapter: null,
   canvas: null,
 
-  testResults: Object.fromEntries(LIVE_TEST_CASES.map((tc) => [tc.id, { status: 'idle', detail: 'Ready to play' }])),
-  runningTestId: null,
-  activeTestNarrative: '',
+  allCases: DEMO_CASES,
+  caseResults: initialCaseResults,
+  runningAllCases: false,
+  runningCaseId: null,
+  activeFilterGroup: 'All',
+  searchQuery: '',
 
   start: async (map: google.maps.Map) => {
     const cur = get();
@@ -187,46 +99,21 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
     set({ state: 'loading', error: null });
 
     try {
-      const center = map.getCenter();
-      const lat = center ? center.lat() : 19.076;
-      const lng = center ? center.lng() : 72.8777;
-
-      let stationInputs: StationInput[] = [];
-
-      try {
-        const res = await fetch(`${API}/api/demo/bootstrap?lat=${lat}&lng=${lng}&limit=3`, {
-          cache: 'no-cache',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.stations && data.stations.length > 0) {
-            stationInputs = data.stations;
-          }
-        }
-      } catch {
-        // Backend offline or unreachable: fall back to built-in 3-charger station
-      }
-
-      if (stationInputs.length === 0) {
-        stationInputs = [FALLBACK_STATION];
-      }
-
-      // Prioritize the station with 3 chargers and decent geofence
-      const targetStation = stationInputs.find((s) => s.chargers === 3) || stationInputs[0];
-
-      // Automatically center and zoom the map for an optimal demo experience
+      // 1. Position the demo station away from public road clutter
+      // Station center is at ORIGIN (19.0657, 72.8687) in open BKC grounds
+      // Gate is at x=38m; public road corridor is 70m away East (32m clearance buffer)
       if (map && typeof map.panTo === 'function') {
-        map.panTo({ lat: targetStation.lat, lng: targetStation.lng });
-        map.setZoom(19); // Zoom level 19 makes the station large, prominent and crystal clear
+        map.panTo({ lat: ORIGIN.lat, lng: ORIGIN.lng });
+        map.setZoom(19); // Zoom 19 ensures station is prominent, huge and crystal clear
       }
 
       const adapter = googleAdapter(map);
-      const engine = new DemoEngine(stationInputs, {
+      const engine = new DemoEngine([DEMO_STANDALONE_STATION], {
         speed: cur.speed,
         arrivalMeanS: cur.arrivalMeanS,
         chargerShare: cur.chargerShare,
-        chargeS: [15, 20], // Fast 15-20s charging for quick demo
-        stayS: [20, 35],
+        chargeS: [14, 20], // Fast 14-20s charging for live visual feedback
+        stayS: [18, 28],
       });
 
       const canvas = new DemoCanvas(adapter, engine);
@@ -234,7 +121,7 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
 
       engine.on((event) => {
         set((s) => ({
-          log: [event, ...s.log].slice(0, 50),
+          log: [event, ...s.log].slice(0, 60),
         }));
       });
 
@@ -253,7 +140,7 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
         }
         canvas.draw();
 
-        if (now - lastSnapUpdate > 200) {
+        if (now - lastSnapUpdate > 180) {
           lastSnapUpdate = now;
           const snap = engine.snapshot();
           set({ stations: snap.stations });
@@ -299,8 +186,8 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
       canvas: null,
       stations: [],
       log: [],
-      runningTestId: null,
-      activeTestNarrative: '',
+      runningCaseId: null,
+      runningAllCases: false,
     });
   },
 
@@ -394,7 +281,7 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
         for (let i = 0; i < 3; i++) {
           setTimeout(() => {
             if (get().state === 'running') engine.forceSpawn(st0, 'CHARGER');
-          }, i * 2000);
+          }, i * 1800);
         }
         break;
 
@@ -405,333 +292,104 @@ export const useMapDemo = create<MapDemoStore>((set, get) => ({
     set({ stations: engine.snapshot().stations });
   },
 
-  // Interactive Live Test Case Orchestrator (Robust, Reactive Assertions)
-  runLiveTestCase: async (caseId: string) => {
-    const { engine } = get();
-    if (!engine || !engine.stations.length) return;
-    const st0 = engine.stations[0].id;
-    const originalSpeed = get().speed;
+  // --- Official 68 Demo Cases Execution ---
+  runDemoCase: async (caseId: string) => {
+    const target = DEMO_CASES.find((c) => c.id === caseId);
+    if (!target) return;
 
     set({
-      runningTestId: caseId,
-      testResults: {
-        ...get().testResults,
-        [caseId]: { status: 'running', detail: 'Executing live scenario...' },
+      runningCaseId: caseId,
+      caseResults: {
+        ...get().caseResults,
+        [caseId]: { status: 'running', detail: 'Executing verification...' },
       },
     });
 
-    const waitFor = async (predicate: () => boolean, timeoutMs = 12000, intervalMs = 100): Promise<boolean> => {
-      const start = Date.now();
-      while (Date.now() - start < timeoutMs) {
-        if (predicate()) return true;
-        await new Promise((r) => setTimeout(r, intervalMs));
-      }
-      return predicate();
-    };
-
+    // Run test deterministically
+    const t0 = performance.now();
     try {
-      // Speed up slightly during automated test verification for fast user feedback
-      engine.setConfig({ speed: 2 });
+      const res = target.run();
+      const durationMs = Math.round(performance.now() - t0);
 
-      switch (caseId) {
-        case 'TC1': {
-          set({ activeTestNarrative: 'TC1: Resetting station and spawning 1 charging EV...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, speed: 2 });
-          engine.forceSpawn(st0, 'CHARGER', 25);
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.chargingQ >= 1 && snap.chargers[0].state === 'CHARGING';
-          }, 9000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC1: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Car entered gate, reserved Bay 1, and plugged in (Green).'
-                  : 'FAILED: Car did not occupy Bay 1.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC2': {
-          set({ activeTestNarrative: 'TC2: Spawning 3 charging cars to saturate all 3 bays...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, chargeS: [40, 40], speed: 2 });
-          engine.forceSpawn(st0, 'CHARGER', 25);
-          await new Promise((r) => setTimeout(r, 600));
-          engine.forceSpawn(st0, 'CHARGER', 25);
-          await new Promise((r) => setTimeout(r, 600));
-          engine.forceSpawn(st0, 'CHARGER', 25);
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.chargingQ === 3;
-          }, 11000);
-
-          const snap = engine.snapshot().stations[0];
-          set({
-            testResults: {
-              ...get().testResults,
-              TC2: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: All 3 bays (C1, C2, C3) successfully saturated in parallel (3/3).'
-                  : `FAILED: Only ${snap.chargingQ}/3 bays occupied.`,
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC3': {
-          set({ activeTestNarrative: 'TC3: Spawning 4 cars; asserting Car #4 queues, then promotes...' });
-          engine.reset();
-          // Fast 5s charge so Bay 1 finishes quickly and promotes waiting car
-          engine.setConfig({ arrivalMeanS: 999, chargeS: [5, 6], speed: 2 });
-          for (let i = 0; i < 4; i++) {
-            engine.forceSpawn(st0, 'CHARGER', 25);
-            await new Promise((r) => setTimeout(r, 450));
-          }
-
-          const queued = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.waiting >= 1 || snap.chargingQ === 3;
-          }, 8000);
-
-          const promoted = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.stats.served >= 1;
-          }, 14000);
-
-          const passed = queued && promoted;
-          set({
-            testResults: {
-              ...get().testResults,
-              TC3: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Car #4 queued in waiting slot, then promoted to Bay 1 upon departure.'
-                  : 'FAILED: Waiting promotion did not trigger.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC4': {
-          set({ activeTestNarrative: 'TC4: Spawning 2 visitor cars (non-charging)...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, speed: 2 });
-          engine.forceSpawn(st0, 'STAYER', 25);
-          await new Promise((r) => setTimeout(r, 600));
-          engine.forceSpawn(st0, 'STAYER', 25);
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.chargingQ === 0 && snap.insideFenceCount >= 1;
-          }, 8000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC4: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Visitors parked in visitor bays (Indigo) without taking any charger bays.'
-                  : 'FAILED: Visitors wrongly took charger bays.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC5': {
-          set({ activeTestNarrative: 'TC5: Overfilling station to trigger Road Standby queue without balking...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, chargeS: [60, 60], stayS: [60, 60], speed: 2 });
-          for (let i = 0; i < 7; i++) {
-            engine.forceSpawn(st0, i % 2 === 0 ? 'CHARGER' : 'STAYER', 35);
-            await new Promise((r) => setTimeout(r, 350));
-          }
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.standbyRoadCount > 0 || snap.insideFenceCount >= 5;
-          }, 9000);
-
-          const snap = engine.snapshot().stations[0];
-          set({
-            testResults: {
-              ...get().testResults,
-              TC5: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? `PASSED: Overflow cars queued in Road Standby (${snap.standbyRoadCount} queued). Zero cars balked.`
-                  : 'FAILED: Standby queue was not utilized.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC6': {
-          set({ activeTestNarrative: 'TC6: Executing fast 5-second charging cycle...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, chargeS: [4, 5], speed: 2 });
-          engine.forceSpawn(st0, 'CHARGER', 25);
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.stats.served >= 1;
-          }, 12000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC6: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Fast charge cycle completed successfully; car vacated bay.'
-                  : 'FAILED: Session did not finish in time.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC7': {
-          set({ activeTestNarrative: 'TC7: Spawning car, tripping Bay 1 offline, and asserting front re-queue...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, speed: 2 });
-          engine.forceSpawn(st0, 'CHARGER', 25);
-
-          // Wait until actively charging in Bay 1
-          await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.chargers[0].state === 'CHARGING';
-          }, 8000);
-
-          engine.toggleFault(st0, 0); // Trip Bay 1
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.chargers[0].state === 'FAULT' && (snap.waiting >= 1 || snap.chargingQ >= 0);
-          }, 6000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC7: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Bay 1 faulted; car re-queued at the FRONT of waiting queue with top priority.'
-                  : 'FAILED: Fault priority re-queue failed.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC8': {
-          set({ activeTestNarrative: 'TC8: Setting short patience (4s); verifying graceful reneging...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, chargeS: [60, 60], patienceS: [4, 5], speed: 2 });
-          for (let i = 0; i < 4; i++) {
-            engine.forceSpawn(st0, 'CHARGER', 25);
-            await new Promise((r) => setTimeout(r, 350));
-          }
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.stats.reneged >= 1;
-          }, 14000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC8: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Impatient car reneged cleanly after patience timer expired without gridlock.'
-                  : 'FAILED: Reneging did not occur in time.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC9': {
-          set({ activeTestNarrative: 'TC9: Asserting Other Jobs classification when car does not plug in...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 999, offerGraceS: 3, speed: 2 });
-          engine.forceSpawn(st0, 'STAYER', 25);
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.stats.otherJobs >= 1 || snap.chargingQ === 0;
-          }, 10000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC9: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? 'PASSED: Unused reservation classified as Other Jobs; charger reclaimed for EV fleet.'
-                  : 'FAILED: Charger was not reclaimed.',
-              },
-            },
-          });
-          break;
-        }
-
-        case 'TC10': {
-          set({ activeTestNarrative: 'TC10: High-density rush hour inflow; verifying collision-free flow...' });
-          engine.reset();
-          engine.setConfig({ arrivalMeanS: 2.5, speed: 2 });
-
-          const passed = await waitFor(() => {
-            const snap = engine.snapshot().stations[0];
-            return snap.stats.spawned >= 4 && engine.guardHolds === 0;
-          }, 10000);
-
-          set({
-            testResults: {
-              ...get().testResults,
-              TC10: {
-                status: passed ? 'passed' : 'failed',
-                detail: passed
-                  ? `PASSED: Multi-car traffic flowed cleanly with 0 collisions and separated 3.5m lanes.`
-                  : 'FAILED: Traffic deadlock encountered.',
-              },
-            },
-          });
-          break;
+      // Trigger visual action on the canvas for dynamic visual feedback
+      const { engine, state } = get();
+      if (state === 'running' && engine && engine.stations.length > 0) {
+        const st0 = engine.stations[0].id;
+        if (target.group === 'Movement' || target.group === 'Queue') {
+          engine.forceSpawn(st0, 'CHARGER', 45);
+        } else if (target.group === 'Faults') {
+          engine.toggleFault(st0, 0);
+          setTimeout(() => {
+            if (get().state === 'running') engine.toggleFault(st0, 0);
+          }, 2500);
         }
       }
-    } catch {
+
       set({
-        testResults: {
-          ...get().testResults,
-          [caseId]: { status: 'failed', detail: 'Test run failed due to execution error.' },
+        runningCaseId: null,
+        caseResults: {
+          ...get().caseResults,
+          [caseId]: {
+            status: res.pass ? 'passed' : 'failed',
+            detail: res.detail,
+            durationMs,
+          },
         },
       });
-    } finally {
-      engine.setConfig({ speed: originalSpeed });
-      set({ runningTestId: null, activeTestNarrative: '' });
+    } catch (err) {
+      set({
+        runningCaseId: null,
+        caseResults: {
+          ...get().caseResults,
+          [caseId]: {
+            status: 'failed',
+            detail: err instanceof Error ? err.message : 'Unknown execution error',
+          },
+        },
+      });
     }
   },
 
-  runAllLiveTestCases: async () => {
-    for (const tc of LIVE_TEST_CASES) {
-      await get().runLiveTestCase(tc.id);
-      await new Promise((r) => setTimeout(r, 1200));
+  runAllDemoCases: async () => {
+    if (get().runningAllCases) return;
+    set({ runningAllCases: true });
+
+    const results = { ...get().caseResults };
+
+    for (let i = 0; i < DEMO_CASES.length; i++) {
+      const c = DEMO_CASES[i];
+      set({ runningCaseId: c.id });
+
+      const t0 = performance.now();
+      try {
+        const res = c.run();
+        const durationMs = Math.round(performance.now() - t0);
+        results[c.id] = {
+          status: res.pass ? 'passed' : 'failed',
+          detail: res.detail,
+          durationMs,
+        };
+      } catch (err) {
+        results[c.id] = {
+          status: 'failed',
+          detail: err instanceof Error ? err.message : 'Error executing case',
+        };
+      }
+
+      set({ caseResults: { ...results } });
+      // Brief yield so the UI progress bar smoothly updates
+      if (i % 3 === 0) {
+        await new Promise((r) => setTimeout(r, 12));
+      }
     }
+
+    set({ runningAllCases: false, runningCaseId: null });
+  },
+
+  setFilterGroup: (group) => set({ activeFilterGroup: group }),
+  setSearchQuery: (query) => set({ searchQuery: query }),
+
+  resetCaseResults: () => {
+    set({ caseResults: initialCaseResults, runningCaseId: null, runningAllCases: false });
   },
 }));

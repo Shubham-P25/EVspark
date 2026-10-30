@@ -351,7 +351,26 @@ export class DemoEngine {
   snapshot() {
     return {
       t: this.t,
-      cars: [...this.cars.values()].map((c) => ({ id: c.id, x: c.pos.x, y: c.pos.y, h: c.heading, kind: c.kind, phase: c.phase, q: c.q, tag: c.tag, stationId: c.stationId })),
+      cars: [...this.cars.values()].map((c) => ({
+        id: c.id,
+        x: c.pos.x,
+        y: c.pos.y,
+        h: c.heading,
+        speed: c.speed,
+        kind: c.kind,
+        phase: c.phase,
+        q: c.q,
+        tag: c.tag,
+        stationId: c.stationId,
+        chargeProgress:
+          c.phase === 'CHARGING' && c.tOffer !== null
+            ? Math.min(1, Math.max(0, (this.t - c.tOffer) / c.chargeS))
+            : c.phase === 'CHARGING' && c.tParked !== null
+            ? Math.min(1, Math.max(0, (this.t - c.tParked) / c.chargeS))
+            : 0,
+        slotId: c.slot?.id ?? null,
+        chargerIdx: c.slot?.chargerIdx ?? null,
+      })),
       stations: this.stations.map((s) => this.stationView(s)),
     };
   }

@@ -33,6 +33,8 @@ export type QueueEntryMinAggregateOutputType = {
   joinedTs: Date | null
   etaTs: Date | null
   status: string | null
+  calledAt: Date | null
+  calledChargerId: string | null
 }
 
 export type QueueEntryMaxAggregateOutputType = {
@@ -44,6 +46,8 @@ export type QueueEntryMaxAggregateOutputType = {
   joinedTs: Date | null
   etaTs: Date | null
   status: string | null
+  calledAt: Date | null
+  calledChargerId: string | null
 }
 
 export type QueueEntryCountAggregateOutputType = {
@@ -55,6 +59,8 @@ export type QueueEntryCountAggregateOutputType = {
   joinedTs: number
   etaTs: number
   status: number
+  calledAt: number
+  calledChargerId: number
   _all: number
 }
 
@@ -68,6 +74,8 @@ export type QueueEntryMinAggregateInputType = {
   joinedTs?: true
   etaTs?: true
   status?: true
+  calledAt?: true
+  calledChargerId?: true
 }
 
 export type QueueEntryMaxAggregateInputType = {
@@ -79,6 +87,8 @@ export type QueueEntryMaxAggregateInputType = {
   joinedTs?: true
   etaTs?: true
   status?: true
+  calledAt?: true
+  calledChargerId?: true
 }
 
 export type QueueEntryCountAggregateInputType = {
@@ -90,6 +100,8 @@ export type QueueEntryCountAggregateInputType = {
   joinedTs?: true
   etaTs?: true
   status?: true
+  calledAt?: true
+  calledChargerId?: true
   _all?: true
 }
 
@@ -174,6 +186,8 @@ export type QueueEntryGroupByOutputType = {
   joinedTs: Date
   etaTs: Date | null
   status: string
+  calledAt: Date | null
+  calledChargerId: string | null
   _count: QueueEntryCountAggregateOutputType | null
   _min: QueueEntryMinAggregateOutputType | null
   _max: QueueEntryMaxAggregateOutputType | null
@@ -206,6 +220,8 @@ export type QueueEntryWhereInput = {
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
   etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
+  calledAt?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
+  calledChargerId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
 }
 
@@ -218,6 +234,8 @@ export type QueueEntryOrderByWithRelationInput = {
   joinedTs?: Prisma.SortOrder
   etaTs?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  calledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  calledChargerId?: Prisma.SortOrderInput | Prisma.SortOrder
   station?: Prisma.StationOrderByWithRelationInput
 }
 
@@ -233,6 +251,8 @@ export type QueueEntryWhereUniqueInput = Prisma.AtLeast<{
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
   etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
+  calledAt?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
+  calledChargerId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
   station?: Prisma.XOR<Prisma.StationScalarRelationFilter, Prisma.StationWhereInput>
 }, "id">
 
@@ -245,6 +265,8 @@ export type QueueEntryOrderByWithAggregationInput = {
   joinedTs?: Prisma.SortOrder
   etaTs?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  calledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  calledChargerId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QueueEntryCountOrderByAggregateInput
   _max?: Prisma.QueueEntryMaxOrderByAggregateInput
   _min?: Prisma.QueueEntryMinOrderByAggregateInput
@@ -262,6 +284,8 @@ export type QueueEntryScalarWhereWithAggregatesInput = {
   joinedTs?: Prisma.DateTimeWithAggregatesFilter<"QueueEntry"> | Date | string
   etaTs?: Prisma.DateTimeNullableWithAggregatesFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringWithAggregatesFilter<"QueueEntry"> | string
+  calledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"QueueEntry"> | Date | string | null
+  calledChargerId?: Prisma.StringNullableWithAggregatesFilter<"QueueEntry"> | string | null
 }
 
 export type QueueEntryCreateInput = {
@@ -272,6 +296,8 @@ export type QueueEntryCreateInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
   station: Prisma.StationCreateNestedOneWithoutQueueEntriesInput
 }
 
@@ -284,6 +310,8 @@ export type QueueEntryUncheckedCreateInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
 }
 
 export type QueueEntryUpdateInput = {
@@ -294,6 +322,8 @@ export type QueueEntryUpdateInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   station?: Prisma.StationUpdateOneRequiredWithoutQueueEntriesNestedInput
 }
 
@@ -306,6 +336,8 @@ export type QueueEntryUncheckedUpdateInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QueueEntryCreateManyInput = {
@@ -317,6 +349,8 @@ export type QueueEntryCreateManyInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
 }
 
 export type QueueEntryUpdateManyMutationInput = {
@@ -327,6 +361,8 @@ export type QueueEntryUpdateManyMutationInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QueueEntryUncheckedUpdateManyInput = {
@@ -338,6 +374,8 @@ export type QueueEntryUncheckedUpdateManyInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QueueEntryListRelationFilter = {
@@ -359,6 +397,8 @@ export type QueueEntryCountOrderByAggregateInput = {
   joinedTs?: Prisma.SortOrder
   etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  calledAt?: Prisma.SortOrder
+  calledChargerId?: Prisma.SortOrder
 }
 
 export type QueueEntryMaxOrderByAggregateInput = {
@@ -370,6 +410,8 @@ export type QueueEntryMaxOrderByAggregateInput = {
   joinedTs?: Prisma.SortOrder
   etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  calledAt?: Prisma.SortOrder
+  calledChargerId?: Prisma.SortOrder
 }
 
 export type QueueEntryMinOrderByAggregateInput = {
@@ -381,6 +423,8 @@ export type QueueEntryMinOrderByAggregateInput = {
   joinedTs?: Prisma.SortOrder
   etaTs?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  calledAt?: Prisma.SortOrder
+  calledChargerId?: Prisma.SortOrder
 }
 
 export type QueueEntryCreateNestedManyWithoutStationInput = {
@@ -433,6 +477,8 @@ export type QueueEntryCreateWithoutStationInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
 }
 
 export type QueueEntryUncheckedCreateWithoutStationInput = {
@@ -443,6 +489,8 @@ export type QueueEntryUncheckedCreateWithoutStationInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
 }
 
 export type QueueEntryCreateOrConnectWithoutStationInput = {
@@ -483,6 +531,8 @@ export type QueueEntryScalarWhereInput = {
   joinedTs?: Prisma.DateTimeFilter<"QueueEntry"> | Date | string
   etaTs?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
   status?: Prisma.StringFilter<"QueueEntry"> | string
+  calledAt?: Prisma.DateTimeNullableFilter<"QueueEntry"> | Date | string | null
+  calledChargerId?: Prisma.StringNullableFilter<"QueueEntry"> | string | null
 }
 
 export type QueueEntryCreateManyStationInput = {
@@ -493,6 +543,8 @@ export type QueueEntryCreateManyStationInput = {
   joinedTs?: Date | string
   etaTs?: Date | string | null
   status?: string
+  calledAt?: Date | string | null
+  calledChargerId?: string | null
 }
 
 export type QueueEntryUpdateWithoutStationInput = {
@@ -503,6 +555,8 @@ export type QueueEntryUpdateWithoutStationInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QueueEntryUncheckedUpdateWithoutStationInput = {
@@ -513,6 +567,8 @@ export type QueueEntryUncheckedUpdateWithoutStationInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QueueEntryUncheckedUpdateManyWithoutStationInput = {
@@ -523,6 +579,8 @@ export type QueueEntryUncheckedUpdateManyWithoutStationInput = {
   joinedTs?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   etaTs?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  calledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  calledChargerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -536,6 +594,8 @@ export type QueueEntrySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   joinedTs?: boolean
   etaTs?: boolean
   status?: boolean
+  calledAt?: boolean
+  calledChargerId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
 
@@ -548,6 +608,8 @@ export type QueueEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   joinedTs?: boolean
   etaTs?: boolean
   status?: boolean
+  calledAt?: boolean
+  calledChargerId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
 
@@ -560,6 +622,8 @@ export type QueueEntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   joinedTs?: boolean
   etaTs?: boolean
   status?: boolean
+  calledAt?: boolean
+  calledChargerId?: boolean
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["queueEntry"]>
 
@@ -572,9 +636,11 @@ export type QueueEntrySelectScalar = {
   joinedTs?: boolean
   etaTs?: boolean
   status?: boolean
+  calledAt?: boolean
+  calledChargerId?: boolean
 }
 
-export type QueueEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "vehicleRef" | "vehicleModelId" | "connector" | "joinedTs" | "etaTs" | "status", ExtArgs["result"]["queueEntry"]>
+export type QueueEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stationId" | "vehicleRef" | "vehicleModelId" | "connector" | "joinedTs" | "etaTs" | "status" | "calledAt" | "calledChargerId", ExtArgs["result"]["queueEntry"]>
 export type QueueEntryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   station?: boolean | Prisma.StationDefaultArgs<ExtArgs>
 }
@@ -599,6 +665,8 @@ export type $QueueEntryPayload<ExtArgs extends runtime.Types.Extensions.Internal
     joinedTs: Date
     etaTs: Date | null
     status: string
+    calledAt: Date | null
+    calledChargerId: string | null
   }, ExtArgs["result"]["queueEntry"]>
   composites: {}
 }
@@ -1031,6 +1099,8 @@ export interface QueueEntryFieldRefs {
   readonly joinedTs: Prisma.FieldRef<"QueueEntry", 'DateTime'>
   readonly etaTs: Prisma.FieldRef<"QueueEntry", 'DateTime'>
   readonly status: Prisma.FieldRef<"QueueEntry", 'String'>
+  readonly calledAt: Prisma.FieldRef<"QueueEntry", 'DateTime'>
+  readonly calledChargerId: Prisma.FieldRef<"QueueEntry", 'String'>
 }
     
 

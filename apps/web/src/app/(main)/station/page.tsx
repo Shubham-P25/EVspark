@@ -1,177 +1,113 @@
 "use client";
+import { useMemo, useState } from "react";
+import { Plus, ArrowsClockwise, PlugsConnected } from "@phosphor-icons/react";
+import { Num, SplitTitle, useNow, useReveal } from "@/components/torque/motion";
+import { Button, EmptyState, Pill, Skeleton } from "@/components/torque/primitives";
+import { toast } from "@/components/torque/toast";
+import { useApi } from "@/lib/api";
+import { useStationLive } from "@/components/torque/station/useStationLive";
+import { liveAmount, liveKwh, progressOf } from "@/components/torque/station/liveMath";
+import { BayCard } from "@/components/torque/station/BayCard";
+import { Lanes } from "@/components/torque/station/Lanes";
+import { Feed, PowerCard, RevenueBars, UtilizationCard } from "@/components/torque/station/Widgets";
+import { WalkInDrawer } from "@/components/torque/station/WalkInDrawer";
+import { ChargerDrawer } from "@/components/torque/station/ChargerDrawer";
 
-import React, { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api";
-import { useOperatorLive } from "@/lib/queries/use-operator-live";
-import { ChargerCard } from "@/components/station/charger-card";
-import { LiveMoney } from "@/components/station/live-money";
-import { ActivityFeed } from "@/components/station/activity-feed";
-import { QueueManager } from "@/components/station/queue-manager";
-import { inr } from "@/lib/format";
-import { Star, MapPin, Clock } from "@phosphor-icons/react";
-import type { LiveCharger } from "@/lib/live";
+type To = "CHARGING" | "COMPLETED" | "CANCELLED";
 
-export default function StationOverviewPage() {
-  const qc = useQueryClient();
+export default function StationPage() {
+  const api = useApi();
+  const { snap, loading, error, offset, live, reload } = useStationLive();
+  const now = useNow(1000, offset);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [walkIn, setWalkIn] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const root = useReveal<HTMLDivElement>([!!snap]);
 
-  const { data: stations, isLoading: loadingStations } = useQuery<any[]>({
-    queryKey: ["operator-stations"],
-    queryFn: () => api.get("/api/operator/stations"),
-  });
+  const d = useMemo(() => {
+    if (!snap) return null;
+    const sessions = snap.sessions.filter((s) => s.status !== "CANCELLED");
+    const charging = sessions.filter((s) => s.status === "CHARGING");
+    const byCharger = new Map(charging.filter((s) => s.chargerId).map((s) => [s.chargerId as string, s]));
+    const usable = snap.chargers.filter((c) => c.status === "AVAILABLE" || c.status === "CHARGING");
+    return { sessions, charging, byCharger, usable, waiting: sessions.filter((s) => s.status === "QUEUED").length };
+  }, [snap]);
 
-  const [stationId, setStationId] = useState<string>("");
-
-  useEffect(() => {
-    if (stations && stations.length > 0 && !stationId) {
-      setStationId(stations[0].id);
-    }
-  }, [stations, stationId]);
-
-  const { data, dataUpdatedAt, isLoading: loadingLive } = useOperatorLive(stationId || undefined);
-
-  const toggleMaintenance = useMutation({
-    mutationFn: (c: LiveCharger) =>
-      api.patch(`/api/operator/chargers/${c.id}/status`, {
-        status: c.status === "MAINTENANCE" ? "FREE" : "MAINTENANCE",
-      }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["operator-live", stationId] });
-    },
-  });
-
-  const callQueue = useMutation({
-    mutationFn: (queueId: string) => api.post(`/api/queue/${queueId}/call`),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["operator-live", stationId] });
-    },
-  });
-
-  const removeQueue = useMutation({
-    mutationFn: (queueId: string) => api.delete(`/api/queue/${queueId}`),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["operator-live", stationId] });
-    },
-  });
-
-  if (loadingStations || (stationId && loadingLive && !data)) {
-    return (
-      <div className="space-y-6">
-        <div className="h-28 rounded-2xl bg-white border border-[#DADCE0] animate-pulse" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="h-44 rounded-2xl bg-white border border-[#DADCE0] animate-pulse" />
-          ))}
-        </div>
-      </div>
-    );
+  async function step(id: string, to: To) {
+    setBusy(id);
+    try {
+      const r = await api<{ undoToken: string | null }>(`/api/operator/sessions/${id}/advance`, { method: "POST", body: JSON.stringify({ to }) });
+      toast({
+        title: to === "CHARGING" ? "Charging started" : to === "COMPLETED" ? "Session completed & billed" : "Removed from queue", tone: "ok",
+        undo: r.undoToken ? async () => {
+          try { await api(`/api/operator/sessions/${id}/undo`, { method: "POST" }); void reload(); }
+          catch (e) { toast({ title: "Can't undo", desc: (e as Error).message, tone: "bad" }); }
+        } : undefined,
+      });
+      void reload();
+    } catch (e) { toast({ title: "Action failed", desc: (e as Error).message, tone: "bad" }); } finally { setBusy(null); }
+  }
+  async function startNext() {
+    if (!snap) return;
+    const first = snap.sessions.filter((s) => s.status === "QUEUED").sort((a, b) => Date.parse(a.queuedAt) - Date.parse(b.queuedAt))[0];
+    if (first) await step(first.id, "CHARGING");
   }
 
-  if (!data) {
-    return (
-      <div className="rounded-2xl bg-white p-12 text-center border border-[#DADCE0]">
-        <p className="text-sm font-semibold text-[#202124]">No station assigned to this account.</p>
-        <p className="text-xs text-[#5F6368] mt-1">Contact your administrator or create a station in Settings.</p>
-      </div>
-    );
-  }
+  if (loading) return <div style={{ display: "grid", gap: 14 }}><Skeleton h={64} w={300} /><Skeleton h={110} /><Skeleton h={300} /></div>;
+  if (error || !snap || !d) return <div className="card"><EmptyState icon={<PlugsConnected size={32} />} title="Couldn't load your station" body={error ?? "No station found for your account."} action={<Button onClick={() => void reload()}>Retry</Button>} /></div>;
 
-  const { station, chargers, queue, kpis, recentEvents } = data;
+  const revenue = d.sessions.filter((s) => s.status === "COMPLETED" || s.status === "CHARGING").reduce((a, s) => a + liveAmount(s, now), 0);
+  const energy = d.sessions.filter((s) => s.status === "COMPLETED" || s.status === "CHARGING").reduce((a, s) => a + liveKwh(s, now), 0);
+  const busyBays = d.usable.filter((c) => c.status === "CHARGING").length;
+  const kwNow = d.charging.reduce((a, s) => a + (progressOf(s, now) < 1 ? s.powerKw : 0), 0);
+  const capacity = snap.chargers.reduce((a, c) => a + c.powerKw, 0);
+  const openCharger = snap.chargers.find((c) => c.id === openId) ?? null;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* 1. Station Header (first thing on the page per user spec) */}
-      <div className="rounded-2xl bg-white p-6 ring-1 ring-[#DADCE0] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div ref={root}>
+      <div className="page-head">
         <div>
-          <div className="flex items-center gap-3 mb-1.5 flex-wrap">
-            <h1 className="text-2xl font-extrabold text-[#202124] tracking-tight">
-              {station.name}
-            </h1>
-            <span
-              className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                station.status === "APPROVED"
-                  ? "bg-[#E6F4EA] text-[#1E8E3E]"
-                  : "bg-[#FEF7E0] text-[#B06000]"
-              }`}
-            >
-              {station.status === "APPROVED" ? "Live" : "Pending approval"}
-            </span>
-            <span className="rounded-full bg-[#F8F9FA] border border-[#DADCE0] px-2.5 py-0.5 text-[11px] font-medium text-[#5F6368]">
-              Simulated data
-            </span>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 10 }} data-reveal>
+            <span className="eyebrow">{snap.station.name}</span>
+            <Pill c={live ? "ok" : "amber"} dot>{live ? "Live" : "Reconnecting"}</Pill>
+            {snap.station.isDemo && <Pill c="violet">Demo data</Pill>}
           </div>
-
-          <div className="flex items-center gap-4 text-xs text-[#5F6368] flex-wrap">
-            {station.address && (
-              <span className="flex items-center gap-1">
-                <MapPin size={14} className="text-[#1A73E8]" />
-                {station.address}{station.city ? `, ${station.city}` : ""}
-              </span>
-            )}
-            <span className="flex items-center gap-1">
-              <Clock size={14} />
-              {station.hours ?? "24/7"}
-            </span>
-            <span className="flex items-center gap-1 font-semibold text-[#202124]">
-              <Star size={14} weight="fill" className="text-[#F9AB00]" />
-              {station.ratingAvg ? station.ratingAvg.toFixed(1) : "4.8"}
-            </span>
-          </div>
+          <SplitTitle text="Station" />
         </div>
-
-        <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l border-[#DADCE0] pt-3 md:pt-0 md:pl-6 shrink-0">
-          <div>
-            <p className="text-xs text-[#5F6368] font-semibold uppercase tracking-wider">Tariff</p>
-            <p className="font-mono text-2xl font-bold text-[#1E8E3E]">
-              {inr(station.pricePerKwh)}
-              <span className="text-xs font-sans text-[#5F6368]">/kWh</span>
-            </p>
-          </div>
+        <div className="page-actions" data-reveal>
+          <Button magnetic onClick={() => void reload()}><ArrowsClockwise size={16} />Refresh</Button>
+          <Button variant="primary" magnetic onClick={() => setWalkIn(true)}><Plus size={16} weight="bold" />Add walk-in</Button>
         </div>
       </div>
 
-      {/* 2. Charger Bays Row (animated cards) */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold text-[#202124] uppercase tracking-wider">
-            Charger Bays ({chargers.filter((c) => c.status === "FREE").length} Available)
-          </h2>
-          <span className="text-xs text-[#5F6368] font-medium">Auto-refreshing</span>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {chargers.map((charger) => (
-            <ChargerCard
-              key={charger.id}
-              c={charger}
-              tariff={station.pricePerKwh}
-              updatedAt={dataUpdatedAt}
-              onToggleMaintenance={(c) => toggleMaintenance.mutate(c)}
-            />
+      <div className="stats">
+        <div className="card" data-reveal><div className="stat-k">Revenue today</div><div className="stat-v"><Num value={revenue} decimals={2} prefix="₹" duration={1000} /></div><div className="stat-f"><Num value={snap.stats.sessionsToday} /> sessions</div></div>
+        <div className="card" data-reveal><div className="stat-k">Energy delivered</div><div className="stat-v"><Num value={energy} decimals={1} suffix=" kWh" duration={1000} /></div><div className="stat-f">across all bays</div></div>
+        <div className="card" data-reveal><div className="stat-k">Utilization</div><div className="stat-v"><Num value={d.usable.length ? Math.round((busyBays / d.usable.length) * 100) : 0} suffix="%" /></div><div className="stat-f">{busyBays} of {d.usable.length} bays in use</div></div>
+        <div className="card" data-reveal><div className="stat-k">Avg wait</div><div className="stat-v"><Num value={snap.stats.avgWaitMin} decimals={1} suffix=" min" /></div><div className="stat-f"><Num value={d.waiting} /> waiting now</div></div>
+      </div>
+
+      <div className="card-h" style={{ margin: "22px 4px 12px" }} data-reveal><h2 style={{ fontSize: 22 }}>Charger bays</h2><span className="eyebrow">{snap.chargers.length} bays</span></div>
+      {snap.chargers.length === 0 ? <div className="card"><EmptyState title="No chargers yet" body="Add chargers from the Chargers page." /></div> : (
+        <div className="bays">
+          {snap.chargers.map((c) => (
+            <BayCard key={c.id} charger={c} session={d.byCharger.get(c.id)} now={now} waiting={d.waiting} busy={busy === d.byCharger.get(c.id)?.id}
+              onComplete={(id) => step(id, "COMPLETED")} onStartNext={startNext} onOpen={() => setOpenId(c.id)} />
           ))}
-        </div>
-      </div>
+        </div>)}
 
-      {/* 3. Live Money & KPI Strip (keeps rising every second) */}
-      <LiveMoney
-        chargers={chargers}
-        completedRevenue={kpis.completedRevenueToday}
-        completedKwh={kpis.completedKwhToday}
-        tariff={station.pricePerKwh}
-        updatedAt={dataUpdatedAt}
-        sessionsToday={kpis.sessionsToday}
-        avgWaitMin={kpis.avgWaitMin}
-        uptimePct={kpis.uptimePct}
-      />
+      <div className="card-h" style={{ margin: "26px 4px 12px" }} data-reveal><h2 style={{ fontSize: 22 }}>Queue</h2><span className="eyebrow">Waiting → Charging → Done</span></div>
+      <Lanes sessions={d.sessions} chargers={snap.chargers} now={now} busyId={busy} onStep={step} />
 
-      {/* 4. Live Activity Feed & 5. Queue Manager */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ActivityFeed events={recentEvents} />
-        <QueueManager
-          queue={queue}
-          onCall={(id) => callQueue.mutate(id)}
-          onRemove={(id) => removeQueue.mutate(id)}
-        />
+      <div className="grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", margin: "14px 0" }}>
+        <UtilizationCard busy={busyBays} total={d.usable.length} />
+        <PowerCard kw={kwNow} capacityKw={capacity} />
+        <RevenueBars hourly={snap.stats.hourlyRevenue} />
       </div>
+      <Feed items={snap.activity} now={now} />
+
+      <WalkInDrawer open={walkIn} onClose={() => setWalkIn(false)} onDone={() => void reload()} />
+      <ChargerDrawer charger={openCharger} onClose={() => setOpenId(null)} onDone={() => void reload()} />
     </div>
   );
 }

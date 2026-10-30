@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { Toaster as TorqueToaster } from "@/components/torque/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { APP_CONFIG } from "@/config/app-config";
 import { PREFERENCE_DEFAULTS } from "@/lib/preferences/preferences-config";
@@ -14,26 +15,14 @@ import { PreferencesStoreProvider } from "@/stores/preferences/preferences-provi
 
 import "./globals.css";
 
-const geist = Geist({
+const sans = Geist({
   subsets: ["latin"],
-  variable: "--font-geist",
+  variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
+const mono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-plus-jakarta",
-  weight: ["600", "700", "800"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500", "600"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -72,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <ThemeBootScript />
         </head>
         <body
-          className={`${geist.variable} ${geistMono.variable} ${plusJakartaSans.variable} ${inter.variable} font-sans min-h-screen antialiased bg-white text-[#0B1220] text-[16px] leading-[1.6]`}
+          className={`${sans.variable} ${mono.variable} font-sans min-h-screen antialiased bg-white text-[#0B1220] text-[16px] leading-[1.6]`}
         >
           <ClerkAuthProvider>
             <AuthBridge />
@@ -81,6 +70,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                 <PreferencesStoreProvider initialValues={PREFERENCE_DEFAULTS}>
                   {children}
                   <Toaster />
+                  <TorqueToaster />
                 </PreferencesStoreProvider>
               </TooltipProvider>
             </QueryProvider>

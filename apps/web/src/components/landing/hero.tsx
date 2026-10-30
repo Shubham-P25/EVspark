@@ -221,7 +221,7 @@ export function LandingHero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55, duration: 0.5 }}
             >
-              <Link href="/register">
+              <Link href="/signup">
                 <Button className="h-12 rounded-xl bg-gradient-to-r from-[#1D6BFF] to-[#4F8CFF] px-7 text-base font-semibold text-white shadow-md shadow-[#1D6BFF]/20 hover:shadow-lg hover:shadow-[#1D6BFF]/30 hover:-translate-y-0.5 transition-all duration-200">
                   Find chargers
                   <ArrowRight size={18} className="ml-2" />

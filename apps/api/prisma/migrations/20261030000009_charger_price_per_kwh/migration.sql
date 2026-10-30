@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Charger" ADD COLUMN IF NOT EXISTS "pricePerKwh" DOUBLE PRECISION;
+

@@ -31,6 +31,9 @@ export type OperatorProfileMinAggregateOutputType = {
   contactName: string | null
   phone: string | null
   gstin: string | null
+  businessType: string | null
+  supportEmail: string | null
+  integration: string | null
 }
 
 export type OperatorProfileMaxAggregateOutputType = {
@@ -40,6 +43,9 @@ export type OperatorProfileMaxAggregateOutputType = {
   contactName: string | null
   phone: string | null
   gstin: string | null
+  businessType: string | null
+  supportEmail: string | null
+  integration: string | null
 }
 
 export type OperatorProfileCountAggregateOutputType = {
@@ -49,6 +55,9 @@ export type OperatorProfileCountAggregateOutputType = {
   contactName: number
   phone: number
   gstin: number
+  businessType: number
+  supportEmail: number
+  integration: number
   _all: number
 }
 
@@ -60,6 +69,9 @@ export type OperatorProfileMinAggregateInputType = {
   contactName?: true
   phone?: true
   gstin?: true
+  businessType?: true
+  supportEmail?: true
+  integration?: true
 }
 
 export type OperatorProfileMaxAggregateInputType = {
@@ -69,6 +81,9 @@ export type OperatorProfileMaxAggregateInputType = {
   contactName?: true
   phone?: true
   gstin?: true
+  businessType?: true
+  supportEmail?: true
+  integration?: true
 }
 
 export type OperatorProfileCountAggregateInputType = {
@@ -78,6 +93,9 @@ export type OperatorProfileCountAggregateInputType = {
   contactName?: true
   phone?: true
   gstin?: true
+  businessType?: true
+  supportEmail?: true
+  integration?: true
   _all?: true
 }
 
@@ -160,6 +178,9 @@ export type OperatorProfileGroupByOutputType = {
   contactName: string | null
   phone: string | null
   gstin: string | null
+  businessType: string | null
+  supportEmail: string | null
+  integration: string | null
   _count: OperatorProfileCountAggregateOutputType | null
   _min: OperatorProfileMinAggregateOutputType | null
   _max: OperatorProfileMaxAggregateOutputType | null
@@ -190,6 +211,9 @@ export type OperatorProfileWhereInput = {
   contactName?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   phone?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   gstin?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  businessType?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  supportEmail?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  integration?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -200,6 +224,9 @@ export type OperatorProfileOrderByWithRelationInput = {
   contactName?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   gstin?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrderInput | Prisma.SortOrder
+  supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  integration?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -213,6 +240,9 @@ export type OperatorProfileWhereUniqueInput = Prisma.AtLeast<{
   contactName?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   phone?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   gstin?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  businessType?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  supportEmail?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
+  integration?: Prisma.StringNullableFilter<"OperatorProfile"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -223,6 +253,9 @@ export type OperatorProfileOrderByWithAggregationInput = {
   contactName?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   gstin?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrderInput | Prisma.SortOrder
+  supportEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  integration?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OperatorProfileCountOrderByAggregateInput
   _max?: Prisma.OperatorProfileMaxOrderByAggregateInput
   _min?: Prisma.OperatorProfileMinOrderByAggregateInput
@@ -238,6 +271,9 @@ export type OperatorProfileScalarWhereWithAggregatesInput = {
   contactName?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
   gstin?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
+  businessType?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
+  supportEmail?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
+  integration?: Prisma.StringNullableWithAggregatesFilter<"OperatorProfile"> | string | null
 }
 
 export type OperatorProfileCreateInput = {
@@ -246,6 +282,9 @@ export type OperatorProfileCreateInput = {
   contactName?: string | null
   phone?: string | null
   gstin?: string | null
+  businessType?: string | null
+  supportEmail?: string | null
+  integration?: string | null
   user: Prisma.UserCreateNestedOneWithoutOperatorProfileInput
 }
 
@@ -256,6 +295,9 @@ export type OperatorProfileUncheckedCreateInput = {
   contactName?: string | null
   phone?: string | null
   gstin?: string | null
+  businessType?: string | null
+  supportEmail?: string | null
+  integration?: string | null
 }
 
 export type OperatorProfileUpdateInput = {
@@ -264,6 +306,9 @@ export type OperatorProfileUpdateInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutOperatorProfileNestedInput
 }
 
@@ -274,6 +319,9 @@ export type OperatorProfileUncheckedUpdateInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OperatorProfileCreateManyInput = {
@@ -283,6 +331,9 @@ export type OperatorProfileCreateManyInput = {
   contactName?: string | null
   phone?: string | null
   gstin?: string | null
+  businessType?: string | null
+  supportEmail?: string | null
+  integration?: string | null
 }
 
 export type OperatorProfileUpdateManyMutationInput = {
@@ -291,6 +342,9 @@ export type OperatorProfileUpdateManyMutationInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OperatorProfileUncheckedUpdateManyInput = {
@@ -300,6 +354,9 @@ export type OperatorProfileUncheckedUpdateManyInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OperatorProfileNullableScalarRelationFilter = {
@@ -314,6 +371,9 @@ export type OperatorProfileCountOrderByAggregateInput = {
   contactName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   gstin?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  supportEmail?: Prisma.SortOrder
+  integration?: Prisma.SortOrder
 }
 
 export type OperatorProfileMaxOrderByAggregateInput = {
@@ -323,6 +383,9 @@ export type OperatorProfileMaxOrderByAggregateInput = {
   contactName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   gstin?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  supportEmail?: Prisma.SortOrder
+  integration?: Prisma.SortOrder
 }
 
 export type OperatorProfileMinOrderByAggregateInput = {
@@ -332,6 +395,9 @@ export type OperatorProfileMinOrderByAggregateInput = {
   contactName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   gstin?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  supportEmail?: Prisma.SortOrder
+  integration?: Prisma.SortOrder
 }
 
 export type OperatorProfileCreateNestedOneWithoutUserInput = {
@@ -372,6 +438,9 @@ export type OperatorProfileCreateWithoutUserInput = {
   contactName?: string | null
   phone?: string | null
   gstin?: string | null
+  businessType?: string | null
+  supportEmail?: string | null
+  integration?: string | null
 }
 
 export type OperatorProfileUncheckedCreateWithoutUserInput = {
@@ -380,6 +449,9 @@ export type OperatorProfileUncheckedCreateWithoutUserInput = {
   contactName?: string | null
   phone?: string | null
   gstin?: string | null
+  businessType?: string | null
+  supportEmail?: string | null
+  integration?: string | null
 }
 
 export type OperatorProfileCreateOrConnectWithoutUserInput = {
@@ -404,6 +476,9 @@ export type OperatorProfileUpdateWithoutUserInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OperatorProfileUncheckedUpdateWithoutUserInput = {
@@ -412,6 +487,9 @@ export type OperatorProfileUncheckedUpdateWithoutUserInput = {
   contactName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gstin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supportEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  integration?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -423,6 +501,9 @@ export type OperatorProfileSelect<ExtArgs extends runtime.Types.Extensions.Inter
   contactName?: boolean
   phone?: boolean
   gstin?: boolean
+  businessType?: boolean
+  supportEmail?: boolean
+  integration?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["operatorProfile"]>
 
@@ -433,6 +514,9 @@ export type OperatorProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   contactName?: boolean
   phone?: boolean
   gstin?: boolean
+  businessType?: boolean
+  supportEmail?: boolean
+  integration?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["operatorProfile"]>
 
@@ -443,6 +527,9 @@ export type OperatorProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   contactName?: boolean
   phone?: boolean
   gstin?: boolean
+  businessType?: boolean
+  supportEmail?: boolean
+  integration?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["operatorProfile"]>
 
@@ -453,9 +540,12 @@ export type OperatorProfileSelectScalar = {
   contactName?: boolean
   phone?: boolean
   gstin?: boolean
+  businessType?: boolean
+  supportEmail?: boolean
+  integration?: boolean
 }
 
-export type OperatorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "businessName" | "contactName" | "phone" | "gstin", ExtArgs["result"]["operatorProfile"]>
+export type OperatorProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "businessName" | "contactName" | "phone" | "gstin" | "businessType" | "supportEmail" | "integration", ExtArgs["result"]["operatorProfile"]>
 export type OperatorProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -478,6 +568,9 @@ export type $OperatorProfilePayload<ExtArgs extends runtime.Types.Extensions.Int
     contactName: string | null
     phone: string | null
     gstin: string | null
+    businessType: string | null
+    supportEmail: string | null
+    integration: string | null
   }, ExtArgs["result"]["operatorProfile"]>
   composites: {}
 }
@@ -908,6 +1001,9 @@ export interface OperatorProfileFieldRefs {
   readonly contactName: Prisma.FieldRef<"OperatorProfile", 'String'>
   readonly phone: Prisma.FieldRef<"OperatorProfile", 'String'>
   readonly gstin: Prisma.FieldRef<"OperatorProfile", 'String'>
+  readonly businessType: Prisma.FieldRef<"OperatorProfile", 'String'>
+  readonly supportEmail: Prisma.FieldRef<"OperatorProfile", 'String'>
+  readonly integration: Prisma.FieldRef<"OperatorProfile", 'String'>
 }
     
 

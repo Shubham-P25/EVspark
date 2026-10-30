@@ -16,7 +16,8 @@
     "test:e2e": "vitest run tests/e2e/smoke.test.ts",
     "test:load": "tsx tests/load/run-load.ts",
     "db:migrate": "pnpm --filter api db:migrate",
-    "db:seed": "pnpm --filter api db:seed"
+    "db:seed": "pnpm --filter api db:seed",
+    "ml:train": "powershell -ExecutionPolicy Bypass -File apps/ml-service/ml/run_all.ps1"
   },
   "devDependencies": {
     "@types/supertest": "^7.2.1",

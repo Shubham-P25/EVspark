@@ -82,7 +82,7 @@ export function LandingNavbar() {
                   Sign In
                 </Button>
               </Link>
-              <Link href="/register">
+              <Link href="/signup">
                 <Button className="bg-gradient-to-r from-[#1D6BFF] to-[#4F8CFF] text-white hover:shadow-md hover:shadow-[#1D6BFF]/20 text-sm font-medium transition-all duration-200">
                   Find Chargers
                 </Button>

@@ -133,7 +133,7 @@ export function BentoSection() {
                   </div>
                 </div>
               }
-              href="/register"
+              href="/signup"
               cta="Create Free Account"
             />
 

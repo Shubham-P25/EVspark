@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/torque.css";
+@import "./torque.css";
+@import "../features/driver-map/tokens.css";
 @import "shadcn/tailwind.css";
 
 /* Theme preset styles: these override CSS variables based on the selected data-theme-preset */
@@ -52,6 +55,35 @@
   --color-ev-busy: var(--ev-busy);
   --color-ev-overload: var(--ev-overload);
   --color-ev-offline: var(--ev-offline);
+  --color-ev-canvas: var(--ev-canvas);
+  --color-ev-card: var(--ev-card);
+  --color-ev-soft: var(--ev-card-soft);
+  --color-ev-line: var(--ev-line);
+  --color-ev-ink: var(--ev-ink);
+  --color-ev-ink2: var(--ev-ink-2);
+  --color-ev-ink3: var(--ev-ink-3);
+  --color-ev-accent: var(--ev-accent);
+  --color-ev-accentSoft: var(--ev-accent-soft);
+  --color-ev-accent-soft: var(--ev-accent-soft);
+  --color-ev-accentDeep: var(--ev-accent-deep);
+  --color-ev-accent-deep: var(--ev-accent-deep);
+  --color-ev-free: var(--ev-free);
+  --color-ev-freeSoft: var(--ev-free-soft);
+  --color-ev-free-soft: var(--ev-free-soft);
+  --color-ev-busy: var(--ev-busy);
+  --color-ev-busySoft: var(--ev-busy-soft);
+  --color-ev-busy-soft: var(--ev-busy-soft);
+  --color-ev-full: var(--ev-full);
+  --color-ev-fullSoft: var(--ev-full-soft);
+  --color-ev-full-soft: var(--ev-full-soft);
+  --color-ev-sky: var(--ev-sky);
+  --color-ev-skySoft: var(--ev-sky-soft);
+  --color-ev-sky-soft: var(--ev-sky-soft);
+  --radius-card: var(--ev-r-card);
+  --radius-inner: var(--ev-r-inner);
+  --radius-pill: var(--ev-r-pill);
+  --shadow-ev: var(--ev-shadow);
+  --shadow-pin: var(--ev-shadow-pin);
   --font-heading: var(--font-plus-jakarta, var(--font-sans));
   --font-sans: var(--font-sans);
 }

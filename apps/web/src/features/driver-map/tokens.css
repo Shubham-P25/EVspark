@@ -1,0 +1,64 @@
+:root {
+  /* surfaces */
+  --ev-canvas: #f1f0ec;          /* warm paper behind everything */
+  --ev-card: #ffffff;            /* floating cards */
+  --ev-card-soft: #f7f6f2;       /* inset areas inside cards */
+  --ev-line: rgba(23, 24, 27, 0.08); /* 1px hairlines */
+
+  /* text */
+  --ev-ink: #17181b;
+  --ev-ink-2: #5b616b;
+  --ev-ink-3: #9096a0;
+
+  /* accent (brand, selection, CTA, hero card) */
+  --ev-accent: #e5392a;
+  --ev-accent-ink: #ffffff;
+  --ev-accent-soft: #fdeceb;      /* tinted pill background */
+  --ev-accent-deep: #c2410c;      /* Torque burnt orange, used for pressed state and links */
+
+  /* status (map pins and pills) */
+  --ev-free: #12a36b;
+  --ev-free-soft: #e3f6ee;
+  --ev-busy: #f5a524;
+  --ev-busy-soft: #fff4dc;
+  --ev-full: #5b616b;             /* full = neutral ink-grey, NOT red (red is the brand) */
+  --ev-full-soft: #ececef;
+  --ev-offline: #b8bcc4;
+
+  /* info */
+  --ev-sky: #2b8bd6;
+  --ev-sky-soft: #e4f1fb;
+
+  /* shape */
+  --ev-r-card: 20px;
+  --ev-r-inner: 14px;
+  --ev-r-pill: 999px;
+
+  /* elevation: ONE soft layered shadow for floating cards */
+  --ev-shadow: 0 1px 2px rgba(23,24,27,.06), 0 8px 24px rgba(23,24,27,.10), 0 24px 48px rgba(23,24,27,.06);
+  --ev-shadow-pin: 0 2px 6px rgba(23,24,27,.25);
+
+  /* motion */
+  --ev-ease: cubic-bezier(.2, .8, .2, 1);
+  --ev-fast: 160ms;
+  --ev-med: 280ms;
+
+  /* layout */
+  --ev-gap: 12px;                 /* gap between floating cards and screen edge */
+  --ev-panel-w: 352px;
+  --ev-dock-w: 64px;
+  --ev-control: 44px;             /* height of buttons, inputs, chips */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ev-fast: 0ms; --ev-med: 0ms; }
+}
+
+@keyframes move-stripes {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 24px 0;
+  }
+}

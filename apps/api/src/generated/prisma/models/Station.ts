@@ -31,6 +31,8 @@ export type StationAvgAggregateOutputType = {
   lng: number | null
   pricePerKwh: number | null
   ratingAvg: number | null
+  parkingSlots: number | null
+  idleFeePerMin: number | null
 }
 
 export type StationSumAggregateOutputType = {
@@ -38,6 +40,8 @@ export type StationSumAggregateOutputType = {
   lng: number | null
   pricePerKwh: number | null
   ratingAvg: number | null
+  parkingSlots: number | null
+  idleFeePerMin: number | null
 }
 
 export type StationMinAggregateOutputType = {
@@ -62,6 +66,13 @@ export type StationMinAggregateOutputType = {
   googlePlaceId: string | null
   photoUrl: string | null
   phone: string | null
+  pincode: string | null
+  landmark: string | null
+  parkingSlots: number | null
+  paymentMethods: string | null
+  idleFeePerMin: number | null
+  description: string | null
+  accessType: string | null
   createdAt: Date | null
 }
 
@@ -87,6 +98,13 @@ export type StationMaxAggregateOutputType = {
   googlePlaceId: string | null
   photoUrl: string | null
   phone: string | null
+  pincode: string | null
+  landmark: string | null
+  parkingSlots: number | null
+  paymentMethods: string | null
+  idleFeePerMin: number | null
+  description: string | null
+  accessType: string | null
   createdAt: Date | null
 }
 
@@ -112,6 +130,13 @@ export type StationCountAggregateOutputType = {
   googlePlaceId: number
   photoUrl: number
   phone: number
+  pincode: number
+  landmark: number
+  parkingSlots: number
+  paymentMethods: number
+  idleFeePerMin: number
+  description: number
+  accessType: number
   createdAt: number
   _all: number
 }
@@ -122,6 +147,8 @@ export type StationAvgAggregateInputType = {
   lng?: true
   pricePerKwh?: true
   ratingAvg?: true
+  parkingSlots?: true
+  idleFeePerMin?: true
 }
 
 export type StationSumAggregateInputType = {
@@ -129,6 +156,8 @@ export type StationSumAggregateInputType = {
   lng?: true
   pricePerKwh?: true
   ratingAvg?: true
+  parkingSlots?: true
+  idleFeePerMin?: true
 }
 
 export type StationMinAggregateInputType = {
@@ -153,6 +182,13 @@ export type StationMinAggregateInputType = {
   googlePlaceId?: true
   photoUrl?: true
   phone?: true
+  pincode?: true
+  landmark?: true
+  parkingSlots?: true
+  paymentMethods?: true
+  idleFeePerMin?: true
+  description?: true
+  accessType?: true
   createdAt?: true
 }
 
@@ -178,6 +214,13 @@ export type StationMaxAggregateInputType = {
   googlePlaceId?: true
   photoUrl?: true
   phone?: true
+  pincode?: true
+  landmark?: true
+  parkingSlots?: true
+  paymentMethods?: true
+  idleFeePerMin?: true
+  description?: true
+  accessType?: true
   createdAt?: true
 }
 
@@ -203,6 +246,13 @@ export type StationCountAggregateInputType = {
   googlePlaceId?: true
   photoUrl?: true
   phone?: true
+  pincode?: true
+  landmark?: true
+  parkingSlots?: true
+  paymentMethods?: true
+  idleFeePerMin?: true
+  description?: true
+  accessType?: true
   createdAt?: true
   _all?: true
 }
@@ -315,6 +365,13 @@ export type StationGroupByOutputType = {
   googlePlaceId: string | null
   photoUrl: string | null
   phone: string | null
+  pincode: string | null
+  landmark: string | null
+  parkingSlots: number | null
+  paymentMethods: string | null
+  idleFeePerMin: number | null
+  description: string | null
+  accessType: string | null
   createdAt: Date
   _count: StationCountAggregateOutputType | null
   _avg: StationAvgAggregateOutputType | null
@@ -363,6 +420,13 @@ export type StationWhereInput = {
   googlePlaceId?: Prisma.StringNullableFilter<"Station"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Station"> | string | null
   phone?: Prisma.StringNullableFilter<"Station"> | string | null
+  pincode?: Prisma.StringNullableFilter<"Station"> | string | null
+  landmark?: Prisma.StringNullableFilter<"Station"> | string | null
+  parkingSlots?: Prisma.IntNullableFilter<"Station"> | number | null
+  paymentMethods?: Prisma.StringNullableFilter<"Station"> | string | null
+  idleFeePerMin?: Prisma.FloatNullableFilter<"Station"> | number | null
+  description?: Prisma.StringNullableFilter<"Station"> | string | null
+  accessType?: Prisma.StringNullableFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -398,6 +462,13 @@ export type StationOrderByWithRelationInput = {
   googlePlaceId?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  pincode?: Prisma.SortOrderInput | Prisma.SortOrder
+  landmark?: Prisma.SortOrderInput | Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethods?: Prisma.SortOrderInput | Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessType?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   chargers?: Prisma.ChargerOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteOrderByRelationAggregateInput
@@ -436,6 +507,13 @@ export type StationWhereUniqueInput = Prisma.AtLeast<{
   googlePlaceId?: Prisma.StringNullableFilter<"Station"> | string | null
   photoUrl?: Prisma.StringNullableFilter<"Station"> | string | null
   phone?: Prisma.StringNullableFilter<"Station"> | string | null
+  pincode?: Prisma.StringNullableFilter<"Station"> | string | null
+  landmark?: Prisma.StringNullableFilter<"Station"> | string | null
+  parkingSlots?: Prisma.IntNullableFilter<"Station"> | number | null
+  paymentMethods?: Prisma.StringNullableFilter<"Station"> | string | null
+  idleFeePerMin?: Prisma.FloatNullableFilter<"Station"> | number | null
+  description?: Prisma.StringNullableFilter<"Station"> | string | null
+  accessType?: Prisma.StringNullableFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Station"> | Date | string
   chargers?: Prisma.ChargerListRelationFilter
   favorites?: Prisma.FavoriteListRelationFilter
@@ -471,6 +549,13 @@ export type StationOrderByWithAggregationInput = {
   googlePlaceId?: Prisma.SortOrderInput | Prisma.SortOrder
   photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  pincode?: Prisma.SortOrderInput | Prisma.SortOrder
+  landmark?: Prisma.SortOrderInput | Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethods?: Prisma.SortOrderInput | Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrderInput | Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessType?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StationCountOrderByAggregateInput
   _avg?: Prisma.StationAvgOrderByAggregateInput
@@ -504,6 +589,13 @@ export type StationScalarWhereWithAggregatesInput = {
   googlePlaceId?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  pincode?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  landmark?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  parkingSlots?: Prisma.IntNullableWithAggregatesFilter<"Station"> | number | null
+  paymentMethods?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  idleFeePerMin?: Prisma.FloatNullableWithAggregatesFilter<"Station"> | number | null
+  description?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
+  accessType?: Prisma.StringNullableWithAggregatesFilter<"Station"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Station"> | Date | string
 }
 
@@ -529,6 +621,13 @@ export type StationCreateInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -564,6 +663,13 @@ export type StationUncheckedCreateInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -599,6 +705,13 @@ export type StationUpdateInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -634,6 +747,13 @@ export type StationUncheckedUpdateInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -669,6 +789,13 @@ export type StationCreateManyInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
 }
 
@@ -694,6 +821,13 @@ export type StationUpdateManyMutationInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -719,6 +853,13 @@ export type StationUncheckedUpdateManyInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -744,6 +885,13 @@ export type StationCountOrderByAggregateInput = {
   googlePlaceId?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  pincode?: Prisma.SortOrder
+  landmark?: Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrder
+  paymentMethods?: Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  accessType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -752,6 +900,8 @@ export type StationAvgOrderByAggregateInput = {
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrder
 }
 
 export type StationMaxOrderByAggregateInput = {
@@ -776,6 +926,13 @@ export type StationMaxOrderByAggregateInput = {
   googlePlaceId?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  pincode?: Prisma.SortOrder
+  landmark?: Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrder
+  paymentMethods?: Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  accessType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -801,6 +958,13 @@ export type StationMinOrderByAggregateInput = {
   googlePlaceId?: Prisma.SortOrder
   photoUrl?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  pincode?: Prisma.SortOrder
+  landmark?: Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrder
+  paymentMethods?: Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  accessType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -809,6 +973,8 @@ export type StationSumOrderByAggregateInput = {
   lng?: Prisma.SortOrder
   pricePerKwh?: Prisma.SortOrder
   ratingAvg?: Prisma.SortOrder
+  parkingSlots?: Prisma.SortOrder
+  idleFeePerMin?: Prisma.SortOrder
 }
 
 export type StationScalarRelationFilter = {
@@ -989,6 +1155,13 @@ export type StationCreateWithoutChargersInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
@@ -1023,6 +1196,13 @@ export type StationUncheckedCreateWithoutChargersInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
@@ -1073,6 +1253,13 @@ export type StationUpdateWithoutChargersInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
@@ -1107,6 +1294,13 @@ export type StationUncheckedUpdateWithoutChargersInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
@@ -1141,6 +1335,13 @@ export type StationCreateWithoutSessionsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1175,6 +1376,13 @@ export type StationUncheckedCreateWithoutSessionsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1225,6 +1433,13 @@ export type StationUpdateWithoutSessionsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1259,6 +1474,13 @@ export type StationUncheckedUpdateWithoutSessionsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1293,6 +1515,13 @@ export type StationCreateWithoutQueueEntriesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1327,6 +1556,13 @@ export type StationUncheckedCreateWithoutQueueEntriesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1377,6 +1613,13 @@ export type StationUpdateWithoutQueueEntriesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1411,6 +1654,13 @@ export type StationUncheckedUpdateWithoutQueueEntriesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1445,6 +1695,13 @@ export type StationCreateWithoutBookingsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1479,6 +1736,13 @@ export type StationUncheckedCreateWithoutBookingsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1529,6 +1793,13 @@ export type StationUpdateWithoutBookingsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1563,6 +1834,13 @@ export type StationUncheckedUpdateWithoutBookingsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1597,6 +1875,13 @@ export type StationCreateWithoutFavoritesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutStationInput
@@ -1631,6 +1916,13 @@ export type StationUncheckedCreateWithoutFavoritesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutStationInput
@@ -1681,6 +1973,13 @@ export type StationUpdateWithoutFavoritesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutStationNestedInput
@@ -1715,6 +2014,13 @@ export type StationUncheckedUpdateWithoutFavoritesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutStationNestedInput
@@ -1749,6 +2055,13 @@ export type StationCreateWithoutReviewsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1783,6 +2096,13 @@ export type StationUncheckedCreateWithoutReviewsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1833,6 +2153,13 @@ export type StationUpdateWithoutReviewsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -1867,6 +2194,13 @@ export type StationUncheckedUpdateWithoutReviewsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -1901,6 +2235,13 @@ export type StationCreateWithoutIssuesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -1935,6 +2276,13 @@ export type StationUncheckedCreateWithoutIssuesInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -1985,6 +2333,13 @@ export type StationUpdateWithoutIssuesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -2019,6 +2374,13 @@ export type StationUncheckedUpdateWithoutIssuesInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -2053,6 +2415,13 @@ export type StationCreateWithoutMetricsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -2087,6 +2456,13 @@ export type StationUncheckedCreateWithoutMetricsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -2137,6 +2513,13 @@ export type StationUpdateWithoutMetricsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -2171,6 +2554,13 @@ export type StationUncheckedUpdateWithoutMetricsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -2205,6 +2595,13 @@ export type StationCreateWithoutForecastsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -2239,6 +2636,13 @@ export type StationUncheckedCreateWithoutForecastsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -2289,6 +2693,13 @@ export type StationUpdateWithoutForecastsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -2323,6 +2734,13 @@ export type StationUncheckedUpdateWithoutForecastsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -2357,6 +2775,13 @@ export type StationCreateWithoutVehiclePingsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteCreateNestedManyWithoutStationInput
@@ -2391,6 +2816,13 @@ export type StationUncheckedCreateWithoutVehiclePingsInput = {
   googlePlaceId?: string | null
   photoUrl?: string | null
   phone?: string | null
+  pincode?: string | null
+  landmark?: string | null
+  parkingSlots?: number | null
+  paymentMethods?: string | null
+  idleFeePerMin?: number | null
+  description?: string | null
+  accessType?: string | null
   createdAt?: Date | string
   chargers?: Prisma.ChargerUncheckedCreateNestedManyWithoutStationInput
   favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutStationInput
@@ -2441,6 +2873,13 @@ export type StationUpdateWithoutVehiclePingsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUpdateManyWithoutStationNestedInput
@@ -2475,6 +2914,13 @@ export type StationUncheckedUpdateWithoutVehiclePingsInput = {
   googlePlaceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pincode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landmark?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parkingSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  paymentMethods?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idleFeePerMin?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chargers?: Prisma.ChargerUncheckedUpdateManyWithoutStationNestedInput
   favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutStationNestedInput
@@ -2621,6 +3067,13 @@ export type StationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   googlePlaceId?: boolean
   photoUrl?: boolean
   phone?: boolean
+  pincode?: boolean
+  landmark?: boolean
+  parkingSlots?: boolean
+  paymentMethods?: boolean
+  idleFeePerMin?: boolean
+  description?: boolean
+  accessType?: boolean
   createdAt?: boolean
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
@@ -2657,6 +3110,13 @@ export type StationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   googlePlaceId?: boolean
   photoUrl?: boolean
   phone?: boolean
+  pincode?: boolean
+  landmark?: boolean
+  parkingSlots?: boolean
+  paymentMethods?: boolean
+  idleFeePerMin?: boolean
+  description?: boolean
+  accessType?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
@@ -2682,6 +3142,13 @@ export type StationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   googlePlaceId?: boolean
   photoUrl?: boolean
   phone?: boolean
+  pincode?: boolean
+  landmark?: boolean
+  parkingSlots?: boolean
+  paymentMethods?: boolean
+  idleFeePerMin?: boolean
+  description?: boolean
+  accessType?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["station"]>
 
@@ -2707,10 +3174,17 @@ export type StationSelectScalar = {
   googlePlaceId?: boolean
   photoUrl?: boolean
   phone?: boolean
+  pincode?: boolean
+  landmark?: boolean
+  parkingSlots?: boolean
+  paymentMethods?: boolean
+  idleFeePerMin?: boolean
+  description?: boolean
+  accessType?: boolean
   createdAt?: boolean
 }
 
-export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sourceId" | "operatorUserId" | "name" | "operatorName" | "state" | "district" | "city" | "address" | "lat" | "lng" | "pricePerKwh" | "hours" | "amenities" | "status" | "ratingAvg" | "datasetSource" | "externalId" | "googlePlaceId" | "photoUrl" | "phone" | "createdAt", ExtArgs["result"]["station"]>
+export type StationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sourceId" | "operatorUserId" | "name" | "operatorName" | "state" | "district" | "city" | "address" | "lat" | "lng" | "pricePerKwh" | "hours" | "amenities" | "status" | "ratingAvg" | "datasetSource" | "externalId" | "googlePlaceId" | "photoUrl" | "phone" | "pincode" | "landmark" | "parkingSlots" | "paymentMethods" | "idleFeePerMin" | "description" | "accessType" | "createdAt", ExtArgs["result"]["station"]>
 export type StationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   chargers?: boolean | Prisma.Station$chargersArgs<ExtArgs>
   favorites?: boolean | Prisma.Station$favoritesArgs<ExtArgs>
@@ -2763,6 +3237,13 @@ export type $StationPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     googlePlaceId: string | null
     photoUrl: string | null
     phone: string | null
+    pincode: string | null
+    landmark: string | null
+    parkingSlots: number | null
+    paymentMethods: string | null
+    idleFeePerMin: number | null
+    description: string | null
+    accessType: string | null
     createdAt: Date
   }, ExtArgs["result"]["station"]>
   composites: {}
@@ -3218,6 +3699,13 @@ export interface StationFieldRefs {
   readonly googlePlaceId: Prisma.FieldRef<"Station", 'String'>
   readonly photoUrl: Prisma.FieldRef<"Station", 'String'>
   readonly phone: Prisma.FieldRef<"Station", 'String'>
+  readonly pincode: Prisma.FieldRef<"Station", 'String'>
+  readonly landmark: Prisma.FieldRef<"Station", 'String'>
+  readonly parkingSlots: Prisma.FieldRef<"Station", 'Int'>
+  readonly paymentMethods: Prisma.FieldRef<"Station", 'String'>
+  readonly idleFeePerMin: Prisma.FieldRef<"Station", 'Float'>
+  readonly description: Prisma.FieldRef<"Station", 'String'>
+  readonly accessType: Prisma.FieldRef<"Station", 'String'>
   readonly createdAt: Prisma.FieldRef<"Station", 'DateTime'>
 }
     

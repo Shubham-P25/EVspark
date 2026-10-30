@@ -36,6 +36,7 @@ describe("Onboarding API Integration Tests", () => {
         workLabel: "BKC, Mumbai",
         maxWaitMin: 15,
         minKw: 50,
+        acceptTerms: true,
       });
 
     expect(res.status).toBe(200);
@@ -63,6 +64,7 @@ describe("Onboarding API Integration Tests", () => {
         gstin: "27AAAAA0000A1Z5",
         stationName: "SparkPower BKC Fast Hub",
         address: "G Block, Bandra Kurla Complex",
+        pincode: "400051",
         city: "Mumbai",
         lat: 19.0657,
         lng: 72.8687,
@@ -73,6 +75,7 @@ describe("Onboarding API Integration Tests", () => {
           { label: "Bay 1", connectorType: "CCS2", powerKw: 60 },
           { label: "Bay 2", connectorType: "CCS2", powerKw: 120 },
         ],
+        acceptTerms: true,
       });
 
     expect(res.status).toBe(200);

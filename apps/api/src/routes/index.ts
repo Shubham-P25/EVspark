@@ -7,6 +7,7 @@ import reviewsRouter from "./reviews.routes";
 import operatorRouter from "./operator.routes";
 import adminRouter from "./admin.routes";
 import meRouter from "./me.routes";
+import onboardingRouter from "./onboarding.routes";
 import telemetryRouter from "./telemetry.routes";
 import { recommendStations } from "../controllers/recommend.controller";
 import { planJourney } from "../controllers/journey.controller";
@@ -44,6 +45,7 @@ router.post("/journeys/plan", validate({ body: journeyPlanSchema }), planJourney
 
 // Authenticated user endpoints
 router.use("/me", requireAuth, meRouter);
+router.use("/onboarding", requireAuth, onboardingRouter);
 router.use("/favorites", requireAuth, favoritesRouter);
 router.use("/favourites", requireAuth, favoritesRouter);
 router.use("/users", requireAuth, usersRouter);

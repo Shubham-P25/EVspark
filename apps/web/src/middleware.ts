@@ -13,8 +13,16 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 const isOnboardingRoute = createRouteMatcher(["/onboarding(.*)"]);
-const isDriverRoute = createRouteMatcher(["/driver(.*)"]);
-const isOperatorRoute = createRouteMatcher(["/station(.*)", "/operator(.*)"]);
+const isDriverRoute = createRouteMatcher(["/driver(.*)", "/map(.*)"]);
+const isOperatorRoute = createRouteMatcher([
+  "/station(.*)",
+  "/operator(.*)",
+  "/chargers(.*)",
+  "/sessions(.*)",
+  "/analytics(.*)",
+  "/pricing(.*)",
+  "/settings(.*)",
+]);
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
